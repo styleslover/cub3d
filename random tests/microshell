@@ -3,6 +3,16 @@
 #include <string.h>
 #include <stdlib.h>
 
+int	ft_strlen(char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+		i++;
+	return (i);
+}
+
 void print_error(char *str, char *arg)
 {
 	write(2, str, strlen(str));
