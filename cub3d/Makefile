@@ -14,7 +14,8 @@ NAME = cub3d
 CC = gcc
 CFLAGS = -Wall -Werror -Wextra
 LIBS = -Lminilibx-linux -lmlx -lXext -lX11
-SRC = test.c
+GNL = get_next_line/get_next_line.c get_next_line/get_next_line_utils.c
+SRC = test.c $(GNL)
 
 MINI_REPO = https://github.com/42Paris/minilibx-linux.git
 MINI_PATH = minilibx-linux
