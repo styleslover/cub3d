@@ -6,7 +6,7 @@
 /*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 16:25:03 by mabrigo           #+#    #+#             */
-/*   Updated: 2025/02/12 21:37:29 by mabrigo          ###   ########.fr       */
+/*   Updated: 2025/02/13 21:50:54 by mabrigo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,12 @@
 
 # include "minilibx-linux/mlx.h"
 # include "libft/libft.h"
+# include <math.h>
 # include <X11/X.h>
 # include <stdio.h>
 # include <unistd.h>
 # include <stdlib.h>
 # include <stdbool.h>
-# include <math.h>
 
 # define WIDTH 1820
 # define HEIGHT 780
@@ -29,6 +29,9 @@
 # define A 97
 # define S 115
 # define D 100
+# define LEFT 65361
+# define RIGHT 65363
+
 # define ESC 65307
 
 # define PI 3.14159265359
@@ -37,11 +40,15 @@ typedef struct s_player
 {
 	float	x;
 	float	y;
+	float	angle;
 
 	bool	key_up;
 	bool	key_down;
 	bool	key_left;
 	bool	key_right;
+
+	bool	left_rot;
+	bool	right_rot;
 }		t_player;
 
 typedef struct s_game
