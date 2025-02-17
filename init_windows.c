@@ -6,13 +6,14 @@
 /*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 22:11:52 by mabrigo           #+#    #+#             */
-/*   Updated: 2025/02/13 22:12:28 by mabrigo          ###   ########.fr       */
+/*   Updated: 2025/02/17 19:44:05 by mabrigo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-void	utils_win()
+void	get_win_measures()
+{}
 
 void	init_game(t_game *game)
 {
