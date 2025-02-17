@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_isascii.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
+/*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/15 17:39:43 by mabrigo           #+#    #+#             */
-/*   Updated: 2023/10/26 18:48:15 by mabrigo          ###   ########.fr       */
+/*   Created: 2023/12/01 19:09:27 by damoncad          #+#    #+#             */
+/*   Updated: 2023/12/21 19:26:47 by damoncad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	ft_isascii(int c)
 {
-	if (c >= 0 && c <= 127)
+	if (c <= 127 && c >= 0)
 		return (1);
 	return (0);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_tolower.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
+/*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/11 21:15:06 by mabrigo           #+#    #+#             */
-/*   Updated: 2023/10/25 20:55:20 by mabrigo          ###   ########.fr       */
+/*   Created: 2023/12/13 21:06:10 by damoncad          #+#    #+#             */
+/*   Updated: 2023/12/18 21:03:15 by damoncad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,5 @@ int	ft_tolower(int c)
 {
 	if (c >= 'A' && c <= 'Z')
 		return (c + 32);
-	else
-		return (c);
+	return (c);
 }
-/*int	main()
-{
-	char	c = 'A';
-	printf("%c", ft_tolower(c));
-	return (0);
-}*/

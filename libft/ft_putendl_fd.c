@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_putendl_fd.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
+/*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/19 22:19:23 by mabrigo           #+#    #+#             */
-/*   Updated: 2023/10/25 20:51:21 by mabrigo          ###   ########.fr       */
+/*   Created: 2023/12/21 19:31:18 by damoncad          #+#    #+#             */
+/*   Updated: 2023/12/21 20:03:29 by damoncad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,10 @@
 
 void	ft_putendl_fd(char *s, int fd)
 {
-	ft_putstr_fd(s, fd);
-	ft_putchar_fd('\n', fd);
+	while (*s != '\0')
+	{
+		write(fd, s, 1);
+		s++;
+	}
+	write(fd, "\n", 1);
 }

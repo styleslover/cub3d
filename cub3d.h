@@ -14,12 +14,14 @@
 # define CUB3D_H
 
 # include "minilibx-linux/mlx.h"
+# include "get_next_line/get_next_line.h"
 # include "libft/libft.h"
 # include <X11/X.h>
 # include <stdio.h>
 # include <unistd.h>
 # include <stdlib.h>
 # include <stdbool.h>
+# include <fcntl.h>
 # include <math.h>
 
 # define WIDTH 1820
@@ -56,7 +58,12 @@ typedef struct s_game
 	int			endian; // Specifica l'ordine dei byte (Big endian o Little endian)
 
 	t_player	*player;
+	char		**map;
 }			t_game;
+
+void	my_pixel_put(int x, int y, t_game *game, int color);
+
+int	count_lines(char *filename);
 
 
 
