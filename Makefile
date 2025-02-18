@@ -15,7 +15,7 @@ CC = gcc
 CFLAGS = -Wall -Werror -Wextra
 LIBS = -Lminilibx-linux -lmlx -lXext -lX11
 GNL = get_next_line/get_next_line.c get_next_line/get_next_line_utils.c
-SRC = test.c free_shit.c $(GNL)
+SRC = test.c free_shit.c draw_picasso.c $(GNL)
 
 MINI_REPO = https://github.com/42Paris/minilibx-linux.git
 MINI_PATH = minilibx-linux

@@ -12,23 +12,23 @@
 
 #include "cub3d.h"
 
-void	draw_player(t_game *game, t_player *player, int size, int color)
-{
-	int	i;
-	int	j;
+// void	draw_player(t_game *game, t_player *player, int size, int color)
+// {
+// 	int	i;
+// 	int	j;
 
-	i = 0;
-	while (i < size)
-	{
-		j = 0;
-		while (j < size)
-		{
-			my_pixel_put(player->x + j, player->y + i, game, color);
-			j++;
-		}
-		i++;
-	}
-}
+// 	i = 0;
+// 	while (i < size)
+// 	{
+// 		j = 0;
+// 		while (j < size)
+// 		{
+// 			my_pixel_put(player->x + j, player->y + i, game, color);
+// 			j++;
+// 		}
+// 		i++;
+// 	}
+// }
 
 void	init_player(t_player *player)
 {

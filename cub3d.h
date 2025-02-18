@@ -31,6 +31,7 @@
 
 # define WIDTH 1280
 # define HEIGHT 720
+# define TILE_SIZE 64
 
 # define W 119
 # define A 97
@@ -71,14 +72,17 @@ typedef struct s_game
 }			t_game;
 
 void	my_pixel_put(int x, int y, t_game *game, int color);
+int	count_lines(char *filename);
 
 //free_shit.c
 void	free_map(char **map);
 void	free_mlx(t_game *game);
 void	free_game_resources(t_game *game);
 
-int	count_lines(char *filename);
-
+//draw_picasso.c
+void	draw_square(int x, int y, int size, t_game *game, int color, bool is_player);
+void	draw_grid(t_game *game, int tile_size);
+void	draw_map(t_game *game);
 
 
 #endif
