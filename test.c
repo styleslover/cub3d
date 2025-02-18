@@ -41,6 +41,10 @@ int	key_press(int keycode, t_game *game)
 		player->key_left = true;
 	if (keycode == D)
 		player->key_right = true;
+	if (keycode == LEFT)
+		player->dir -= 0.1f;
+	if (keycode == RIGHT)
+		player->dir += 0.1f;
 	if (keycode == ESC)
 	{
 		free_game_resources(game);
@@ -95,8 +99,8 @@ void	init_player(t_player *player, char **map, int offset_x, int offset_y)
 		{
 			if (map[i][j] == 'N')
 			{
-				player->x = j * TILE_SIZE + offset_x + (TILE_SIZE / 2);
-				player->y = i * TILE_SIZE + offset_y + (TILE_SIZE / 2);
+				player->x = (float)(j * TILE_SIZE + offset_x + (TILE_SIZE / 2));
+				player->y = (float)(i * TILE_SIZE + offset_y + (TILE_SIZE / 2));
 				map[i][j] = '0';
 				return ;
 			}
@@ -104,8 +108,9 @@ void	init_player(t_player *player, char **map, int offset_x, int offset_y)
 		}
 		i++;
 	}
-	player->x = WIDTH / 2;
-	player->y = HEIGHT / 2;
+	player->x = (float)(WIDTH / 2);
+	player->y = (float)(HEIGHT / 2);
+	player->dir = 0;
 	printf("Posizione non trovata sulla mappa, posizionato al centro dello schermo\n");
 }
 
@@ -115,7 +120,7 @@ void	move_player(t_player *player)
 {
 	int	speed;
 
-	speed = 5;
+	speed = 3.0f; //usando un float per avere una velocità più fluida(piu comoda pare a me)
 	if (player->key_up && player->y > 0)
 		player->y -= speed;
 	if (player->key_down && player->y < HEIGHT - 10)
@@ -280,7 +285,8 @@ int	draw_loop(t_game *game)
 			&game->endian);
 	
 	draw_map(game);
-	draw_square(player->x, player->y, 15, game, GREEN, true);
+	//draw_square(player->x, player->y, 15, game, GREEN);
+	draw_player(game, player, 15, GREEN);
 
 	mlx_put_image_to_window(game->mlx, game->win, game->img, 0, 0);
 	return (0);

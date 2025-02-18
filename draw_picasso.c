@@ -12,7 +12,85 @@
 
 #include "cub3d.h"
 
-void	draw_square(int x, int y, int size, t_game *game, int color, bool is_player)
+void	draw_direction_line(t_game *game, t_player *player, int length, int color)
+{
+	float	end_x;
+	float	end_y;
+	float	step_x;
+	float	step_y;
+	float	delta_x;
+	float	delta_y;
+	int		max_steps;
+	int		i;
+	float	temp_x;
+	float	temp_y;
+
+	//calcola la fine della linea in base alla direzione del giocatore
+	end_x = player->x + cosf(player->dir) * length;	//il cosf e' per i float
+	end_y = player->y + sinf(player->dir) * length;	//il sinf e' per i float
+	//calcola la fine della linea in base alla direzione del giocatore
+	delta_x = end_x - player->x;
+	delta_y = end_y - player->y;
+	max_steps = (int)fmaxf(fabsf(delta_x), fabsf(delta_y));	//fabsf per float(sarebbe abs)
+	step_x = delta_x / max_steps;	//passo per x
+	step_y = delta_y / max_steps;	//passo per y
+	
+	temp_x = player->x;
+	temp_y = player->y;
+	
+	//disegna la linea
+	i = 0;
+	while (i <= max_steps)
+	{
+		my_pixel_put((int)temp_x, (int)temp_y, game, color);	//si arrotonda a int
+		temp_x += step_x;
+		temp_y += step_y;
+		i++;
+	}
+}
+
+void	draw_player(t_game *game, t_player *player, int size, int color)
+{
+	int		i;
+	int		j;
+	float	half_size;
+	int		center_x;
+	int		center_y;
+	float	x;
+	float	y;
+
+	// Calcola il centro del quadrato (personaggio)
+	center_x = player->x;
+	center_y = player->y;
+	half_size = size / 2.0f;
+
+	// Disegna il quadrato ruotato (personaggio)
+	i = -half_size;
+	while (i <= half_size)
+	{
+		j = -half_size;
+		while (j <= half_size)
+		{
+			//calcola coordinate ruotate yeeeeeah
+			x = center_x + j;
+			y = center_y + i;
+			rotate_point(&x, &y, center_x, center_y, player->dir);
+			//disegna il pixel ruotato
+			my_pixel_put((int)x, (int)y, game, color);
+			j++;
+		}
+		i++;
+	}
+	//disegna la linea di direzione
+	draw_direction_line(game, player, size * 2, GREEN);	//linea verde
+
+	// draw_square(center_x - size / 2, center_y - size / 2, size, game, color);
+
+	// // Disegna la linea di direzione
+	// draw_direction_line(game, player, size * 2, GREEN); // Linea verde
+}
+
+void	draw_square(int x, int y, int size, t_game *game, int color)
 {
 	int	i;
 	int	j;
@@ -23,10 +101,7 @@ void	draw_square(int x, int y, int size, t_game *game, int color, bool is_player
 		j = 0;
 		while (j < size)
 		{
-			if (is_player)
-				my_pixel_put(x + j, y + i, game, color);
-			else
-				my_pixel_put(x + j, y + i, game, color);
+			my_pixel_put(x + j, y + i, game, color);
 			j++;
 		}
 		i++;
@@ -100,7 +175,7 @@ void	draw_map(t_game *game)
 				continue;
 			}
 				draw_square(j * TILE_SIZE + game->offset_x,
-				i * TILE_SIZE + game->offset_y, TILE_SIZE, game, color, false);
+				i * TILE_SIZE + game->offset_y, TILE_SIZE, game, color);
 			j++;
 		}
 		i++;

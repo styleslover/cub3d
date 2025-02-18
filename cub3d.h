@@ -37,6 +37,8 @@
 # define A 97
 # define S 115
 # define D 100
+# define LEFT 65361
+# define RIGHT 65363
 # define ESC 65307
 
 # define PI 3.14159265359
@@ -45,6 +47,7 @@ typedef struct s_player
 {
 	float	x;
 	float	y;
+	float	dir;
 
 	bool	key_up;
 	bool	key_down;
@@ -80,9 +83,13 @@ void	free_mlx(t_game *game);
 void	free_game_resources(t_game *game);
 
 //draw_picasso.c
-void	draw_square(int x, int y, int size, t_game *game, int color, bool is_player);
+void	draw_square(int x, int y, int size, t_game *game, int color);
+void	draw_player(t_game *game, t_player *player, int size, int color);
 void	draw_grid(t_game *game, int tile_size);
 void	draw_map(t_game *game);
+void	draw_direction_line(t_game *game, t_player *player, int length, int color);
 
+//rotate_that_booty.c
+void    rotate_point(float *x, float *y, float center_x, float center_y, float angle);
 
 #endif
