@@ -77,7 +77,7 @@ int	key_release(int keycode, t_game *game)
 // }
 
 
-void	init_player(t_player *player, char **map)
+void	init_player(t_player *player, char **map, int offset_x, int offset_y)
 {
 	int	i;
 	int	j;
@@ -95,8 +95,8 @@ void	init_player(t_player *player, char **map)
 		{
 			if (map[i][j] == 'N')
 			{
-				player->x = j * TILE_SIZE + (TILE_SIZE / 2);
-				player->y = i * TILE_SIZE + (TILE_SIZE / 2);
+				player->x = j * TILE_SIZE + offset_x + (TILE_SIZE / 2);
+				player->y = i * TILE_SIZE + offset_y + (TILE_SIZE / 2);
 				map[i][j] = '0';
 				return ;
 			}
@@ -196,8 +196,18 @@ void	init_game(t_game *game)
 		perror("Errore in malloc player\n");
 		exit (1);
 	}
-	//init_player(game->player);
-	init_player(game->player, game->map);
+
+	// calcolo l'offset della mappa per poterlo mandare a player
+	//in modo tale da avere la posizione corretta del character
+	game->map_width = (ft_strlen(game->map[0]) - 1);
+	game->map_height = 0;
+	while (game->map[game->map_height] != NULL)
+		game->map_height++;
+
+	game->offset_x = (WIDTH - game->map_width * TILE_SIZE) / 2;
+	game->offset_y = (HEIGHT - game->map_height * TILE_SIZE) / 2;
+
+	init_player(game->player, game->map, game->offset_x, game->offset_y);
 	game->mlx = mlx_init();
 	mlx_get_screen_size(game->mlx, &screen_width, &screen_height);
 
