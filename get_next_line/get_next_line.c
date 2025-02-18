@@ -6,7 +6,7 @@
 /*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/30 18:57:42 by mabrigo           #+#    #+#             */
-/*   Updated: 2024/01/29 21:03:58 by mabrigo          ###   ########.fr       */
+/*   Updated: 2025/02/18 21:06:02 by mabrigo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ char	*nl_strcat(char *str1, char *str2)
 	int		j;
 
 	i = 0;
-	out = ft_calloc(sizeof(char), nl_strlen(str1) + nl_strlen(str2) + 1);
+	out = nl_calloc(sizeof(char), nl_strlen(str1) + nl_strlen(str2) + 1);
 	if (str1)
 	{
 		while (str1[i])
@@ -75,7 +75,7 @@ char	*get_string(char **str, int fd)
 	char	*temp;
 	int		char_read;
 
-	buf = ft_calloc(sizeof(char), BUFFER_SIZE + 1);
+	buf = nl_calloc(sizeof(char), BUFFER_SIZE + 1);
 	if (!buf)
 		return (NULL);
 	while (buf[check_nl(buf)] == '\0')
@@ -109,7 +109,7 @@ char	*get_next_line(int fd)
 	if (str == NULL)
 		return (free_null(&str));
 	idx_newline = check_nl(str);
-	new_line = ft_calloc(sizeof(char), idx_newline + 2);
+	new_line = nl_calloc(sizeof(char), idx_newline + 2);
 	if (!new_line)
 		return (NULL);
 	i = -1;

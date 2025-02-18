@@ -6,7 +6,7 @@
 /*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 19:36:54 by mabrigo           #+#    #+#             */
-/*   Updated: 2025/02/17 19:23:51 by mabrigo          ###   ########.fr       */
+/*   Updated: 2025/02/18 22:01:13 by mabrigo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,10 +41,10 @@ int	key_press(int keycode, t_game *game)
 		player->key_left = true;
 	if (keycode == D)
 		player->key_right = true;
-	if (keycode == LEFT)
-		player->left_rot = true;
-	if (keycode == RIGHT)
-		player->right_rot = true;
+	// if (keycode == LEFT)
+	// 	player->left_rot = true;
+	// if (keycode == RIGHT)
+	// player->right_rot = true;
 	if (keycode == ESC)
 	{
 		mlx_destroy_window(game->mlx, game->win);
@@ -66,10 +66,10 @@ int	key_release(int keycode, t_game *game)
 		player->key_left = false;
 	if (keycode == D)
 		player->key_right = false;
-	if (keycode == LEFT)
-		player->left_rot = false;
-	if (keycode == RIGHT)
-		player->right_rot = false;
+	// if (keycode == LEFT)
+	// 	player->left_rot = false;
+	// if (keycode == RIGHT)
+	// 	player->right_rot = false;
 	return (0);
 }
 
@@ -86,6 +86,23 @@ int	draw_loop(t_game *game)
 	draw_player(game, player, 10, 0xFF00FF);
 	mlx_put_image_to_window(game->mlx, game->win, game->img, 0, 0);
 	return (0);
+}
+
+void	init_game(t_game *game)
+{
+	game->player = malloc(sizeof(t_player));
+	if (!game->player)
+	{
+		perror("Errore in malloc player\n");
+		exit (1);
+	}
+	init_player(game->player);
+	game->mlx = mlx_init();
+	game->win = mlx_new_window(game->mlx, WIDTH, HEIGHT, "CUB3D");
+	game->img = mlx_new_image(game->mlx, WIDTH, HEIGHT);
+	game->data = mlx_get_data_addr(game->img, &game->bpp,
+			&game->size_line, &game->endian);
+	mlx_put_image_to_window(game->mlx, game->win, game->img, 0, 0);
 }
 
 int	main ()

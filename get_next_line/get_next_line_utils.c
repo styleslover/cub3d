@@ -6,7 +6,7 @@
 /*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/30 18:57:46 by mabrigo           #+#    #+#             */
-/*   Updated: 2023/12/22 21:06:30 by mabrigo          ###   ########.fr       */
+/*   Updated: 2025/02/18 21:07:58 by mabrigo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ char	*nl_bzero(char **s, int n)
 	int		len;
 
 	len = nl_strlen(*s) - n;
-	p = ft_calloc(sizeof(char), len + 1);
+	p = nl_calloc(sizeof(char), len + 1);
 	if (!p)
 		return (NULL);
 	i = n + 1;
@@ -53,7 +53,7 @@ char	*nl_bzero(char **s, int n)
 	return (p);
 }
 
-void	*ft_calloc(int nmemb, int size)
+void	*nl_calloc(int nmemb, int size)
 {
 	char	*ptr;
 	int		i;

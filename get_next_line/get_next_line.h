@@ -6,7 +6,7 @@
 /*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/30 18:57:37 by mabrigo           #+#    #+#             */
-/*   Updated: 2023/12/27 19:31:03 by mabrigo          ###   ########.fr       */
+/*   Updated: 2025/02/18 21:04:42 by mabrigo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,6 @@ char	*get_next_line(int fd);
 int		check_nl(char *str);
 int		nl_strlen(char *str);
 char	*nl_bzero(char **s, int n);
-void	*ft_calloc(int nmemb, int size);
+void	*nl_calloc(int nmemb, int size);
 
 #endif
