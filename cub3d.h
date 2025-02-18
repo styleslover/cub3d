@@ -24,8 +24,13 @@
 # include <fcntl.h>
 # include <math.h>
 
-# define WIDTH 1820
-# define HEIGHT 780
+# define RED 0xFF0000
+# define GREEN 0x00FF00
+# define BLUE 0x0000FF
+# define WHITE 0xFFFFFF
+
+# define WIDTH 1280
+# define HEIGHT 720
 
 # define W 119
 # define A 97
@@ -59,9 +64,18 @@ typedef struct s_game
 
 	t_player	*player;
 	char		**map;
+	int			offset_x;
+	int			offset_y;
+	int			map_width;
+	int			map_height;
 }			t_game;
 
 void	my_pixel_put(int x, int y, t_game *game, int color);
+
+//free_shit.c
+void	free_map(char **map);
+void	free_mlx(t_game *game);
+void	free_game_resources(t_game *game);
 
 int	count_lines(char *filename);
 

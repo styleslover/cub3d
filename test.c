@@ -43,7 +43,7 @@ int	key_press(int keycode, t_game *game)
 		player->key_right = true;
 	if (keycode == ESC)
 	{
-		mlx_destroy_window(game->mlx, game->win);
+		free_game_resources(game);
 		exit (0);
 	}
 	return (0);
@@ -126,6 +126,40 @@ void	move_player(t_player *player)
 		player->x += speed;
 }
 
+//GRIGLIA DI DEBUG
+void	draw_grid(t_game *game, int tile_size)
+{
+	int	x;
+	int	y;
+
+	// Linee orizzontali
+	y = game->offset_y;
+	while (y < game->offset_y + game->map_height * tile_size)
+	{
+		x = game->offset_x;
+		while (x < game->offset_x + game->map_width * tile_size)
+		{
+			my_pixel_put(x, y, game, 0xFFFFFF);  // Linea orizzontale bianca
+			x++;
+		}
+		y += tile_size;
+	}
+
+	// Linee verticali
+	x = game->offset_x;
+	while (x < game->offset_x + game->map_width * tile_size)
+	{
+		y = game->offset_y;
+		while (y < game->offset_y + game->map_height * tile_size)
+		{
+			my_pixel_put(x, y, game, 0xFFFFFF);  // Linea verticale bianca
+			y++;
+		}
+		x += tile_size;
+	}
+}
+
+
 void	draw_map(t_game *game)
 {
 	char	**map;
@@ -133,36 +167,36 @@ void	draw_map(t_game *game)
 	int		i;
 	int		j;
 	int		tile_size;
-	int		offset_x;
-	int		offset_y;
-	int		map_width;
-	int		map_height;
-
+	
 	map = game->map;
 	tile_size = 64;
+	
+	game->map_width = (ft_strlen(map[0]) - 1);
+	game->map_height = 0;
+	while (map[game->map_height] != NULL)
+	game->map_height++;
 
-	map_width = ft_strlen(map[0]);
-	map_height = 0;
-	while (map[map_height] != NULL)
-		map_height++;
-
-	offset_x = (WIDTH - map_width * tile_size) / 2;
-	offset_y = (HEIGHT - map_height * tile_size) / 2;
+	game->offset_x = (WIDTH - game->map_width * tile_size) / 2;
+	game->offset_y = (HEIGHT - game->map_height * tile_size) / 2;
 	i = 0;
 	while (map[i] != NULL)
 	{
 		j = 0;
-		while (map[i][j] != '\0')
+		while (map[i][j + 1] != '\0')
 		{
 			if (map[i][j] == '1')
-				color = 0x0000FF;			
+				color = RED;			
 			else
-				color = 0x00FF00;
-			draw_square(j * tile_size + offset_x, i * tile_size, tile_size + offset_y, game, color);
+				color = BLUE;
+			draw_square(j * tile_size + game->offset_x,
+				i * tile_size + game->offset_y, tile_size, game, color);
 			j++;
 		}
 		i++;
 	}
+	//AGGIUNGE LA GRIGLIA DI DEBUG
+	draw_grid(game, tile_size);
+	//printf("map_width: %d\nmap_height%d\n", game->map_width, game->map_height);
 }
 
 int	draw_loop(t_game *game)
@@ -171,11 +205,17 @@ int	draw_loop(t_game *game)
 
 	player = game->player;
 	move_player(player);
+
+	if (game->img)
+		mlx_destroy_image(game->mlx, game->img);
+
 	game->img = mlx_new_image(game->mlx, WIDTH, HEIGHT);
 	game->data = mlx_get_data_addr(game->img, &game->bpp, &game->size_line,
 			&game->endian);
+	
 	draw_map(game);
-	draw_player(game, player, 10, 0xFF00FF);
+	draw_player(game, player, 15, GREEN);
+
 	mlx_put_image_to_window(game->mlx, game->win, game->img, 0, 0);
 	return (0);
 }
@@ -262,12 +302,23 @@ void	init_game(t_game *game)
 	mlx_put_image_to_window(game->mlx, game->win, game->img, 0, 0);
 }
 
+int	close_window(void *param)
+{
+	t_game	*game;
+
+	game = (t_game *)param;
+	if (game)
+	{
+		free_game_resources(game);
+	}
+	exit (0);
+	return (0);
+}
+
 int	main ()
 {
 	t_game		game;
-	int i;
 
-	i = 0;
 	game.map = load_map("map.txt");
 	if (!game.map)
 	{
@@ -276,17 +327,14 @@ int	main ()
 	}
 	init_game(&game);
 	draw_map(&game);
+
 	mlx_hook(game.win, 2, 1L << 0, key_press, &game);
 	mlx_hook(game.win, 3, 1L << 1, key_release, &game);
 	mlx_loop_hook(game.mlx, draw_loop, &game);
+	mlx_hook(game.win, 17, 0, close_window, &game);
 	mlx_loop(game.mlx);
 
-	free(game.player);
-	while (game.map[i])
-	{
-		free(game.map[i]);
-		i++;
-	}
-	free(game.map);
+	free_game_resources(&game);
+
 	return (0);
 }
