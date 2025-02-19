@@ -6,7 +6,7 @@
 /*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 16:25:03 by mabrigo           #+#    #+#             */
-/*   Updated: 2025/02/18 21:53:16 by mabrigo          ###   ########.fr       */
+/*   Updated: 2025/02/19 21:20:28 by mabrigo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define CUB3D_H
 
 # include "minilibx-linux/mlx.h"
+# include "get_next_line/get_next_line.h"
 # include "libft/libft.h"
 # include <math.h>
 # include <X11/X.h>
@@ -47,9 +48,24 @@ typedef struct s_player
 	bool	key_left;
 	bool	key_right;
 
-	bool	left_rot;
-	bool	right_rot;
+	//bool	left_rot;
+	//bool	right_rot;
 }		t_player;
+
+typedef struct s_map
+{
+	int			fd;
+	int			map_width;
+	int			map_height;
+
+	char		*north_txtr;
+	char		*west_txtr;
+	char		*south_txtr;
+	char		*east_txtr;
+
+	char		*ceiling_color;
+	char		*floor_color;
+}				t_map;
 
 typedef struct s_game
 {
@@ -62,6 +78,8 @@ typedef struct s_game
 	int			size_line; // Numero di byte per ogni riga dell'immagine
 	int			endian; // Specifica l'ordine dei byte (Big endian o Little endian)
 
+	int			offset_x;
+	int			offset_y;
 	t_player	*player;
 }			t_game;
 
@@ -70,8 +88,14 @@ int		key_press(int keycode, t_game *game);
 int		key_release(int keycode, t_game *game);
 int		draw_loop(t_game *game);
 
-void	init_game(t_game *game);
-void	get_win_measures();
+void	init_game(t_game *game, t_map *map);
+
+//map
+char	*strcmp_from_i(int i, char *src);
+void	parse_config_line(char *str, t_map *map);
+int		is_map_line(char *str);
+void	parse_file(int fd, t_map *map);
+
 
 void	init_player(t_player *player);
 void	draw_player(t_game *game, t_player *player, int size, int color);

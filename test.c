@@ -6,7 +6,7 @@
 /*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 19:36:54 by mabrigo           #+#    #+#             */
-/*   Updated: 2025/02/18 22:01:13 by mabrigo          ###   ########.fr       */
+/*   Updated: 2025/02/19 21:23:35 by mabrigo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ int	draw_loop(t_game *game)
 	return (0);
 }
 
-void	init_game(t_game *game)
+void	init_game(t_game *game, t_map *map)
 {
 	game->player = malloc(sizeof(t_player));
 	if (!game->player)
@@ -97,7 +97,7 @@ void	init_game(t_game *game)
 		exit (1);
 	}
 	init_player(game->player);
-	parse_file(game); //todo
+	parse_file(map->fd, map); //todo
 	game->mlx = mlx_init();
 	game->win = mlx_new_window(game->mlx, WIDTH, HEIGHT, "CUB3D");
 	game->img = mlx_new_image(game->mlx, WIDTH, HEIGHT);
@@ -106,11 +106,25 @@ void	init_game(t_game *game)
 	mlx_put_image_to_window(game->mlx, game->win, game->img, 0, 0);
 }
 
-int	main ()
+int	main(int ac, char **av)
 {
 	t_game		game;
+	t_map		map;
 
-	init_game(&game);
+	if (ac != 2)
+	{
+		printf("NOT ENOUGH ARGUMENTS\n");
+		return (1);
+	}
+	map.fd = open(av[1], O_RDONLY);
+	if (map.fd == -1)
+	{
+		printf("NOT ENOUGH ARGUMENTS\n");
+		return (1);
+	}
+	parse_file(map.fd, &map);
+	close(map.fd);
+	init_game(&game, &map);
 	mlx_hook(game.win, 2, 1L << 0, key_press, &game);
 	mlx_hook(game.win, 3, 1L << 1, key_release, &game);
 	mlx_loop_hook(game.mlx, draw_loop, &game);

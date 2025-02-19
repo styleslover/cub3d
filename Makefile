@@ -6,7 +6,7 @@
 #    By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/12 16:24:59 by mabrigo           #+#    #+#              #
-#    Updated: 2025/02/18 21:54:34 by mabrigo          ###   ########.fr        #
+#    Updated: 2025/02/19 19:50:05 by mabrigo          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,7 @@ CC = gcc
 CFLAGS = -Wall -Werror -Wextra
 LIBS = -Lminilibx-linux -lmlx -lXext -lX11
 GNL = get_next_line/get_next_line.c get_next_line/get_next_line_utils.c
-SRC = test.c player.c $(GNL)
+SRC = test.c player.c parsing.c $(GNL)
 
 MINI_REPO = https://github.com/42Paris/minilibx-linux.git
 MINI_PATH = minilibx-linux
