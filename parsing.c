@@ -6,7 +6,7 @@
 /*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 19:47:17 by mabrigo           #+#    #+#             */
-/*   Updated: 2025/02/19 21:31:22 by mabrigo          ###   ########.fr       */
+/*   Updated: 2025/02/19 21:32:59 by mabrigo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ void	parse_file(int fd, t_map *map)
 		{
 			line_len = ft_strlen(line);
 			if (line_len > map->map_width)
-			map->map_width = line_len;
+				map->map_width = line_len;
 			map->map_height++;
 		}
 		else
