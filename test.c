@@ -6,7 +6,7 @@
 /*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 19:36:54 by mabrigo           #+#    #+#             */
-/*   Updated: 2025/02/19 21:23:35 by mabrigo          ###   ########.fr       */
+/*   Updated: 2025/02/19 21:30:00 by mabrigo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ int	draw_loop(t_game *game)
 	return (0);
 }
 
-void	init_game(t_game *game, t_map *map)
+void	init_game(t_game *game)
 {
 	game->player = malloc(sizeof(t_player));
 	if (!game->player)
@@ -97,7 +97,6 @@ void	init_game(t_game *game, t_map *map)
 		exit (1);
 	}
 	init_player(game->player);
-	parse_file(map->fd, map); //todo
 	game->mlx = mlx_init();
 	game->win = mlx_new_window(game->mlx, WIDTH, HEIGHT, "CUB3D");
 	game->img = mlx_new_image(game->mlx, WIDTH, HEIGHT);
@@ -124,7 +123,7 @@ int	main(int ac, char **av)
 	}
 	parse_file(map.fd, &map);
 	close(map.fd);
-	init_game(&game, &map);
+	init_game(&game);
 	mlx_hook(game.win, 2, 1L << 0, key_press, &game);
 	mlx_hook(game.win, 3, 1L << 1, key_release, &game);
 	mlx_loop_hook(game.mlx, draw_loop, &game);

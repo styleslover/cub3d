@@ -6,7 +6,7 @@
 /*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 16:25:03 by mabrigo           #+#    #+#             */
-/*   Updated: 2025/02/19 21:20:28 by mabrigo          ###   ########.fr       */
+/*   Updated: 2025/02/19 21:29:51 by mabrigo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ int		key_press(int keycode, t_game *game);
 int		key_release(int keycode, t_game *game);
 int		draw_loop(t_game *game);
 
-void	init_game(t_game *game, t_map *map);
+void	init_game(t_game *game);
 
 //map
 char	*strcmp_from_i(int i, char *src);

@@ -6,7 +6,7 @@
 /*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 19:47:17 by mabrigo           #+#    #+#             */
-/*   Updated: 2025/02/19 21:23:47 by mabrigo          ###   ########.fr       */
+/*   Updated: 2025/02/19 21:31:22 by mabrigo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,8 @@ void	parse_file(int fd, t_map *map)
 		free(line);
 		line = get_next_line(fd);
 	}
+	map->map_width *= 64;
+	map->map_height *= 64;
 	printf("North Texture: %s\n", map->north_txtr);
 	printf("South Texture: %s\n", map->south_txtr);
 	printf("West Texture: %s\n", map->west_txtr);
