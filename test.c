@@ -215,9 +215,7 @@ void	init_game(t_game *game)
 	init_player(game->player, game->map, game->offset_x, game->offset_y);
 	game->mlx = mlx_init();
 	mlx_get_screen_size(game->mlx, &screen_width, &screen_height);
-
 	game->win = mlx_new_window(game->mlx, WIDTH, HEIGHT, "CUB3D");
-	
 	game->img = mlx_new_image(game->mlx, WIDTH, HEIGHT);
 	game->data = mlx_get_data_addr(game->img, &game->bpp,
 			&game->size_line, &game->endian);
@@ -233,6 +231,8 @@ int	not_valid_char(char c)
 	return (0);
 }
 
+//	DA AGGIUNGERE SE LA MAPPA E' CHIUSA E CONTROLLARE SE TUTTI I BLOCCHI
+//SONO RAGGIUNGIBILI (PEZZI DI MAPPA AL DI FUORI DELLA MAPPA)
 int	check_map(char **map)
 {
 	int	i;

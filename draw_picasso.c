@@ -153,7 +153,7 @@ void	draw_map(t_game *game)
 	game->map_width = (ft_strlen(map[0]) - 1);
 	game->map_height = 0;
 	while (map[game->map_height] != NULL)
-	game->map_height++;
+		game->map_height++;
 
 	game->offset_x = (WIDTH - game->map_width * TILE_SIZE) / 2;
 	game->offset_y = (HEIGHT - game->map_height * TILE_SIZE) / 2;
