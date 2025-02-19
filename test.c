@@ -97,6 +97,7 @@ void	init_game(t_game *game)
 		exit (1);
 	}
 	init_player(game->player);
+	parse_file(game); //todo
 	game->mlx = mlx_init();
 	game->win = mlx_new_window(game->mlx, WIDTH, HEIGHT, "CUB3D");
 	game->img = mlx_new_image(game->mlx, WIDTH, HEIGHT);
