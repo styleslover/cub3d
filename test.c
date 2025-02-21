@@ -97,10 +97,20 @@ void	init_player(t_player *player, char **map, int offset_x, int offset_y)
 		j = 0;
 		while (map[i][j] != '\0')
 		{
-			if (map[i][j] == 'N')
+			if (map[i][j] == 'N') //giocatore posizionato nella mappa
 			{
 				player->x = (float)(j * TILE_SIZE + offset_x + (TILE_SIZE / 2));
 				player->y = (float)(i * TILE_SIZE + offset_y + (TILE_SIZE / 2));
+				player->dir = PI / 2; //guarda in alto
+
+				//direzione iniziale
+				player->dir_x = 0.0f;
+				player->dir_y = -1.0f;
+
+				//piano della camera(modifica il FOV)
+				player->plane_x = 0.66f;	//0.66 valore standard per il fov
+				player->plane_y = 0.0f;
+
 				map[i][j] = '0';
 				return ;
 			}
@@ -110,7 +120,10 @@ void	init_player(t_player *player, char **map, int offset_x, int offset_y)
 	}
 	player->x = (float)(WIDTH / 2);
 	player->y = (float)(HEIGHT / 2);
-	player->dir = 0;
+	player->dir_x = 1.0f;
+	player->dir_y = 0.0f;
+	player->plane_x = 0.0f;
+	player->plane_y = 0.66f;
 	printf("Posizione non trovata sulla mappa, posizionato al centro dello schermo\n");
 }
 
@@ -272,11 +285,11 @@ int	close_window(void *param)
 
 int	draw_loop(t_game *game)
 {
-	t_player *player;
+	//t_player *player;
 
-	player = game->player;
-	move_player(player);
-
+	//player = game->player;
+	move_player(game->player);
+	
 	if (game->img)
 		mlx_destroy_image(game->mlx, game->img);
 
@@ -286,7 +299,7 @@ int	draw_loop(t_game *game)
 	
 	draw_map(game);
 	//draw_square(player->x, player->y, 15, game, GREEN);
-	draw_player(game, player, 15, GREEN);
+	draw_player(game, game->player, 15, GREEN);
 
 	mlx_put_image_to_window(game->mlx, game->win, game->img, 0, 0);
 	return (0);

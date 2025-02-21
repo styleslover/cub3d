@@ -41,13 +41,43 @@
 # define RIGHT 65363
 # define ESC 65307
 
-# define PI 3.14159265359
+# define PI 3.14159265359f
+
+// typedef struct s_ray
+// {
+//     double camera_x;        // Posizione del raggio nel piano della camera (-1 sinistra, 1 destra)
+    
+//     double ray_dir_x;       // Direzione del raggio lungo l'asse X
+//     double ray_dir_y;       // Direzione del raggio lungo l'asse Y
+
+//     int map_x;              // Coordinata X della cella della mappa in cui si trova il raggio
+//     int map_y;              // Coordinata Y della cella della mappa in cui si trova il raggio
+
+//     double side_dist_x;     // Distanza dal bordo della cella alla prima intersezione con una parete (X)
+//     double side_dist_y;     // Distanza dal bordo della cella alla prima intersezione con una parete (Y)
+
+//     double delta_dist_x;    // Distanza necessaria per attraversare completamente una cella lungo X
+//     double delta_dist_y;    // Distanza necessaria per attraversare completamente una cella lungo Y
+
+//     int step_x;             // Direzione del passo lungo X (-1 = sinistra, 1 = destra)
+//     int step_y;             // Direzione del passo lungo Y (-1 = su, 1 = giù)
+
+//     int hit;                // Flag per indicare se il raggio ha colpito una parete (1 = sì, 0 = no)
+//     int side;               // Indica se il raggio ha colpito una parete verticale (1) o orizzontale (0)
+
+//     double perp_wall_dist;  // Distanza perpendicolare dalla posizione del player alla parete colpita
+// } t_ray;
 
 typedef struct s_player
 {
-	float	x;
-	float	y;
-	float	dir;
+	float	x;			// Posizione X del giocatore
+	float	y;			// Posizione Y del giocatore
+	float	dir;		// Angolo di rotazione (in radianti)
+
+	float	dir_x;		// Direzione X (vettore direzione)
+	float	dir_y;		// Direzione Y (vettore direzione)
+	float	plane_x;	// Piano della camera X (per la prospettiva)
+	float	plane_y;	// Piano della camera Y (per la prospettiva)
 
 	bool	key_up;
 	bool	key_down;
