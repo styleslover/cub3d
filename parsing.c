@@ -6,7 +6,7 @@
 /*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 19:47:17 by mabrigo           #+#    #+#             */
-/*   Updated: 2025/02/21 11:54:51 by mabrigo          ###   ########.fr       */
+/*   Updated: 2025/02/21 12:13:19 by mabrigo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,6 +110,10 @@ void	parse_file(int fd, t_map *map)
 	}
 	map->map_width *= TILE_SIZE;
 	map->map_height *= TILE_SIZE;
+	if (map->map_width >= 1920)
+		map->map_width = 1920;
+	if (map->map_height >= 1080)
+		map->map_height = 1080;
 	printf("North Texture: %s\n", map->north_txtr);
 	printf("South Texture: %s\n", map->south_txtr);
 	printf("West Texture: %s\n", map->west_txtr);
