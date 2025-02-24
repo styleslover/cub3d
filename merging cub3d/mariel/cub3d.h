@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/21 12:40:01 by mabrigo           #+#    #+#             */
-/*   Updated: 2025/02/21 12:49:33 by mabrigo          ###   ########.fr       */
+/*   Created: 2025/02/12 16:25:03 by mabrigo           #+#    #+#             */
+/*   Updated: 2025/02/21 12:30:34 by mabrigo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,35 +37,28 @@
 
 # define TILE_SIZE 64
 
-# define RED 0xFF0000
-# define GREEN 0x00FF00
-# define BLUE 0x0000FF
-# define WHITE 0xFFFFFF
-
 # define PI 3.14159265359
 
 typedef struct s_player
 {
 	float	x;
 	float	y;
-	float	dir;
+	float	angle;
 
 	bool	key_up;
 	bool	key_down;
 	bool	key_left;
 	bool	key_right;
 
-	float	dir_x;		// Direzione X (vettore direzione)
-	float	dir_y;		// Direzione Y (vettore direzione)
-	float	plane_x;	// Piano della camera X (per la prospettiva)
-	float	plane_y;	// Piano della camera Y (per la prospettiva)
+	//bool	left_rot;
+	//bool	right_rot;
 }		t_player;
 
-typedef struct s_map_data
+typedef struct s_map
 {
 	int			fd;
-	int			win_width;
-	int			win_height;
+	int			map_width;
+	int			map_height;
 
 	char		*north_txtr;
 	char		*west_txtr;
@@ -74,7 +67,7 @@ typedef struct s_map_data
 
 	char		*ceiling_color;
 	char		*floor_color;
-}				t_map_data;
+}				t_map;
 
 typedef struct s_game
 {
@@ -87,13 +80,28 @@ typedef struct s_game
 	int			size_line; // Numero di byte per ogni riga dell'immagine
 	int			endian; // Specifica l'ordine dei byte (Big endian o Little endian)
 
-	char		**map;
 	int			offset_x;
 	int			offset_y;
-	int			map_width;
-	int			map_height;
 	t_player	*player;
 }			t_game;
 
+void	my_pixel_put(int x, int y, t_game *game, int color);
+int		key_press(int keycode, t_game *game);
+int		key_release(int keycode, t_game *game);
+int		draw_loop(t_game *game);
+
+void	init_game(t_game *game);
+
+//map
+char	*strcmp_from_i(int i, char *src);
+void	parse_config_line(char *str, t_map *map);
+int		is_map_line(char *str);
+void	parse_file(int fd, t_map *map);
+
+
+void	init_player(t_player *player);
+void	draw_player(t_game *game, t_player *player, int size, int color);
+void	turn_player(t_player *player);
+void	move_player(t_player *player);
 
 #endif
