@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_isdigit.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
+/*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/15 17:40:59 by mabrigo           #+#    #+#             */
-/*   Updated: 2023/10/25 20:50:33 by mabrigo          ###   ########.fr       */
+/*   Created: 2023/12/01 19:17:49 by damoncad          #+#    #+#             */
+/*   Updated: 2023/12/21 19:26:24 by damoncad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,7 @@
 
 int	ft_isdigit(int c)
 {
-	if (c > 47 && c < 58)
+	if (c >= '0' && c <= '9')
 		return (1);
-	else
-		return (0);
+	return (0);
 }
-
-/*int	main()
-{
-	printf("valore = %d\n", ft_isdigit('2'));
-	printf("valore = %d\n", ft_isdigit('a'));
-	printf("valore = %d\n", ft_isdigit('B'));
-}	*/

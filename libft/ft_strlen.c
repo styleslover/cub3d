@@ -3,28 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strlen.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
+/*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/12 22:31:43 by mabrigo           #+#    #+#             */
-/*   Updated: 2023/10/25 20:52:38 by mabrigo          ###   ########.fr       */
+/*   Created: 2023/12/01 18:59:37 by damoncad          #+#    #+#             */
+/*   Updated: 2023/12/13 20:47:21 by damoncad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
-
-size_t	ft_strlen(const char *s)
+int	ft_strlen(char *s)
 {
-	size_t	i;
+	int	a;
 
-	i = 0;
-	while (s[i] != '\0')
-		i++;
-	return (i);
+	a = 0;
+	while (s[a] != '\0')
+		a++;
+	return (a);
 }
-
-/*int	main()
-{
-	char	str[5] = "boia";
-	
-	printf("%ld", ft_strlen(str));
-}*/

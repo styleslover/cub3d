@@ -3,51 +3,36 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strnstr.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
+/*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/11 21:17:15 by mabrigo           #+#    #+#             */
-/*   Updated: 2023/10/25 21:04:30 by mabrigo          ###   ########.fr       */
+/*   Created: 2023/12/21 19:29:16 by damoncad          #+#    #+#             */
+/*   Updated: 2023/12/21 19:29:20 by damoncad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_strnstr(const char *big, const char *little, size_t len)
+char	*ft_strnstr( char *big,  char *little, size_t len)
 {
 	size_t	i;
-	size_t	j;
-	size_t	len_little;
-	char	*cbig;
+	size_t	n;
+	size_t	little_len;
 
 	i = 0;
-	len_little = ft_strlen(little);
-	cbig = (char *)big;
-	if (len_little == 0 || big == little)
-		return (cbig);
-	else
+	n = 0;
+	little_len = ft_strlen(little);
+	if (little[0] == '\0')
+		return ((char *)big);
+	while (i < len && big[i])
 	{
-		while (cbig[i] != '\0' && i < len)
+		while (big[i + n] == little[n] && n + i < len)
 		{
-			j = 0;
-			while (cbig[i + j] != '\0' && little[j] != '\0'
-				&& cbig[i + j] == little[j] && i + j < len)
-				j++;
-			if (j == len_little)
-				return (cbig + i);
-			i++;
+			if (n >= little_len - 1)
+				return ((char *)&big[i]);
+			n++;
 		}
-		return (NULL);
+		n = 0;
+		i++;
 	}
+	return (0);
 }
-
-/*int main()
-{
-    const char big[50] = "hola soy dora y me gusta ...";
-    const char small[50] = "ciao";
-    
-    ;
-    printf("%s", ft_strnstr(big, small, 10));
-
-    return 0;
-}
-		*/	

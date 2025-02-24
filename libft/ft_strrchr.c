@@ -3,37 +3,25 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strrchr.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
+/*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/11 21:16:01 by mabrigo           #+#    #+#             */
-/*   Updated: 2023/11/03 19:11:26 by mabrigo          ###   ########.fr       */
+/*   Created: 2023/12/14 20:27:37 by damoncad          #+#    #+#             */
+/*   Updated: 2023/12/18 21:24:36 by damoncad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_strrchr(const char *s, int c)
+char	*ft_strrchr( char *s, int c)
 {
-	char	*res;
+	int	a;
 
-	res = NULL;
-	while (*s != '\0')
+	a = ft_strlen(s);
+	while (a >= 0)
 	{
-		if (*s == (unsigned char)c)
-			res = (char *)s;
-		s++;
+		if (s[a] == (char)c)
+			return ((char *)s + a);
+		a--;
 	}
-	if ((unsigned char)c == 0)
-		return ((char *)s);
-	return (res);
+	return (NULL);
 }
-
-/*int	main()
-{
-	char s[50] = "hola soy dora";
-    
-	if (ft_strrchr(s, 's') == NULL)
-		printf ("letter not found");
-	else
-		puts (ft_strrchr(s, 's'));
-}*/

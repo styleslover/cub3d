@@ -3,15 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   test.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mariel <mariel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 19:36:54 by mabrigo           #+#    #+#             */
-/*   Updated: 2025/02/12 21:47:48 by mabrigo          ###   ########.fr       */
+/*   Updated: 2025/02/24 23:47:08 by mariel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
+
+//preso
 // Permette di colorare un singolo pixel nell'immagine.
 // Calcola indice del pixel nell'array data
 // Controllo per evitare di uscire dallo schermo
@@ -28,6 +30,7 @@ void	my_pixel_put(int x, int y, t_game *game, int color)
 	game->data[index + 2] = (color >> 16) & 0xFF;
 }
 
+//preso
 int	key_press(int keycode, t_game *game)
 {
 	t_player	*player;
@@ -53,7 +56,7 @@ int	key_press(int keycode, t_game *game)
 	}
 	return (0);
 }
-
+//preso
 int	key_release(int keycode, t_game *game)
 {
 	t_player	*player;
@@ -128,7 +131,7 @@ void	init_player(t_player *player, char **map, int offset_x, int offset_y)
 }
 
 
-
+//preso
 void	move_player(t_player *player)
 {
 	int	speed;
@@ -143,7 +146,7 @@ void	move_player(t_player *player)
 	if (player->key_right && player->x < WIDTH - 10)
 		player->x += speed;
 }
-
+//preso
 int	count_lines(char *filename)
 {
 	int		fd;
@@ -163,6 +166,7 @@ int	count_lines(char *filename)
 	return (lines);
 }
 
+//preso
 // Funzione per caricare la mappa
 char	**load_map(char *filename)
 {
@@ -202,7 +206,7 @@ char	**load_map(char *filename)
 	return (map);
 }
 
-
+//preso
 void	init_game(t_game *game)
 {
 	int	screen_width;

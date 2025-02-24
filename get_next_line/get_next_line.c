@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mariel <mariel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 17:42:01 by damoncad          #+#    #+#             */
-/*   Updated: 2024/03/13 12:16:33 by damoncad         ###   ########.fr       */
+/*   Updated: 2025/02/24 22:34:14 by mariel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,28 +117,28 @@ char	*get_next_line(int fd)
 	return (line_part);
 }
 
-#include <stdio.h>
-#include <fcntl.h>
-#include "get_next_line.h"
-
-int main()
-{
-	char	*line;
-	int		fd;
-
-	fd = open("example.txt", O_RDONLY);
-	if (fd == -1)
-	{
-		printf("Failed to open the file.\n");
-		return (1);
-	}
-
-	while ((line = get_next_line(fd)) != NULL)
-	{
-		printf("%s\n", line);
-		free(line);
-	}
-	//printf("%s", get_next_line(fd));
-	close(fd);
-	return (0);
-}
+//#include <stdio.h>
+//#include <fcntl.h>
+//#include "get_next_line.h"
+//
+//int main()
+//{
+//	char	*line;
+//	int		fd;
+//
+//	fd = open("example.txt", O_RDONLY);
+//	if (fd == -1)
+//	{
+//		printf("Failed to open the file.\n");
+//		return (1);
+//	}
+//
+//	while ((line = get_next_line(fd)) != NULL)
+//	{
+//		printf("%s\n", line);
+//		free(line);
+//	}
+//	//printf("%s", get_next_line(fd));
+//	close(fd);
+//	return (0);
+//}

@@ -5,26 +5,12 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: mariel <mariel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/19 19:47:17 by mabrigo           #+#    #+#             */
-/*   Updated: 2025/02/24 23:26:36 by mariel           ###   ########.fr       */
+/*   Created: 2025/02/24 22:52:55 by mariel            #+#    #+#             */
+/*   Updated: 2025/02/25 00:05:05 by mariel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-
-// preso tutto
 #include "cub3d.h"
-
-void	init_map(t_map *map)
-{
-	map->map_height = 0;
-	map->map_width = 0;
-	map->east_txtr = NULL;
-	map->north_txtr = NULL;
-	map->south_txtr = NULL;
-	map->west_txtr = NULL;
-	map->ceiling_color = NULL;
-	map->floor_color = NULL;
-}
 
 char	*strcmp_from_i(int i, char *src)
 {
@@ -47,8 +33,7 @@ char	*strcmp_from_i(int i, char *src)
 	return (dest);
 }
 
-
-void	parse_config_line(char *str, t_map *map)
+void	parse_config_line(char *str, t_map_data *map)
 {
 	int	i;
 
@@ -89,12 +74,69 @@ int	is_map_line(char *str)
 	return (0);
 }
 
+int	count_lines(char **av, int fd)
+{
+	int		lines;
+	char	*line;
 
-void	parse_file(int fd, t_map *map)
+	lines = 0;
+	fd = open(av[1], O_RDONLY);
+	if (fd < 0)
+		return (0);
+	while ((line = get_next_line(fd)))
+	{
+		lines++;
+		free(line);
+	}
+	close(fd);
+	return (lines);
+}
+
+// Funzione per caricare la mappa
+char	**load_map(char **av, int fd)
+{
+	int		i;
+	int		lines;
+	char	**map;
+
+    if (fd < 0)
+		return (0);
+	lines = count_lines(av[1], fd);
+	if (lines <= 0)
+		return (NULL);
+	map = malloc((lines + 1) * sizeof(char *));  // +1 per NULL finale
+	if (!map)
+		return (NULL);
+	fd = open(av[1], O_RDONLY);
+	if (fd < 0)
+	{
+		free(map);
+		return (NULL);
+	}
+	i = 0;
+	while (i < lines)
+	{
+		map[i] = get_next_line(fd);
+		if (!map[i])  // Se get_next_line fallisce
+		{
+			while (i > 0)
+				free(map[--i]);
+			free(map);
+			close(fd);
+			return (NULL);
+		}
+		i++;
+	}
+	map[i] = NULL;  // Terminatore NULL per l'array di stringhe
+	close(fd);
+	return (map);
+}
+
+void	parse_file(char **av, int fd, t_map_data *map)
 {
 	char	*line;
-	int		line_len;
-
+	int		line_len;    
+    
 	init_map(map);
 	line_len = 0;
 	while ((line = get_next_line(fd)))
@@ -109,7 +151,9 @@ void	parse_file(int fd, t_map *map)
 		else
 			parse_config_line(line, map);
 		free(line);
+		close(fd);
 	}
+	map->world = load_map(av[1], fd);
 	map->map_width *= TILE_SIZE;
 	map->map_height *= TILE_SIZE;
 	if (map->map_width >= 1920)

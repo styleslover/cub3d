@@ -3,14 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   draw_picasso.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: damoncad <damoncad@student.42.fr>          #+#  +:+       +#+        */
+/*   By: mariel <mariel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025-02-18 15:57:35 by damoncad          #+#    #+#             */
-/*   Updated: 2025-02-18 15:57:35 by damoncad         ###   ########.fr       */
+/*   Created: 2025/02/18 15:57:35 by damoncad          #+#    #+#             */
+/*   Updated: 2025/02/24 23:44:51 by mariel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+
+//preso
 
 void	draw_direction_line(t_game *game, t_player *player, int length, int color)
 {
@@ -48,7 +50,7 @@ void	draw_direction_line(t_game *game, t_player *player, int length, int color)
 		i++;
 	}
 }
-
+//preso
 void	draw_player(t_game *game, t_player *player, int size, int color)
 {
 	int		i;
@@ -89,7 +91,7 @@ void	draw_player(t_game *game, t_player *player, int size, int color)
 	// // Disegna la linea di direzione
 	// draw_direction_line(game, player, size * 2, GREEN); // Linea verde
 }
-
+//inutile
 void	draw_square(int x, int y, int size, t_game *game, int color)
 {
 	int	i;
@@ -108,6 +110,7 @@ void	draw_square(int x, int y, int size, t_game *game, int color)
 	}
 }
 
+//preso
 //GRIGLIA DI DEBUG
 void	draw_grid(t_game *game, int tile_size)
 {
@@ -140,7 +143,7 @@ void	draw_grid(t_game *game, int tile_size)
 		x += tile_size;
 	}
 }
-
+//preso
 void	draw_map(t_game *game)
 {
 	char	**map;

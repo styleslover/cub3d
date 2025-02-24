@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_toupper.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
+/*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/11 21:14:54 by mabrigo           #+#    #+#             */
-/*   Updated: 2023/10/25 20:45:37 by mabrigo          ###   ########.fr       */
+/*   Created: 2023/12/13 21:00:28 by damoncad          #+#    #+#             */
+/*   Updated: 2023/12/13 21:04:36 by damoncad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,5 @@ int	ft_toupper(int c)
 {
 	if (c >= 'a' && c <= 'z')
 		return (c - 32);
-	else
-		return (c);
+	return (c);
 }
-/*int	main()
-{
-	char	c = 'a';
-	printf("%c", ft_toupper(c));
-	return (0);
-}*/

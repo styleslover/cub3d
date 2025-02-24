@@ -3,42 +3,34 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strlcpy.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
+/*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/11 21:14:15 by mabrigo           #+#    #+#             */
-/*   Updated: 2023/10/28 17:38:25 by mabrigo          ###   ########.fr       */
+/*   Created: 2023/12/01 19:47:02 by damoncad          #+#    #+#             */
+/*   Updated: 2023/12/13 20:58:00 by damoncad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-size_t	ft_strlcpy(char *dest, const char *src, size_t size)
+size_t	ft_strlcpy(char *dest,  char *src, size_t size)
 {
-	size_t	i;
+	size_t	a;
 
-	i = 0;
+	a = 0;
 	if (size == 0)
 	{
-		while (src[i])
-			i++;
-		return (i);
+		while (src[a])
+			a++;
+		return (a);
 	}
-	while (src[i] && i < size - 1)
+	while (a < size - 1 && src[a] != '\0')
 	{
-		dest[i] = src[i];
-		i++;
+		dest[a] = src[a];
+		a++;
 	}
-	if (i < size)
-		dest[i] = '\0';
-	while (src[i] != '\0')
-		i++;
-	return (i);
+	if (a < size)
+		dest[a] = '\0';
+	while (src[a] != '\0')
+		a++;
+	return (a);
 }
-
-/*int main()
-{
-    char d[50] = "boiaaaaaaa";
-    char s[50] = "ciaooo";
-    
-    printf("%zu", ft_strlcpy(d, s, 6));
-}*/

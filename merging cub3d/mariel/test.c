@@ -3,15 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   test.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mariel <mariel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 19:36:54 by mabrigo           #+#    #+#             */
-/*   Updated: 2025/02/21 12:14:34 by mabrigo          ###   ########.fr       */
+/*   Updated: 2025/02/24 23:47:12 by mariel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
+//preso
 // Permette di colorare un singolo pixel nell'immagine.
 // Calcola indice del pixel nell'array data
 // Controllo per evitare di uscire dallo schermo
@@ -27,7 +28,7 @@ void	my_pixel_put(int x, int y, t_game *game, int color)
 	game->data[index + 1] = (color >> 8) & 0xFF;
 	game->data[index + 2] = (color >> 16) & 0xFF;
 }
-
+//preso
 int	key_press(int keycode, t_game *game)
 {
 	t_player	*player;
@@ -52,7 +53,7 @@ int	key_press(int keycode, t_game *game)
 	}
 	return (0);
 }
-
+//preso
 int	key_release(int keycode, t_game *game)
 {
 	t_player	*player;
@@ -73,7 +74,7 @@ int	key_release(int keycode, t_game *game)
 	return (0);
 }
 
-
+//preso
 int	draw_loop(t_game *game)
 {
 	t_player *player;
@@ -87,7 +88,7 @@ int	draw_loop(t_game *game)
 	mlx_put_image_to_window(game->mlx, game->win, game->img, 0, 0);
 	return (0);
 }
-
+//preso
 void	init_game(t_game *game)
 {
 	game->player = malloc(sizeof(t_player));
@@ -105,6 +106,7 @@ void	init_game(t_game *game)
 	mlx_put_image_to_window(game->mlx, game->win, game->img, 0, 0);
 }
 
+//fatto
 int	main(int ac, char **av)
 {
 	t_game		game;

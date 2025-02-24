@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_putstr_fd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
+/*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/19 22:05:51 by mabrigo           #+#    #+#             */
-/*   Updated: 2023/11/04 18:36:01 by mabrigo          ###   ########.fr       */
+/*   Created: 2023/12/14 19:55:18 by damoncad          #+#    #+#             */
+/*   Updated: 2023/12/21 20:03:37 by damoncad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,24 +14,5 @@
 
 void	ft_putstr_fd(char *s, int fd)
 {
-	int	i;
-
-	i = 0;
-	if (s)
-	{
-		while (s[i] != '\0')
-		{
-			write(fd, &s[i], 1);
-			i++;
-		}
-	}
+	write(fd, s, ft_strlen(s));
 }
-
-/*int	main()
-{
-	char str[] = "harry styles <3";
-    
-	ft_putstr_fd(str, 1);
-
-	return 0;
-}*/

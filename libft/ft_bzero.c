@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_bzero.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
+/*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/12 21:39:56 by mabrigo           #+#    #+#             */
-/*   Updated: 2023/10/28 17:03:45 by mabrigo          ###   ########.fr       */
+/*   Created: 2023/12/21 19:54:25 by damoncad          #+#    #+#             */
+/*   Updated: 2023/12/21 19:54:29 by damoncad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,20 +14,9 @@
 
 void	ft_bzero(void *s, size_t n)
 {
-	char	*p;
+	char unsigned	*ptr;
 
-	p = (char *)s;
-	while (n > 0)
-	{
-		*p = 0;
-		p++;
-		n--;
-	}
+	ptr = s;
+	while (n--)
+		*ptr++ = 0;
 }
-
-/*int main()
-{
-  char str[50] = "cazzo ne so";
-  ft_bzero(str, 5);
-  puts(str);
-}*/

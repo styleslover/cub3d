@@ -3,30 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strchr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
+/*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/11 21:15:42 by mabrigo           #+#    #+#             */
-/*   Updated: 2023/11/03 18:41:07 by mabrigo          ###   ########.fr       */
+/*   Created: 2023/12/13 21:08:40 by damoncad          #+#    #+#             */
+/*   Updated: 2023/12/13 21:15:43 by damoncad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_strchr(const char *s, int c)
+char	*ft_strchr( char *s, int c)
 {
-	while ((*s != '\0') && (*s != (unsigned char)c))
-		s++;
-	if (*s == (unsigned char)c)
-		return ((char *)s);
-	return (NULL);
-}
+	int	a;
 
-/*int main()
-{
-	char s[50] = "ciao come stai";
-    
-	if (ft_strchr(s, 'o') == NULL)
-		printf ("letter not found");
-	else
-		puts (ft_strchr(s, 'o'));
-}*/
+	a = 0;
+	while ((s[a] != (char)c) && (s[a] != '\0'))
+		a++;
+	if (s[a] == (char)c)
+		return ((char *)&s[a]);
+	return (0);
+}

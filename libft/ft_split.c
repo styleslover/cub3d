@@ -3,66 +3,75 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
+/*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/18 21:11:00 by mabrigo           #+#    #+#             */
-/*   Updated: 2023/11/16 18:35:01 by mabrigo          ###   ########.fr       */
+/*   Created: 2023/12/21 19:17:24 by damoncad          #+#    #+#             */
+/*   Updated: 2023/12/21 19:48:59 by damoncad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static void	*free_matrix(char **matrix, int j)
+static size_t	words_counter( char *str, char c)
 {
-	while (--j >= 0)
-		free(matrix[j]);
-	free(matrix);
-	return (NULL);
-}
+	size_t	counter;
+	int		i;
+	int		word;
 
-static int	counter(char const *s, char c)
-{
-	int	i;
-
-	if (!*s)
-		return (0);
+	counter = 0;
 	i = 0;
-	while (*s)
+	word = 0;
+	while (str[i] != '\0')
 	{
-		while (*s == c)
-			s++;
-		if (*s)
-			i++;
-		while (*s != c && *s)
-			s++;
+		if (!word && str[i] != c)
+		{
+			word = 1;
+			counter++;
+		}
+		else if (word && str[i] == c)
+			word = 0;
+		i++;
 	}
-	return (i);
+	return (counter);
 }
 
-static char	*word_strdup(const char *s, int start, int end)
+static char	*alt_str_dup( char *str, int start, int finish)
 {
-	char	*dup;
+	char	*word;
 	int		i;
 
 	i = 0;
-	dup = malloc(sizeof(char) * (end - start + 1));
-	if (!dup)
+	word = malloc((finish - start + 1) * sizeof(char));
+	if (!word)
 		return (NULL);
-	while (start < end)
-		dup[i++] = s[start++];
-	dup[i] = '\0';
-	return (dup);
+	while (start < finish)
+		word[i++] = str[start++];
+	word[i] = '\0';
+	return (word);
 }
 
-char	**ft_split(char const *s, char c)
+static void	free_split(char **split, int limit)
 {
-	char	**split;
-	size_t	i;
-	size_t	j;
-	int		index;
+	int	i;
 
-	split = malloc(sizeof(char *) * (counter(s, c) + 1));
-	if (!s || !split)
+	i = 0;
+	while (i <= limit)
+	{
+		free(split[i]);
+		i++;
+	}
+	free(split);
+}
+
+char	**ft_split(char  *s, char c)
+{
+	int		i;
+	int		j;
+	int		index;
+	char	**split;
+
+	split = malloc((words_counter(s, c) + 1) * sizeof(char *));
+	if (!split)
 		return (NULL);
 	i = -1;
 	j = 0;
@@ -73,30 +82,12 @@ char	**ft_split(char const *s, char c)
 			index = i;
 		else if ((s[i] == c || i == ft_strlen(s)) && index >= 0)
 		{
-			split[j++] = word_strdup(s, index, i);
+			split[j++] = alt_str_dup(s, index, i);
 			if (!split[j - 1])
-				return (free_matrix(split, j));
+				return (free_split(split, --j), NULL);
 			index = -1;
 		}
 	}
-	split[j] = NULL;
+	split[j] = 0;
 	return (split);
 }
-
-/*int main()
-{
-	char *str;
-	char	**matrice;
-
-	str = "i 4lh fghf";
-	char	c = ' ';
-	int i = 0;
-	
-	matrice = ft_split(str, c);
-	while (matrice[i] != NULL)         "ciao    fdg dfg dfg dfg dfg "  
-	{
-		printf("%s\n", matrice[i]);
-		i++;
-	}
-	return(0);
-}*/

@@ -3,26 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   ft_isalnum.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
+/*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/15 17:35:46 by mabrigo           #+#    #+#             */
-/*   Updated: 2023/10/25 20:49:57 by mabrigo          ###   ########.fr       */
+/*   Created: 2023/12/01 19:03:52 by damoncad          #+#    #+#             */
+/*   Updated: 2023/12/13 19:10:10 by damoncad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
-
-int	ft_isalnum(int c)
+int	ft_isalnum(unsigned char c)
 {
-	if (((c > 64 && c < 91) || (c > 96 && c < 123)) || (c > 47 && c < 58))
-		return (1);
-	else
-		return (0);
+	return ((c >= '0' && c <= '9')
+		|| (c >= 'a' && c <= 'z')
+		|| (c >= 'A' && c <= 'Z'));
 }
-
-/*int	main()
-{
-	printf("valore = %d\n", ft_isalnum(' '));
-	printf("valore = %d\n", ft_isalnum('3'));
-	printf("valore = %d\n", ft_isalnum('B'));
-}*/	

@@ -3,47 +3,27 @@
 /*                                                        :::      ::::::::   */
 /*   ft_calloc.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
+/*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/15 18:15:08 by mabrigo           #+#    #+#             */
-/*   Updated: 2023/10/25 20:49:20 by mabrigo          ###   ########.fr       */
+/*   Created: 2023/12/21 19:54:59 by damoncad          #+#    #+#             */
+/*   Updated: 2023/12/21 19:55:02 by damoncad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-//nmemb = elementi; size = dimensione
 void	*ft_calloc(size_t nmemb, size_t size)
 {
+	size_t	product;
 	void	*ptr;
 
+	product = nmemb * size;
+	if (product != 0 && product / nmemb != size)
+		return (NULL);
 	ptr = malloc(nmemb * size);
-	if (ptr == NULL)
-		return (ptr);
+	if (!ptr)
+		return (NULL);
 	else
-	{
 		ft_bzero(ptr, nmemb * size);
-		return (ptr);
-	}
+	return (ptr);
 }
-
-/*int main() {
-    int *ptr;
-    int n = 5;
-
-    // Utilizza la tua implementazione di ft_calloc
-    ptr = (int *)ft_calloc(n, sizeof(int));
-
-    if (ptr == NULL) {
-        printf("Errore nell'allocazione di memoria.\n");
-        return 1;
-    }
-
-    for (int i = 0; i < n; i++) {
-        printf("%d ", ptr[i]);  // Stampa zeri
-    }
-
-    free(ptr);
-
-    return 0;
-}*/

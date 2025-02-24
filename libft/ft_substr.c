@@ -3,51 +3,37 @@
 /*                                                        :::      ::::::::   */
 /*   ft_substr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
+/*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/15 20:45:18 by mabrigo           #+#    #+#             */
-/*   Updated: 2023/11/01 18:53:35 by mabrigo          ###   ########.fr       */
+/*   Created: 2023/12/21 19:46:47 by damoncad          #+#    #+#             */
+/*   Updated: 2023/12/21 19:46:52 by damoncad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_substr(char const *s, unsigned int start, size_t len)
+char	*ft_substr(char  *s, unsigned int start, size_t len)
 {
+	char	*str;
 	size_t	i;
-	size_t	size;
-	char	*sub;
+	size_t	str_len;
 
 	if (!s)
 		return (NULL);
-	if ((unsigned int)ft_strlen(s) < start)
+	str_len = ft_strlen(s);
+	if (start >= str_len)
 		return (ft_strdup(""));
-	size = ft_strlen(s + start);
-	if (size < len)
-		len = size;
-	sub = (char *)malloc(sizeof(char) * (len + 1));
-	if (!sub)
+	if (len > str_len - start)
+		len = str_len - start;
+	str = malloc(sizeof(*s) * (len + 1));
+	if (!str)
 		return (NULL);
 	i = 0;
-	while (i < len)
+	while (i < len && s[start + i])
 	{
-		sub[i] = s[start + i];
+		str[i] = s[start + i];
 		i++;
 	}
-	sub[i] = '\0';
-	return (sub);
+	str[i] = '\0';
+	return (str);
 }
-
-/*int	main()
-{
-	char const	*s;
-	char	*figlia;
-	unsigned int	i;
-	size_t	len;
-	
-	s = "ciao";
-	i = 2;
-	len = 3;
-	figlia = ft_substr(s, i, len);
-	printf("%s", figlia);
-}*/

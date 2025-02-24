@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   player.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mariel <mariel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 19:04:03 by mabrigo           #+#    #+#             */
-/*   Updated: 2025/02/12 19:04:39 by mabrigo          ###   ########.fr       */
+/*   Updated: 2025/02/24 23:35:09 by mariel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ void	init_player(t_player *player)
 	player->key_right = false;
 }
 
+//preso
 void	move_player(t_player *player)
 {
 	int	speed;

@@ -3,39 +3,25 @@
 /*                                                        :::      ::::::::   */
 /*   ft_memcpy.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
+/*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/11 20:41:27 by mabrigo           #+#    #+#             */
-/*   Updated: 2023/10/25 20:51:02 by mabrigo          ###   ########.fr       */
+/*   Created: 2023/12/07 20:30:36 by damoncad          #+#    #+#             */
+/*   Updated: 2023/12/21 19:27:34 by damoncad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	*ft_memcpy(void *dest, const void *src, size_t n)
+void	*ft_memcpy(void *dest,  void *src, size_t n)
 {
-	char	*d;
-	char	*s;
+	char		*dest_ptr;
+	 char	*src_ptr;
 
-	d = (char *)dest;
-	s = (char *)src;
-	if (!dest && !src)
-		return (0);
-	while (n > 0)
-	{
-		*d = *s;
-		d++;
-		s++;
-		n--;
-	}
+	if (dest == NULL && src == NULL)
+		return (NULL);
+	dest_ptr = (char *)dest;
+	src_ptr = ( char *)src;
+	while (n-- > 0)
+		dest_ptr[n] = src_ptr[n];
 	return (dest);
 }
-
-/*int main()
-{
-	char dest[50] = "";
-	char src[50] = "";
-
-	ft_memcpy(dest, src, 3);
-	printf("%s", dest);
-}*/

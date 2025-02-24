@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mariel <mariel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 12:40:01 by mabrigo           #+#    #+#             */
-/*   Updated: 2025/02/21 12:49:33 by mabrigo          ###   ########.fr       */
+/*   Updated: 2025/02/25 00:09:17 by mariel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,9 +63,15 @@ typedef struct s_player
 
 typedef struct s_map_data
 {
+	char		**world;
 	int			fd;
 	int			win_width;
 	int			win_height;
+
+	int			map_width;
+	int			map_height;
+	int			offset_x;
+	int			offset_y;
 
 	char		*north_txtr;
 	char		*west_txtr;
@@ -87,13 +93,45 @@ typedef struct s_game
 	int			size_line; // Numero di byte per ogni riga dell'immagine
 	int			endian; // Specifica l'ordine dei byte (Big endian o Little endian)
 
-	char		**map;
-	int			offset_x;
-	int			offset_y;
-	int			map_width;
-	int			map_height;
 	t_player	*player;
+	t_map_data	*map;
 }			t_game;
+
+//cub3d.c
+int	print_error(char *str);
+
+//draw.c
+void	my_pixel_put(int x, int y, t_game *game, int color);
+void	draw_direction_line(t_game *game, t_player *player, int length, int color);
+void	draw_player(t_game *game, t_player *player, int size, int color);
+void	draw_grid(t_map_data *map, int tile_size);
+void	draw_map(t_map_data *map);
+int		draw_loop(t_game *game);
+
+//free_shit.c
+void	free_map(char **map);
+void	free_mlx(t_game *game);
+void	free_game_resources(t_game *game);
+
+//init.c
+void	init_map(t_map_data *map);
+void	init_player(t_player *player, t_map_data *map, int offset_x, int offset_y);
+void	init_game(t_game *game, t_map_data *map);
+int		key_press(int keycode, t_game *game);
+int		key_release(int keycode, t_game *game);
+int		close_window(void *param);
+
+//parsing.c
+char	*strcmp_from_i(int i, char *src);
+void	parse_config_line(char *str, t_map_data *map);
+int		is_map_line(char *str);
+int		count_lines(char **av, int fd);
+char	**load_map(char **av, int fd);
+void	parse_file(char **av, int fd, t_map_data *map);
+
+//move_player
+void	move_player(t_player *player);
+void    rotate_point(float *x, float *y, float center_x, float center_y, float angle);
 
 
 #endif

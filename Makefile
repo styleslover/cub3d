@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+         #
+#    By: mariel <mariel@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/12 16:24:59 by mabrigo           #+#    #+#              #
-#    Updated: 2025/02/21 12:51:34 by mabrigo          ###   ########.fr        #
+#    Updated: 2025/02/24 23:51:10 by mariel           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,7 @@ CC = gcc
 CFLAGS = -Wall -Werror -Wextra
 LIBS = -Lminilibx-linux -lmlx -lXext -lX11 -lm
 GNL = get_next_line/get_next_line.c get_next_line/get_next_line_utils.c
-SRC =  $(GNL)
+SRC = $(GNL) cub3d.c draw.c free_shit.c init.c key_events.c parsing.c player.c rotate_that_booty.c
 
 MINI_REPO = https://github.com/42Paris/minilibx-linux.git
 MINI_PATH = minilibx-linux

@@ -3,43 +3,36 @@
 /*                                                        :::      ::::::::   */
 /*   ft_atoi.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
+/*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/11 21:17:27 by mabrigo           #+#    #+#             */
-/*   Updated: 2023/10/25 20:46:01 by mabrigo          ###   ########.fr       */
+/*   Created: 2023/12/13 17:25:52 by damoncad          #+#    #+#             */
+/*   Updated: 2023/12/13 20:08:56 by damoncad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	ft_atoi(const char *nptr)
+int	ft_atoi( char *str)
 {
-	long	i;
-	long	nbr;
-	int		segno;
+	int	a;
+	int	segno;
+	int	resu;
 
-	i = 0;
-	nbr = 0;
+	a = 0;
 	segno = 1;
-	while (nptr[i] == 32 || (nptr[i] >= 9 && nptr[i] <= 13))
-		i++;
-	if (nptr[i] == '+' || nptr[i] == '-')
+	resu = 0;
+	while (str[a] == ' ' || (str[a] >= 9 && str[a] <= 13))
+		a++;
+	if (str[a] == '-' || str[a] == '+')
 	{
-		if (nptr[i] == '-')
+		if (str[a] == '-')
 			segno *= -1;
-		i++;
+		a++;
 	}
-	while (nptr[i] > 47 && nptr[i] < 58)
+	while (str[a] >= '0' && str[a] <= '9')
 	{
-		nbr = nbr * 10 + (nptr[i] - 48);
-		i++;
+		resu = (str[a] - '0') + (resu * 10);
+		a++;
 	}
-	return (nbr * segno);
+	return (resu * segno);
 }
-
-/*int main()
-{
-    printf("%d", ft_atoi("  	-aa5245 155sd664"));
-
-    return 0;
-}*/

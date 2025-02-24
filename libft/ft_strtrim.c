@@ -3,47 +3,33 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strtrim.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
+/*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/16 21:48:33 by mabrigo           #+#    #+#             */
-/*   Updated: 2023/11/01 21:18:19 by mabrigo          ###   ########.fr       */
+/*   Created: 2023/12/14 20:17:50 by damoncad          #+#    #+#             */
+/*   Updated: 2023/12/14 20:21:35 by damoncad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_strtrim(char const *s1, char const *set)
+char	*ft_strtrim(char  *s1, char  *set)
 {
-	char	*out;
-	long	start;
-	long	end;
+	size_t	a;
+	size_t	b;
+	char	*str;
 
-	out = (char *)s1;
-	if (!s1 || !set)
-		return (NULL);
-	start = 0;
-	end = ft_strlen(s1) - 1;
-	while (*s1 && ft_strchr(set, out[start]) != NULL)
-		start++;
-	while (end > start && ft_strchr(set, s1[end]) != NULL)
-		end--;
-	if (end < start)
-		return (ft_strdup(""));
-	out = (char *)malloc(end - start + 2);
-	if (out == NULL)
-		return (NULL);
-	out = (char *)ft_memcpy(out, &s1[start], end - start + 1);
-	out[end - start + 1] = '\0';
-	return (out);
+	str = 0;
+	if (s1 != 0 && set != 0)
+	{
+		a = 0;
+		b = ft_strlen(s1);
+		while (s1[a] && ft_strchr(set, s1[a]))
+			a++;
+		while (s1[b - 1] && ft_strchr(set, s1[b - 1]) && b > a)
+			b--;
+		str = (char *)malloc(sizeof(char) * (b - a + 1));
+		if (str)
+			ft_strlcpy(str, &s1[a], b - a + 1);
+	}
+	return (str);
 }
-
-/*int main()
-{
-    const char *s1;
-    const char *set;
-    
-    s1 = "               ";
-    set = "iac";
-    
-    printf("%s", ft_strtrim(s1, set));
-}*/
