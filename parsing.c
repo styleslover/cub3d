@@ -151,8 +151,8 @@ void	parse_file(char **av, int fd, t_map_data *map)
 		else
 			parse_config_line(line, map);
 		free(line);
-		close(fd);
 	}
+	close(fd);
 	map->world = load_map(av[1], fd);
 	map->map_width *= TILE_SIZE;
 	map->map_height *= TILE_SIZE;
