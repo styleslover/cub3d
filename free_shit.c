@@ -12,21 +12,17 @@
 
 #include "cub3d.h"
 
-void	free_map(char **map)
+void	free_map(t_map_data *map)
 {
 	int	i;
 
-	i = 0;
-    if (!map)
+    if (map->world)
     {
-        return;
+        i = 0;
+        while (map->world[i])
+            free(map->world[i++]);
+        free(map->world);
     }
-	while (map[i])
-	{
-		free(map[i]);
-		i++;
-	}
-	free(map);
 }
 
 void	free_mlx(t_game *game)

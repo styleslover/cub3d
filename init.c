@@ -12,7 +12,7 @@
 
 #include "cub3d.h"
 
-void	init_map(t_map *map)
+void	init_map(t_map_data *map)
 {
 	map->map_height = 0;
 	map->map_width = 0;
@@ -22,6 +22,7 @@ void	init_map(t_map *map)
 	map->west_txtr = NULL;
 	map->ceiling_color = NULL;
 	map->floor_color = NULL;
+	map->world = NULL;
 }
 
 void	init_player(t_player *player, t_map_data *map, int offset_x, int offset_y)
@@ -55,6 +56,7 @@ void	init_player(t_player *player, t_map_data *map, int offset_x, int offset_y)
 				player->plane_y = 0.0f;
 
 				map->world[i][j] = '0';
+				printf("Player initialized at (%f, %f)\n", player->x, player->y);//debug
 				return ;
 			}
 			j++;
@@ -92,12 +94,33 @@ void	init_game(t_game *game, t_map_data *map)
 	map->offset_x = (WIDTH - map->map_width * TILE_SIZE) / 2;
 	map->offset_y = (HEIGHT - map->map_height * TILE_SIZE) / 2;
 
-	init_player(game->player, game->map, map->offset_x, map->offset_y);
+	init_player(game->player, map, map->offset_x, map->offset_y);
 	game->mlx = mlx_init();
+	if (!game->mlx)
+	{
+		perror("errore in mlx_init\n");
+		exit(1);
+	}
 	mlx_get_screen_size(game->mlx, &screen_width, &screen_height);
 	game->win = mlx_new_window(game->mlx, WIDTH, HEIGHT, "CUB3D");
+	if (!game->win)
+	{
+		perror("error in mlx_new_window\n");
+		exit(1);
+	}
 	game->img = mlx_new_image(game->mlx, WIDTH, HEIGHT);
+	if (!game->img)
+	{
+		perror("errore in mlx_new_image\n");
+		exit(1);
+	}
 	game->data = mlx_get_data_addr(game->img, &game->bpp,
 			&game->size_line, &game->endian);
+	if (!game->data)
+	{
+		perror("errore in mlx_get_data_addr\n");
+		exit (1);
+	}
 	mlx_put_image_to_window(game->mlx, game->win, game->img, 0, 0);
+	printf("Game initialized successfully\n");
 }

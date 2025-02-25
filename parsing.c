@@ -69,18 +69,21 @@ int	is_map_line(char *str)
 		if (str[i + 1] == 'O' || str[i + 1] == 'A' || str[i + 1] == 'E')
 			return (0);
 		else
+		{
+			printf("Map line: %s\n", str);//debug
 			return (1);
+		}
 	}
 	return (0);
 }
 
-int	count_lines(char **av, int fd)
+int	count_lines(char *av, int fd)
 {
 	int		lines;
 	char	*line;
 
 	lines = 0;
-	fd = open(av[1], O_RDONLY);
+	fd = open(av, O_RDONLY);
 	if (fd < 0)
 		return (0);
 	while ((line = get_next_line(fd)))
@@ -93,7 +96,7 @@ int	count_lines(char **av, int fd)
 }
 
 // Funzione per caricare la mappa
-char	**load_map(char **av, int fd)
+char	**load_map(char *av, int fd)
 {
 	int		i;
 	int		lines;
@@ -101,13 +104,13 @@ char	**load_map(char **av, int fd)
 
     if (fd < 0)
 		return (0);
-	lines = count_lines(av[1], fd);
+	lines = count_lines(av, fd);
 	if (lines <= 0)
 		return (NULL);
 	map = malloc((lines + 1) * sizeof(char *));  // +1 per NULL finale
 	if (!map)
 		return (NULL);
-	fd = open(av[1], O_RDONLY);
+	fd = open(av, O_RDONLY);
 	if (fd < 0)
 	{
 		free(map);
@@ -125,6 +128,7 @@ char	**load_map(char **av, int fd)
 			close(fd);
 			return (NULL);
 		}
+		printf("Map line %d: %s\n", i, map[i]);//debug
 		i++;
 	}
 	map[i] = NULL;  // Terminatore NULL per l'array di stringhe
@@ -154,6 +158,11 @@ void	parse_file(char **av, int fd, t_map_data *map)
 	}
 	close(fd);
 	map->world = load_map(av[1], fd);
+	if (!map->world)
+	{
+		printf("Error: Failed to load map\n");
+		exit(1);
+	}
 	map->map_width *= TILE_SIZE;
 	map->map_height *= TILE_SIZE;
 	if (map->map_width >= 1920)

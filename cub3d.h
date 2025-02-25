@@ -104,12 +104,13 @@ int	print_error(char *str);
 void	my_pixel_put(int x, int y, t_game *game, int color);
 void	draw_direction_line(t_game *game, t_player *player, int length, int color);
 void	draw_player(t_game *game, t_player *player, int size, int color);
-void	draw_grid(t_map_data *map, int tile_size);
-void	draw_map(t_map_data *map);
+void	draw_grid(t_game *game, int tile_size);
+void	draw_square(int x, int y, int size, t_game *game, int color);
+void	draw_map(t_game *game);
 int		draw_loop(t_game *game);
 
 //free_shit.c
-void	free_map(char **map);
+void	free_map(t_map_data *map);
 void	free_mlx(t_game *game);
 void	free_game_resources(t_game *game);
 
@@ -125,8 +126,8 @@ int		close_window(void *param);
 char	*strcmp_from_i(int i, char *src);
 void	parse_config_line(char *str, t_map_data *map);
 int		is_map_line(char *str);
-int		count_lines(char **av, int fd);
-char	**load_map(char **av, int fd);
+int		count_lines(char *av, int fd);
+char	**load_map(char *av, int fd);
 void	parse_file(char **av, int fd, t_map_data *map);
 
 //move_player

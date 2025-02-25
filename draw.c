@@ -106,11 +106,13 @@ void	draw_player(t_game *game, t_player *player, int size, int color)
 	// draw_direction_line(game, player, size * 2, GREEN); // Linea verde
 }
 
-void	draw_grid(t_map_data *map, int tile_size)
+void	draw_grid(t_game *game, int tile_size)
 {
+	t_map_data	*map;
 	int	x;
 	int	y;
 
+	map = game->map;
 	// Linee orizzontali
 	y = map->offset_y;
 	while (y < map->offset_y + map->map_height * tile_size)
@@ -118,7 +120,7 @@ void	draw_grid(t_map_data *map, int tile_size)
 		x = map->offset_x;
 		while (x < map->offset_x + map->map_width * tile_size)
 		{
-			my_pixel_put(x, y, map, 0xFFFFFF);  // Linea orizzontale bianca
+			my_pixel_put(x, y, game, 0xFFFFFF);  // Linea orizzontale bianca
 			x++;
 		}
 		y += tile_size;
@@ -131,22 +133,48 @@ void	draw_grid(t_map_data *map, int tile_size)
 		y = map->offset_y;
 		while (y < map->offset_y + map->map_height * tile_size)
 		{
-			my_pixel_put(x, y, map, 0xFFFFFF);  // Linea verticale bianca
+			my_pixel_put(x, y, game, 0xFFFFFF);  // Linea verticale bianca
 			y++;
 		}
 		x += tile_size;
 	}
 }
 
-void	draw_map(t_map_data *map)
+void	draw_square(int x, int y, int size, t_game *game, int color)
 {
-	char	**world;
-	int		color;
-	int		i;
-	int		j;
+	int	i;
+	int	j;
+
+	i = 0;
+	while (i < size)
+	{
+		j = 0;
+		while (j < size)
+		{
+			my_pixel_put(x + j, y + i, game, color);
+			j++;
+		}
+		i++;
+	}
+	printf("Square drawn at (%d, %d)\n", x, y);//debug
+}
+
+void	draw_map(t_game *game)
+{
+	t_map_data	*map;
+	char		**world;
+	int			color;
+	int			i;
+	int			j;
 	
+	map = game->map;
+	printf("PORCODIO\n");
 	world = map->world;
-	
+	if (!world || !world[0])
+	{
+		printf("Error: Map not loaded or empty\n");
+		return;
+	}
 	map->map_width = (ft_strlen(world[0]) - 1);
 	map->map_height = 0;
 	while (world[map->map_height] != NULL)
@@ -172,14 +200,14 @@ void	draw_map(t_map_data *map)
 				continue;
 			}
 				draw_square(j * TILE_SIZE + map->offset_x,
-				i * TILE_SIZE + map->offset_y, TILE_SIZE, map, color);
+				i * TILE_SIZE + map->offset_y, TILE_SIZE, game, color);
 			j++;
 		}
 		i++;
 	}
 	//AGGIUNGE LA GRIGLIA DI DEBUG
-	draw_grid(world, TILE_SIZE);
-	//printf("map_width: %d\nmap_height%d\n", map->map_width, map->map_height);
+	draw_grid(game, TILE_SIZE);
+	printf("Map drawn successfully\n");//debug
 }
 
 
