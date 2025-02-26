@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mariel <mariel@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 23:30:39 by mariel            #+#    #+#             */
-/*   Updated: 2025/02/24 23:44:28 by mariel           ###   ########.fr       */
+/*   Updated: 2025/02/26 18:13:04 by mabrigo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,13 +106,13 @@ void	draw_player(t_game *game, t_player *player, int size, int color)
 	// draw_direction_line(game, player, size * 2, GREEN); // Linea verde
 }
 
-void	draw_grid(t_game *game, int tile_size)
+void	draw_grid(t_game *game, t_map_data *map, int tile_size)
 {
-	t_map_data	*map;
 	int	x;
 	int	y;
 
-	map = game->map;
+	if (!map)
+		print_error("Errore draw_grid");
 	// Linee orizzontali
 	y = map->offset_y;
 	while (y < map->offset_y + map->map_height * tile_size)
@@ -156,43 +156,38 @@ void	draw_square(int x, int y, int size, t_game *game, int color)
 		}
 		i++;
 	}
-	printf("Square drawn at (%d, %d)\n", x, y);//debug
 }
 
-void	draw_map(t_game *game)
+void	draw_map(t_game *game, t_map_data *map)
 {
-	t_map_data	*map;
-	char		**world;
 	int			color;
 	int			i;
 	int			j;
-	
-	map = game->map;
+
 	printf("PORCODIO\n");
-	world = map->world;
-	if (!world || !world[0])
+	if (!map->world || !map->world[0])
 	{
 		printf("Error: Map not loaded or empty\n");
 		return;
 	}
-	map->map_width = (ft_strlen(world[0]) - 1);
+	map->map_width = (ft_strlen(map->world[0]) - 1);
 	map->map_height = 0;
-	while (world[map->map_height] != NULL)
+	while (map->world[map->map_height] != NULL)
 		map->map_height++;
 
 	map->offset_x = (WIDTH - map->map_width * TILE_SIZE) / 2;
 	map->offset_y = (HEIGHT - map->map_height * TILE_SIZE) / 2;
 	i = 0;
-	while (world[i] != NULL)
+	while (map->world[i] != NULL)
 	{
 		j = 0;
-		while (world[i][j + 1] != '\0')
+		while (map->world[i][j + 1] != '\0')
 		{
-			if (world[i][j] == '1')
+			if (map->world[i][j] == '1')
 				color = RED;
-			else if (world[i][j] == '0')
+			else if (map->world[i][j] == '0')
 				color = BLUE;
-			else if (world[i][j] == 'N')	// IGNORA 'N' O GESTISCI IL GIOCATORE
+			else if (map->world[i][j] == 'N')	// IGNORA 'N' O GESTISCI IL GIOCATORE
 				color = GREEN;
 			else
 			{
@@ -205,8 +200,9 @@ void	draw_map(t_game *game)
 		}
 		i++;
 	}
+	printf("Fuori while\n");
 	//AGGIUNGE LA GRIGLIA DI DEBUG
-	draw_grid(game, TILE_SIZE);
+	draw_grid(game, map, TILE_SIZE);
 	printf("Map drawn successfully\n");//debug
 }
 
@@ -220,7 +216,7 @@ int	draw_loop(t_game *game)
     game->img = mlx_new_image(game->mlx, WIDTH, HEIGHT);
 	game->data = mlx_get_data_addr(game->img, &game->bpp, &game->size_line,
 			&game->endian);
-	draw_map(game);
+	//draw_map(game, game->map);
 	//draw_square(player->x, player->y, 15, game, GREEN);
 	draw_player(game, game->player, 15, GREEN);
 

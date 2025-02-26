@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mariel <mariel@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 23:45:26 by mariel            #+#    #+#             */
-/*   Updated: 2025/02/25 00:08:15 by mariel           ###   ########.fr       */
+/*   Updated: 2025/02/26 17:37:52 by mabrigo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@ void	init_map(t_map_data *map)
 {
 	map->map_height = 0;
 	map->map_width = 0;
+	map->win_height = 0;
+	map->win_width = 0;
 	map->east_txtr = NULL;
 	map->north_txtr = NULL;
 	map->south_txtr = NULL;
@@ -74,9 +76,6 @@ void	init_player(t_player *player, t_map_data *map, int offset_x, int offset_y)
 
 void	init_game(t_game *game, t_map_data *map)
 {
-	int	screen_width;
-	int	screen_height;
-
 	game->player = malloc(sizeof(t_player));
 	if (!game->player)
 	{
@@ -94,6 +93,12 @@ void	init_game(t_game *game, t_map_data *map)
 	map->offset_x = (WIDTH - map->map_width * TILE_SIZE) / 2;
 	map->offset_y = (HEIGHT - map->map_height * TILE_SIZE) / 2;
 
+	//feb 26
+	if (map->offset_x < 0)
+    map->offset_x = 0;
+	if (map->offset_y < 0)
+    map->offset_y = 0;
+	//feb 26
 	init_player(game->player, map, map->offset_x, map->offset_y);
 	game->mlx = mlx_init();
 	if (!game->mlx)
@@ -101,14 +106,14 @@ void	init_game(t_game *game, t_map_data *map)
 		perror("errore in mlx_init\n");
 		exit(1);
 	}
-	mlx_get_screen_size(game->mlx, &screen_width, &screen_height);
-	game->win = mlx_new_window(game->mlx, WIDTH, HEIGHT, "CUB3D");
+	mlx_get_screen_size(game->mlx, &map->win_width, &map->win_height);
+	game->win = mlx_new_window(game->mlx, map->win_width, map->win_height, "CUB3D");
 	if (!game->win)
 	{
 		perror("error in mlx_new_window\n");
 		exit(1);
 	}
-	game->img = mlx_new_image(game->mlx, WIDTH, HEIGHT);
+	game->img = mlx_new_image(game->mlx, map->win_width, map->win_height);
 	if (!game->img)
 	{
 		perror("errore in mlx_new_image\n");

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mariel <mariel@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 12:40:01 by mabrigo           #+#    #+#             */
-/*   Updated: 2025/02/25 00:09:17 by mariel           ###   ########.fr       */
+/*   Updated: 2025/02/26 17:51:02 by mabrigo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,9 +104,9 @@ int	print_error(char *str);
 void	my_pixel_put(int x, int y, t_game *game, int color);
 void	draw_direction_line(t_game *game, t_player *player, int length, int color);
 void	draw_player(t_game *game, t_player *player, int size, int color);
-void	draw_grid(t_game *game, int tile_size);
+void	draw_grid(t_game *game, t_map_data *map, int tile_size);
 void	draw_square(int x, int y, int size, t_game *game, int color);
-void	draw_map(t_game *game);
+void	draw_map(t_game *game, t_map_data *map);
 int		draw_loop(t_game *game);
 
 //free_shit.c

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw_picasso.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mariel <mariel@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 15:57:35 by damoncad          #+#    #+#             */
-/*   Updated: 2025/02/24 23:44:51 by mariel           ###   ########.fr       */
+/*   Updated: 2025/02/26 17:51:54 by mabrigo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,9 +150,8 @@ void	draw_map(t_game *game)
 	int		color;
 	int		i;
 	int		j;
-	
+
 	map = game->map;
-	
 	game->map_width = (ft_strlen(map[0]) - 1);
 	game->map_height = 0;
 	while (map[game->map_height] != NULL)
@@ -184,6 +183,6 @@ void	draw_map(t_game *game)
 		i++;
 	}
 	//AGGIUNGE LA GRIGLIA DI DEBUG
-	draw_grid(game, TILE_SIZE);
+	draw_grid(game, map, TILE_SIZE);
 	//printf("map_width: %d\nmap_height%d\n", game->map_width, game->map_height);
 }

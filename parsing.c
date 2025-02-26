@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mariel <mariel@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 22:52:55 by mariel            #+#    #+#             */
-/*   Updated: 2025/02/25 00:05:05 by mariel           ###   ########.fr       */
+/*   Updated: 2025/02/26 17:47:15 by mabrigo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,8 +139,8 @@ char	**load_map(char *av, int fd)
 void	parse_file(char **av, int fd, t_map_data *map)
 {
 	char	*line;
-	int		line_len;    
-    
+	int		line_len;
+
 	init_map(map);
 	line_len = 0;
 	while ((line = get_next_line(fd)))
@@ -148,9 +148,9 @@ void	parse_file(char **av, int fd, t_map_data *map)
 		if (is_map_line(line) != 0)
 		{
 			line_len = ft_strlen(line);
-			if (line_len > map->map_width)
-				map->map_width = line_len;
-			map->map_height++;
+			if (line_len > map->win_width)
+				map->win_width = line_len;
+			map->win_height++;
 		}
 		else
 			parse_config_line(line, map);
@@ -163,17 +163,18 @@ void	parse_file(char **av, int fd, t_map_data *map)
 		printf("Error: Failed to load map\n");
 		exit(1);
 	}
-	map->map_width *= TILE_SIZE;
-	map->map_height *= TILE_SIZE;
-	if (map->map_width >= 1920)
-		map->map_width = 1920;
-	if (map->map_height >= 1080)
-		map->map_height = 1080;
+	map->win_width *= TILE_SIZE;
+	map->win_height *= TILE_SIZE;
+	if (map->win_width >= WIDTH || map->win_height >= 1080)
+	{
+		map->win_width = WIDTH;
+		map->win_height = HEIGHT;
+	}
 	printf("North Texture: %s\n", map->north_txtr);
 	printf("South Texture: %s\n", map->south_txtr);
 	printf("West Texture: %s\n", map->west_txtr);
 	printf("East Texture: %s\n", map->east_txtr);
 	printf("Floor Color: %s\n", map->floor_color);
 	printf("Ceiling Color: %s\n", map->ceiling_color);
-	printf("Map Size: %d x %d\n", map->map_width, map->map_height);
+	printf("Win Size (pxl): %d x %d\n", map->win_width, map->win_height);
 }
