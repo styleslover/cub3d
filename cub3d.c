@@ -6,7 +6,7 @@
 /*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 12:52:13 by mabrigo           #+#    #+#             */
-/*   Updated: 2025/02/26 18:12:49 by mabrigo          ###   ########.fr       */
+/*   Updated: 2025/02/27 18:14:35 by mabrigo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 int	print_error(char *str)
 {
 	printf("%s", str);
-	exit(0);
+	exit(1);
 }
 
 int	main(int ac, char **av)

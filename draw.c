@@ -6,7 +6,7 @@
 /*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 23:30:39 by mariel            #+#    #+#             */
-/*   Updated: 2025/02/26 18:13:04 by mabrigo          ###   ########.fr       */
+/*   Updated: 2025/02/27 18:21:44 by mabrigo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -168,7 +168,7 @@ void	draw_map(t_game *game, t_map_data *map)
 	if (!map->world || !map->world[0])
 	{
 		printf("Error: Map not loaded or empty\n");
-		return;
+		return ;
 	}
 	map->map_width = (ft_strlen(map->world[0]) - 1);
 	map->map_height = 0;
@@ -216,8 +216,9 @@ int	draw_loop(t_game *game)
     game->img = mlx_new_image(game->mlx, WIDTH, HEIGHT);
 	game->data = mlx_get_data_addr(game->img, &game->bpp, &game->size_line,
 			&game->endian);
-	//draw_map(game, game->map);
-	//draw_square(player->x, player->y, 15, game, GREEN);
+	if (!game->map)
+		print_error("Errore caricamento mappa");
+	draw_map(game, game->map);
 	draw_player(game, game->player, 15, GREEN);
 
 	mlx_put_image_to_window(game->mlx, game->win, game->img, 0, 0);

@@ -6,7 +6,7 @@
 /*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 23:45:26 by mariel            #+#    #+#             */
-/*   Updated: 2025/02/26 17:37:52 by mabrigo          ###   ########.fr       */
+/*   Updated: 2025/02/27 18:16:30 by mabrigo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,7 @@ void	init_player(t_player *player, t_map_data *map, int offset_x, int offset_y)
 
 void	init_game(t_game *game, t_map_data *map)
 {
+	game->map = map;
 	game->player = malloc(sizeof(t_player));
 	if (!game->player)
 	{
