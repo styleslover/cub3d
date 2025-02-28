@@ -6,7 +6,7 @@
 /*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 22:52:55 by mariel            #+#    #+#             */
-/*   Updated: 2025/02/26 17:47:15 by mabrigo          ###   ########.fr       */
+/*   Updated: 2025/02/28 18:50:31 by mabrigo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,6 +133,7 @@ char	**load_map(char *av, int fd)
 	}
 	map[i] = NULL;  // Terminatore NULL per l'array di stringhe
 	close(fd);
+	// if (check_map(map))
 	return (map);
 }
 
@@ -165,10 +166,10 @@ void	parse_file(char **av, int fd, t_map_data *map)
 	}
 	map->win_width *= TILE_SIZE;
 	map->win_height *= TILE_SIZE;
-	if (map->win_width >= WIDTH || map->win_height >= 1080)
+	if (map->win_width >= WIDTH || map->win_height >= HEIGHT)
 	{
-		map->win_width = WIDTH;
-		map->win_height = HEIGHT;
+		map->win_width = map->win_width;
+		map->win_height = map->win_height;
 	}
 	printf("North Texture: %s\n", map->north_txtr);
 	printf("South Texture: %s\n", map->south_txtr);

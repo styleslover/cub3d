@@ -6,7 +6,7 @@
 /*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 12:40:01 by mabrigo           #+#    #+#             */
-/*   Updated: 2025/02/26 17:51:02 by mabrigo          ###   ########.fr       */
+/*   Updated: 2025/02/28 18:49:43 by mabrigo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,7 +131,7 @@ char	**load_map(char *av, int fd);
 void	parse_file(char **av, int fd, t_map_data *map);
 
 //move_player
-void	move_player(t_player *player);
+void	move_player(t_player *player, t_map_data *map);
 void    rotate_point(float *x, float *y, float center_x, float center_y, float angle);
 
 

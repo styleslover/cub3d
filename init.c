@@ -6,7 +6,7 @@
 /*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 23:45:26 by mariel            #+#    #+#             */
-/*   Updated: 2025/02/27 18:16:30 by mabrigo          ###   ########.fr       */
+/*   Updated: 2025/02/28 18:44:33 by mabrigo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,8 +65,8 @@ void	init_player(t_player *player, t_map_data *map, int offset_x, int offset_y)
 		}
 		i++;
 	}
-	player->x = (float)(WIDTH / 2);
-	player->y = (float)(HEIGHT / 2);
+	player->x = (float)(map->win_width / 2);
+	player->y = (float)(map->win_height / 2);
 	player->dir_x = 1.0f;
 	player->dir_y = 0.0f;
 	player->plane_x = 0.0f;
@@ -91,8 +91,8 @@ void	init_game(t_game *game, t_map_data *map)
 	while (map->world[map->map_height] != NULL)
 		map->map_height++;
 
-	map->offset_x = (WIDTH - map->map_width * TILE_SIZE) / 2;
-	map->offset_y = (HEIGHT - map->map_height * TILE_SIZE) / 2;
+	map->offset_x = (map->win_width - map->map_width * TILE_SIZE) / 2;
+	map->offset_y = (map->win_height - map->map_height * TILE_SIZE) / 2;
 
 	//feb 26
 	if (map->offset_x < 0)

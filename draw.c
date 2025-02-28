@@ -6,7 +6,7 @@
 /*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 23:30:39 by mariel            #+#    #+#             */
-/*   Updated: 2025/02/27 18:21:44 by mabrigo          ###   ########.fr       */
+/*   Updated: 2025/02/28 18:50:03 by mabrigo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	my_pixel_put(int x, int y, t_game *game, int color)
 	int	index;
 
 	index = y * game->size_line + x * game->bpp / 8;
-	if (x >= WIDTH || y >= HEIGHT || x < 0 || y < 0)
+	if (x >= game->map->win_width || y >= game->map->win_height || x < 0 || y < 0)
 		return ;
 	game->data[index] = color & 0xFF;
 	game->data[index + 1] = (color >> 8) & 0xFF;
@@ -175,8 +175,8 @@ void	draw_map(t_game *game, t_map_data *map)
 	while (map->world[map->map_height] != NULL)
 		map->map_height++;
 
-	map->offset_x = (WIDTH - map->map_width * TILE_SIZE) / 2;
-	map->offset_y = (HEIGHT - map->map_height * TILE_SIZE) / 2;
+	map->offset_x = (game->map->win_width - map->map_width * TILE_SIZE) / 2;
+	map->offset_y = (game->map->win_height - map->map_height * TILE_SIZE) / 2;
 	i = 0;
 	while (map->world[i] != NULL)
 	{
@@ -209,11 +209,10 @@ void	draw_map(t_game *game, t_map_data *map)
 
 int	draw_loop(t_game *game)
 {
-    move_player(game->player);
-	
+    move_player(game->player, game->map);
 	if (game->img)
 		mlx_destroy_image(game->mlx, game->img);
-    game->img = mlx_new_image(game->mlx, WIDTH, HEIGHT);
+    game->img = mlx_new_image(game->mlx, game->map->win_width, game->map->win_height);
 	game->data = mlx_get_data_addr(game->img, &game->bpp, &game->size_line,
 			&game->endian);
 	if (!game->map)
