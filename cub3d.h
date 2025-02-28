@@ -6,7 +6,7 @@
 /*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 12:40:01 by mabrigo           #+#    #+#             */
-/*   Updated: 2025/02/28 19:33:22 by mabrigo          ###   ########.fr       */
+/*   Updated: 2025/02/28 20:07:45 by mabrigo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@
 
 # define ESC 65307
 
-# define TILE_SIZE 64
+# define TILE_SIZE 32
 
 # define RED 0xFF0000
 # define GREEN 0x00FF00

@@ -6,7 +6,7 @@
 /*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 23:45:26 by mariel            #+#    #+#             */
-/*   Updated: 2025/02/28 19:29:34 by mabrigo          ###   ########.fr       */
+/*   Updated: 2025/02/28 20:08:53 by mabrigo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,6 @@ void	init_game(t_game *game, t_map_data *map)
 	// Calcola offset per centrare la mappa nella finestra
 	map->offset_x = (map->win_width - (map->map_width * TILE_SIZE)) / 2;
 	map->offset_y = (map->win_height - (map->map_height * TILE_SIZE)) / 2;
-
 	if (map->offset_x < 0) map->offset_x = 0;
 	if (map->offset_y < 0) map->offset_y = 0;
 
