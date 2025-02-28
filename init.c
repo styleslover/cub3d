@@ -6,7 +6,7 @@
 /*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 23:45:26 by mariel            #+#    #+#             */
-/*   Updated: 2025/02/28 18:44:33 by mabrigo          ###   ########.fr       */
+/*   Updated: 2025/02/28 19:29:34 by mabrigo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,49 +84,56 @@ void	init_game(t_game *game, t_map_data *map)
 		exit (1);
 	}
 
-	// calcolo l'offset della mappa per poterlo mandare a player
-	//in modo tale da avere la posizione corretta del character
-	map->map_width = (ft_strlen(map->world[0]) - 1);
-	map->map_height = 0;
-	while (map->world[map->map_height] != NULL)
-		map->map_height++;
-
-	map->offset_x = (map->win_width - map->map_width * TILE_SIZE) / 2;
-	map->offset_y = (map->win_height - map->map_height * TILE_SIZE) / 2;
-
-	//feb 26
-	if (map->offset_x < 0)
-    map->offset_x = 0;
-	if (map->offset_y < 0)
-    map->offset_y = 0;
-	//feb 26
-	init_player(game->player, map, map->offset_x, map->offset_y);
-	game->mlx = mlx_init();
-	if (!game->mlx)
+	// Imposta la dimensione della finestra basata sulla mappa caricata
+	if (map->win_width == 0 || map->win_height == 0)
 	{
-		perror("errore in mlx_init\n");
+		perror("Errore: Dimensioni della mappa non valide\n");
 		exit(1);
 	}
-	mlx_get_screen_size(game->mlx, &map->win_width, &map->win_height);
+
+	// Ottieni la dimensione massima dello schermo
+	int screen_w, screen_h;
+	game->mlx = mlx_init();
+	mlx_get_screen_size(game->mlx, &screen_w, &screen_h);
+
+	// Limita la finestra alla dimensione massima dello schermo
+	if (map->win_width > screen_w)
+		map->win_width = screen_w;
+	if (map->win_height > screen_h)
+		map->win_height = screen_h;
+
+	// Calcola offset per centrare la mappa nella finestra
+	map->offset_x = (map->win_width - (map->map_width * TILE_SIZE)) / 2;
+	map->offset_y = (map->win_height - (map->map_height * TILE_SIZE)) / 2;
+
+	if (map->offset_x < 0) map->offset_x = 0;
+	if (map->offset_y < 0) map->offset_y = 0;
+
+	init_player(game->player, map, map->offset_x, map->offset_y);
+
+	// Crea la finestra
 	game->win = mlx_new_window(game->mlx, map->win_width, map->win_height, "CUB3D");
 	if (!game->win)
 	{
-		perror("error in mlx_new_window\n");
+		perror("Errore in mlx_new_window\n");
 		exit(1);
 	}
+
+	// Crea l'immagine
 	game->img = mlx_new_image(game->mlx, map->win_width, map->win_height);
 	if (!game->img)
 	{
-		perror("errore in mlx_new_image\n");
+		perror("Errore in mlx_new_image\n");
 		exit(1);
 	}
-	game->data = mlx_get_data_addr(game->img, &game->bpp,
-			&game->size_line, &game->endian);
+
+	game->data = mlx_get_data_addr(game->img, &game->bpp, &game->size_line, &game->endian);
 	if (!game->data)
 	{
-		perror("errore in mlx_get_data_addr\n");
+		perror("Errore in mlx_get_data_addr\n");
 		exit (1);
 	}
+
 	mlx_put_image_to_window(game->mlx, game->win, game->img, 0, 0);
 	printf("Game initialized successfully\n");
 }
