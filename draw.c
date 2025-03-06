@@ -164,7 +164,7 @@ void	draw_map(t_game *game, t_map_data *map)
 	int			i;
 	int			j;
 
-	printf("PORCODIO\n");
+	//printf("PORCODIO\n");
 	if (!map->world || !map->world[0])
 	{
 		printf("Error: Map not loaded or empty\n");
@@ -200,10 +200,10 @@ void	draw_map(t_game *game, t_map_data *map)
 		}
 		i++;
 	}
-	printf("Fuori while\n");
+	//printf("Fuori while\n");
 	//AGGIUNGE LA GRIGLIA DI DEBUG
 	draw_grid(game, map, TILE_SIZE);
-	printf("Map drawn successfully\n");//debug
+	//printf("Map drawn successfully\n");//debug
 }
 
 

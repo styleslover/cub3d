@@ -127,7 +127,7 @@ char	*strcmp_from_i(int i, char *src);
 void	parse_config_line(char *str, t_map_data *map);
 int		is_map_line(char *str);
 int		count_lines(char *av, int fd);
-char	**load_map(char *av, int fd);
+char	**load_map(char *av, int *map_start_line);
 void	parse_file(char **av, int fd, t_map_data *map);
 
 //move_player

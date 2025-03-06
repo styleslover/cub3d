@@ -31,7 +31,7 @@ int	main(int ac, char **av)
 	parse_file(av, map.fd, &map);
 	close(map.fd);
 	init_game(&game, &map);
-	printf("SONO QUI\n");
+	//printf("SONO QUI\n");
 	draw_map(&game, &map);
 	mlx_hook(game.win, 2, 1L << 0, key_press, &game);
 	mlx_hook(game.win, 3, 1L << 1, key_release, &game);
