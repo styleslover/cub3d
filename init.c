@@ -6,7 +6,7 @@
 /*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 23:45:26 by mariel            #+#    #+#             */
-/*   Updated: 2025/02/28 20:08:53 by mabrigo          ###   ########.fr       */
+/*   Updated: 2025/03/10 11:09:50 by mabrigo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,21 +43,21 @@ void	init_player(t_player *player, t_map_data *map, int offset_x, int offset_y)
 		j = 0;
 		while (map->world[i][j] != '\0')
 		{
-			if (map->world[i][j] == 'N') //giocatore posizionato nella mappa
+			if (map->world[i][j] == 'W' || map->world[i][j] == 'S'
+				|| map->world[i][j] == 'E' || map->world[i][j] == 'N') //giocatore posizionato nella mappa
 			{
 				player->x = (float)(j * TILE_SIZE + offset_x + (TILE_SIZE / 2));
 				player->y = (float)(i * TILE_SIZE + offset_y + (TILE_SIZE / 2));
 				player->dir = PI / 2; //guarda in alto
 
 				//direzione iniziale
-				player->dir_x = 0.0f;
-				player->dir_y = -1.0f;
+				get_direction(player, map->world[i][j]);
 
 				//piano della camera(modifica il FOV)
 				player->plane_x = 0.66f;	//0.66 valore standard per il fov
 				player->plane_y = 0.0f;
 
-				map->world[i][j] = '0';
+				//map->world[i][j] = '0';
 				printf("Player initialized at (%f, %f)\n", player->x, player->y);//debug
 				return ;
 			}
@@ -74,7 +74,7 @@ void	init_player(t_player *player, t_map_data *map, int offset_x, int offset_y)
 	printf("Posizione non trovata sulla mappa, posizionato al centro dello schermo\n");
 }
 
-void	init_game(t_game *game, t_map_data *map)
+void	init_game(char *name_win, t_game *game, t_map_data *map)
 {
 	game->map = map;
 	game->player = malloc(sizeof(t_player));
@@ -92,15 +92,14 @@ void	init_game(t_game *game, t_map_data *map)
 	}
 
 	// Ottieni la dimensione massima dello schermo
-	int screen_w, screen_h;
 	game->mlx = mlx_init();
-	mlx_get_screen_size(game->mlx, &screen_w, &screen_h);
+	mlx_get_screen_size(game->mlx, &game->screen_w, &game->screen_h);
 
 	// Limita la finestra alla dimensione massima dello schermo
-	if (map->win_width > screen_w)
-		map->win_width = screen_w;
-	if (map->win_height > screen_h)
-		map->win_height = screen_h;
+	if (map->win_width > game->screen_w)
+		map->win_width = game->screen_w;
+	if (map->win_height > game->screen_h)
+		map->win_height = game->screen_h;
 
 	// Calcola offset per centrare la mappa nella finestra
 	map->offset_x = (map->win_width - (map->map_width * TILE_SIZE)) / 2;
@@ -111,7 +110,7 @@ void	init_game(t_game *game, t_map_data *map)
 	init_player(game->player, map, map->offset_x, map->offset_y);
 
 	// Crea la finestra
-	game->win = mlx_new_window(game->mlx, map->win_width, map->win_height, "CUB3D");
+	game->win = mlx_new_window(game->mlx, game->screen_w, game->screen_h, name_win);
 	if (!game->win)
 	{
 		perror("Errore in mlx_new_window\n");
@@ -119,7 +118,7 @@ void	init_game(t_game *game, t_map_data *map)
 	}
 
 	// Crea l'immagine
-	game->img = mlx_new_image(game->mlx, map->win_width, map->win_height);
+	game->img = mlx_new_image(game->mlx, game->screen_w, game->screen_h);
 	if (!game->img)
 	{
 		perror("Errore in mlx_new_image\n");

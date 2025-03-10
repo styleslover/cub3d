@@ -6,7 +6,7 @@
 /*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 12:40:01 by mabrigo           #+#    #+#             */
-/*   Updated: 2025/02/28 20:07:45 by mabrigo          ###   ########.fr       */
+/*   Updated: 2025/03/10 11:10:04 by mabrigo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,9 @@ typedef struct s_game
 	int			size_line; // Numero di byte per ogni riga dell'immagine
 	int			endian; // Specifica l'ordine dei byte (Big endian o Little endian)
 
+	int			screen_w;
+	int			screen_h;
+
 	t_player	*player;
 	t_map_data	*map;
 }			t_game;
@@ -117,7 +120,7 @@ void	free_game_resources(t_game *game);
 //init.c
 void	init_map(t_map_data *map);
 void	init_player(t_player *player, t_map_data *map, int offset_x, int offset_y);
-void	init_game(t_game *game, t_map_data *map);
+void	init_game(char *name_win, t_game *game, t_map_data *map);
 int		key_press(int keycode, t_game *game);
 int		key_release(int keycode, t_game *game);
 int		close_window(void *param);
@@ -131,7 +134,8 @@ char	**load_map(char *av, int *map_start_line);
 void	parse_file(char **av, int fd, t_map_data *map);
 
 //move_player
-void	move_player(t_player *player, t_map_data *map);
+void	move_player(t_player *player, t_game *game);
+float	get_direction(t_player *player, char c);
 void    rotate_point(float *x, float *y, float center_x, float center_y, float angle);
 
 

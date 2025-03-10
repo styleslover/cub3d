@@ -6,7 +6,7 @@
 /*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 12:52:13 by mabrigo           #+#    #+#             */
-/*   Updated: 2025/02/27 18:14:35 by mabrigo          ###   ########.fr       */
+/*   Updated: 2025/03/10 10:10:35 by mabrigo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int	main(int ac, char **av)
 		return (printf("Error: invalid fd"));
 	parse_file(av, map.fd, &map);
 	close(map.fd);
-	init_game(&game, &map);
+	init_game(av[1], &game, &map);
 	//printf("SONO QUI\n");
 	draw_map(&game, &map);
 	mlx_hook(game.win, 2, 1L << 0, key_press, &game);
