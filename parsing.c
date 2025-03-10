@@ -6,7 +6,7 @@
 /*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 22:52:55 by mariel            #+#    #+#             */
-/*   Updated: 2025/03/10 10:32:13 by mabrigo          ###   ########.fr       */
+/*   Updated: 2025/03/10 12:40:41 by mabrigo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -337,5 +337,12 @@ void	parse_file(char **av, int fd, t_map_data *map)
 	printf("Floor Color: %s\n", map->floor_color);
 	printf("Ceiling Color: %s\n", map->ceiling_color);
 	printf("Win Size (pxl): %d x %d\n", map->win_width, map->win_height);
+	int i = 0;
+	while (map->world[i])
+	{
+		printf("map line [%d]: %s\n", i, map->world[i]);
+		i++;
+	}
+	
 	//map_check(map); //todo: check delle texture (no spazi o altro), check valori f e c, mappa chiusa
 }

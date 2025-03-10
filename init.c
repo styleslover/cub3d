@@ -6,7 +6,7 @@
 /*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 23:45:26 by mariel            #+#    #+#             */
-/*   Updated: 2025/03/10 11:09:50 by mabrigo          ###   ########.fr       */
+/*   Updated: 2025/03/10 12:34:34 by mabrigo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,8 @@ void	init_player(t_player *player, t_map_data *map, int offset_x, int offset_y)
 			if (map->world[i][j] == 'W' || map->world[i][j] == 'S'
 				|| map->world[i][j] == 'E' || map->world[i][j] == 'N') //giocatore posizionato nella mappa
 			{
-				player->x = (float)(j * TILE_SIZE + offset_x + (TILE_SIZE / 2));
-				player->y = (float)(i * TILE_SIZE + offset_y + (TILE_SIZE / 2));
+				player->x = (float)(j * (TILE_SIZE / 2) + offset_x);
+				player->y = (float)(i * (TILE_SIZE / 2) + offset_y);
 				player->dir = PI / 2; //guarda in alto
 
 				//direzione iniziale

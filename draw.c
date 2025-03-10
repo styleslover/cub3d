@@ -6,7 +6,7 @@
 /*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 23:30:39 by mariel            #+#    #+#             */
-/*   Updated: 2025/03/10 11:01:13 by mabrigo          ###   ########.fr       */
+/*   Updated: 2025/03/10 12:41:43 by mabrigo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -181,7 +181,7 @@ void	draw_map(t_game *game, t_map_data *map)
 	while (map->world[i] != NULL)
 	{
 		j = 0;
-		while (map->world[i][j + 1] != '\0')
+		while (map->world[i][j] != '\0')
 		{
 			if (map->world[i][j] == '1')
 				color = RED;
