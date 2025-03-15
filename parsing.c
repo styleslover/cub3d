@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
+/*   By: santiago <santiago@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 22:52:55 by mariel            #+#    #+#             */
-/*   Updated: 2025/03/10 12:40:41 by mabrigo          ###   ########.fr       */
+/*   Updated: 2025/03/14 22:16:58 by santiago         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -186,6 +186,13 @@ int	count_lines(char *av, int fd)
 // 	// if (check_map(map))
 // 	return (map);
 // }
+char *trim_newline(char *line)
+{
+	int len = strlen(line);
+	if (len > 0 && line[len - 1] == '\n')
+		line[len - 1] = '\0';
+	return line;
+}
 
 char	**load_map(char *av, int *map_start_line)
 {
@@ -231,6 +238,7 @@ char	**load_map(char *av, int *map_start_line)
 		if (is_map_line(line))
 		{
 			map[i] = line;
+			map[i] =trim_newline(map[i]);
 			i++;
 		}
 		else
@@ -318,7 +326,7 @@ void	parse_file(char **av, int fd, t_map_data *map)
 	}
 	close(fd);
 	map->world = load_map(av[1], &map_start_line);
-	if (!map->world)
+	if (!check_map(map->world))
 	{
 		printf("Error: Failed to load map\n");
 		exit(1);

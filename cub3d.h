@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
+/*   By: santiago <santiago@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 12:40:01 by mabrigo           #+#    #+#             */
-/*   Updated: 2025/03/10 11:10:04 by mabrigo          ###   ########.fr       */
+/*   Updated: 2025/03/14 22:13:02 by santiago         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,5 +138,9 @@ void	move_player(t_player *player, t_game *game);
 float	get_direction(t_player *player, char c);
 void    rotate_point(float *x, float *y, float center_x, float center_y, float angle);
 
+//map_checks.c
+int	my_strchr(char *s, int c);
+int	map_valid_char(char **world);
+int	check_map(char **world);
 
 #endif
