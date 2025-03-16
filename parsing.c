@@ -6,7 +6,7 @@
 /*   By: santiago <santiago@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 22:52:55 by mariel            #+#    #+#             */
-/*   Updated: 2025/03/14 22:16:58 by santiago         ###   ########.fr       */
+/*   Updated: 2025/03/16 17:27:35 by santiago         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -331,6 +331,7 @@ void	parse_file(char **av, int fd, t_map_data *map)
 		printf("Error: Failed to load map\n");
 		exit(1);
 	}
+	/*
 	map->win_width *= TILE_SIZE;
 	map->win_height *= TILE_SIZE;
 	if (map->win_width >= WIDTH || map->win_height >= HEIGHT)
@@ -338,6 +339,13 @@ void	parse_file(char **av, int fd, t_map_data *map)
 		map->win_width = map->win_width;
 		map->win_height = map->win_height;
 	}
+	*/
+	map->map_width = ft_strlen(map->world[0]);  // Larghezza della mappa
+    map->map_height = 0;
+    while (map->world[map->map_height] != NULL)
+        map->map_height++;
+    printf("Map dimensions after loading: %d x %d\n", map->map_width, map->map_height);
+	
 	printf("North Texture: %s\n", map->north_txtr);
 	printf("South Texture: %s\n", map->south_txtr);
 	printf("West Texture: %s\n", map->west_txtr);
