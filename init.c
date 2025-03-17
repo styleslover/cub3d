@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
+/*   By: santiago <santiago@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 23:45:26 by mariel            #+#    #+#             */
-/*   Updated: 2025/03/10 12:34:34 by mabrigo          ###   ########.fr       */
+/*   Updated: 2025/03/16 20:32:12 by santiago         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,28 +43,45 @@ void	init_player(t_player *player, t_map_data *map, int offset_x, int offset_y)
 		j = 0;
 		while (map->world[i][j] != '\0')
 		{
-			if (map->world[i][j] == 'W' || map->world[i][j] == 'S'
-				|| map->world[i][j] == 'E' || map->world[i][j] == 'N') //giocatore posizionato nella mappa
+			if (map->world[i][j] == 'N' || map->world[i][j] == 'S'
+				|| map->world[i][j] == 'E' || map->world[i][j] == 'W') //giocatore posizionato nella mappa
 			{
-				player->x = (float)(j * (TILE_SIZE / 2) + offset_x);
-				player->y = (float)(i * (TILE_SIZE / 2) + offset_y);
-				player->dir = PI / 2; //guarda in alto
+				player->tile_x = j;
+				player->tile_y = i;
+				player->x = (float)(j * TILE_SIZE + TILE_SIZE / 2) + offset_x;
+				player->y = (float)(i * TILE_SIZE + TILE_SIZE / 2) + offset_y;
+				//player->dir = PI / 2; //guarda in alto
 
+				//verifica posizione spawn valida
+				if (!is_valid_position(map, player->x, player->y))
+				{
+					printf("Error: invalid spawn position at (%d, %d)\n", j, i);
+					exit(1);
+				}
+				
 				//direzione iniziale
 				get_direction(player, map->world[i][j]);
 
+				//debug
+				printf("player direction: %f\n", player->dir);
+				
 				//piano della camera(modifica il FOV)
 				player->plane_x = 0.66f;	//0.66 valore standard per il fov
 				player->plane_y = 0.0f;
 
-				//map->world[i][j] = '0';
-				printf("Player initialized at (%f, %f)\n", player->x, player->y);//debug
+				map->world[i][j] = '0';
+				printf("Tile coordinates: (%d, %d)\n", j, i);
+				printf("TILE_SIZE: %d\n", TILE_SIZE);
+				printf("Offset X: %d, Offset Y: %d\n", offset_x, offset_y);
+				printf("Player spawn position: (%f, %f)\n", player->x, player->y);
 				return ;
 			}
 			j++;
 		}
 		i++;
 	}
+	player->tile_x = map->map_width / 2;
+	player->tile_y = map->map_height / 2;
 	player->x = (float)(map->win_width / 2);
 	player->y = (float)(map->win_height / 2);
 	player->dir_x = 1.0f;
@@ -83,8 +100,6 @@ void	init_game(char *name_win, t_game *game, t_map_data *map)
 		perror("Errore in malloc player\n");
 		exit (1);
 	}
-
-	// Imposta la dimensione della finestra basata sulla mappa caricata
 	if (map->win_width == 0 || map->win_height == 0)
 	{
 		perror("Errore: Dimensioni della mappa non valide\n");
@@ -98,9 +113,18 @@ void	init_game(char *name_win, t_game *game, t_map_data *map)
 	// Limita la finestra alla dimensione massima dello schermo
 	if (map->win_width > game->screen_w)
 		map->win_width = game->screen_w;
+	else
+		map->win_width = game->screen_w;
+		
 	if (map->win_height > game->screen_h)
 		map->win_height = game->screen_h;
+	else
+		map->win_height = game->screen_h;
 
+	printf("win_width: %d, win_height: %d\n", map->win_width, map->win_height);
+	printf("screen_w: %d, screen_h: %d\n", game->screen_w, game->screen_h);
+	printf("map_width: %d, map_height: %d\n", map->map_width, map->map_height);
+		
 	// Calcola offset per centrare la mappa nella finestra
 	map->offset_x = (map->win_width - (map->map_width * TILE_SIZE)) / 2;
 	map->offset_y = (map->win_height - (map->map_height * TILE_SIZE)) / 2;

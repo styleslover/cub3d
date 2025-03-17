@@ -6,7 +6,7 @@
 /*   By: santiago <santiago@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 21:33:29 by santiago          #+#    #+#             */
-/*   Updated: 2025/03/14 23:09:33 by santiago         ###   ########.fr       */
+/*   Updated: 2025/03/15 19:03:55 by santiago         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,10 +34,10 @@ int	map_valid_char(char **world)
 	while (world[i])
 	{
 		j = 0;
-		printf("analizing line [%d]: %s\n", i, world[i]);
+		//printf("analizing line [%d]: %s\n", i, world[i]);
 		while (world[i][j])
 		{
-			printf("analizing char [%d]: %c\n", j, world[i][j]);
+			//printf("analizing char [%d]: %c\n", j, world[i][j]);
 			if (!my_strchr("01NSEW ", world[i][j]))
 				return (0);
 			if (my_strchr("NSEW", world[i][j]))
@@ -71,7 +71,7 @@ int	valid_first_last_line(char **world, int lines)
 	}
 	return (1);
 }
-
+/*
 int	map_closed(char **world)
 {
 	int	i;
@@ -96,7 +96,7 @@ int	map_closed(char **world)
 		i++;
 	}
 }
-
+*/
 int	check_map(char **world)
 {
 	int	lines;
@@ -109,7 +109,7 @@ int	check_map(char **world)
 		lines++;
 		i++;
 	}
-    if (!map_valid_char(world) || !valid_first_last_line(world, lines - 1) || !map_closed(world))	
+    if (!map_valid_char(world) || !valid_first_last_line(world, lines - 1))	
 		print_error("Error: Invalid map\n");
 	return (1);
 }

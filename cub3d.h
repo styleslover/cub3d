@@ -6,7 +6,7 @@
 /*   By: santiago <santiago@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 12:40:01 by mabrigo           #+#    #+#             */
-/*   Updated: 2025/03/14 22:13:02 by santiago         ###   ########.fr       */
+/*   Updated: 2025/03/16 17:50:08 by santiago         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,8 @@ typedef struct s_player
 {
 	float	x;
 	float	y;
+	int		tile_x;
+	int		tile_y;
 	float	dir;
 
 	bool	key_up;
@@ -134,6 +136,7 @@ char	**load_map(char *av, int *map_start_line);
 void	parse_file(char **av, int fd, t_map_data *map);
 
 //move_player
+bool	is_valid_position(t_map_data *map, float x, float y);
 void	move_player(t_player *player, t_game *game);
 float	get_direction(t_player *player, char c);
 void    rotate_point(float *x, float *y, float center_x, float center_y, float angle);
