@@ -6,7 +6,7 @@
 /*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 21:33:29 by santiago          #+#    #+#             */
-/*   Updated: 2025/03/17 11:23:48 by mabrigo          ###   ########.fr       */
+/*   Updated: 2025/03/17 12:19:08 by mabrigo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,11 +34,16 @@ int	map_valid_char(char **world)
 	while (world[i])
 	{
 		j = 0;
+		while (world[i][j] == 32 || (world[i][j] >= 9 && world[i][j] <= 13))
+			j++;
 		while (world[i][j])
 		{
-			//printf("analizing char [%d]: %c\n", j, world[i][j]);
 			if (!my_strchr("01NSEW ", world[i][j]))
+			{
 				return (0);
+			}
+			if (world[i][j] == 32)
+				world[i][j] = '1';
 			if (my_strchr("NSEW", world[i][j]))
 			{
 				if (j != 0 && world[i][j + 1])
