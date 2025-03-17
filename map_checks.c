@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map_checks.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mariel <mariel@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 21:33:29 by santiago          #+#    #+#             */
-/*   Updated: 2025/03/16 20:07:31 by mariel           ###   ########.fr       */
+/*   Updated: 2025/03/17 11:23:48 by mabrigo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,51 +90,63 @@ void	get_line_data(t_analisys *line, char *str)
 	int	i;
 
 	i = 0;
-	line->end = -1;
-	line->start = -1;
+	line->end = 0;
+	line->start = 0;
 	line->len = 0;
+
+	while (str[i] == 32 || (str[i] >= 9 && str[i] <= 13))
+		i++;
+	line->start = i;
 	while (str[i])
 	{
-		while (str[i] == 32 || (str[i] >= 9 && str[i] <= 13))
-			i++;
-		if (line->start == -1)
-			line->start = i;
-		while (ft_strchr("01NSEW", str[i]) || str[i] == 32 || (str[i] >= 9 && str[i] <= 13))
-		{
-			if (str[i] == '1' || str[i] == '0') 
-				line->end = i;
-			i++;
-		}
+		if (ft_strchr("01NSEW", str[i]))
+			line->end = i;
 		i++;
 	}
 	line->len = line->end - line->start;
 }
 
-int	check_line1(char **world, t_analisys *line, t_analisys *prev_line, int i)
+int	check_line_start(char **world, t_analisys *line, t_analisys *prev_line, int i)
 {
-	printf("Ciao sono dentro check line 1\n");
 	while (line->start < prev_line->start)
 	{
 		if (world[i][line->start] != '1')
-		{
-			printf("Error: Line %d not closed\n", i);
 			return (0);
-		}
 		line->start++;
 	}
 	while (line->start > prev_line->start)
 	{
 		if (world[i][line->start] != '1')
-		{
-			printf("Error: Line %d not closed\n", i);
 			return (0);
-		} 
-		if (world[i - 1][prev_line->start] != '1')
+		while (prev_line->start < line->start)
 		{
-			printf("Error: Line %d not closed\n", i);
-			return (0);
+			if (world[i - 1][prev_line->start] != '1')
+				return (0);
+			prev_line->start++;
 		}
-		prev_line->start++;
+	}
+	return (1);
+}
+
+int	check_line_end(char **world, t_analisys *line, t_analisys *prev_line, int i)
+{
+	while (line->end > prev_line->end)
+	{
+		if (world[i][line->end] != '1')
+			return (0);
+		line->end--;
+	}
+	while (line->end < prev_line->end)
+	{
+		if (world[i][line->end] != '1')
+			return (0);
+		line->end++;
+		while (prev_line->end > line->end)
+		{
+			if (world[i - 1][prev_line->end] != '1')
+				return (0);
+			prev_line->end--;
+		}
 	}
 	return (1);
 }
@@ -156,14 +168,18 @@ int	map_closed(char **world)
 		printf("PREV START: %d\tPREV END: %d\nLINE START: %d\tLINE END: %d\n", prev_line.start, prev_line.end, line.start, line.end);
 		if (line.start == prev_line.start && line.end == prev_line.end)
 		{
+			printf("linee di stessa lunghezza\n");
 			if (world[i][line.start] != '1' || world[i][line.end] != '1')
+			{
 				printf("Errore: map not closed at line");
-			return (0);
+				return (0);
+			}
 		}
 		if (line.start != prev_line.start)
 		{
-			if (!check_line1(world, &line, &prev_line, i))
-					return (0);
+			if (!check_line_start(world, &line, &prev_line, i)
+				|| !check_line_end(world, &line, &prev_line, i))
+				return (0);
 		}
 		i++;
 	}

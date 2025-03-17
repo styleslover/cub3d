@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mariel <mariel@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 22:52:55 by mariel            #+#    #+#             */
-/*   Updated: 2025/03/16 19:38:05 by mariel           ###   ########.fr       */
+/*   Updated: 2025/03/17 10:28:24 by mabrigo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -281,6 +281,7 @@ void	parse_file(char **av, int fd, t_map_data *map)
 	map_start_line = 0;
 	while ((line = get_next_line(fd)))
 	{
+		printf("processing line: %s\n", line);
 		if (is_empty_line(line))
 		{
 			printf("Ignoring empty line: %s\n", line);
@@ -330,6 +331,7 @@ void	parse_file(char **av, int fd, t_map_data *map)
 		printf("Error: Failed to load map\n");
 		exit(1);
 	}
+	/*
 	map->win_width *= TILE_SIZE;
 	map->win_height *= TILE_SIZE;
 	if (map->win_width >= WIDTH || map->win_height >= HEIGHT)
@@ -337,6 +339,13 @@ void	parse_file(char **av, int fd, t_map_data *map)
 		map->win_width = map->win_width;
 		map->win_height = map->win_height;
 	}
+	*/
+	map->map_width = ft_strlen(map->world[0]);  // Larghezza della mappa
+    map->map_height = 0;
+    while (map->world[map->map_height] != NULL)
+        map->map_height++;
+    printf("Map dimensions after loading: %d x %d\n", map->map_width, map->map_height);
+	
 	printf("North Texture: %s\n", map->north_txtr);
 	printf("South Texture: %s\n", map->south_txtr);
 	printf("West Texture: %s\n", map->west_txtr);
