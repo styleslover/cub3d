@@ -6,7 +6,7 @@
 /*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 12:40:01 by mabrigo           #+#    #+#             */
-/*   Updated: 2025/03/18 18:59:52 by damoncad         ###   ########.fr       */
+/*   Updated: 2025/03/18 20:44:34 by damoncad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,11 @@
 # define GREEN 0x00FF00
 # define BLUE 0x0000FF
 # define WHITE 0xFFFFFF
+# define PURPLE 0x800080
 
-# define PI 3.14159265359
+# define PI 3.14159265
+# define FOV (PI / 3)
+# define NUM_RAYS 100
 # define ROTASPEED 0.15f
 
 typedef struct s_player
@@ -148,5 +151,9 @@ void    rotate_point(float *x, float *y, float center_x, float center_y, float a
 int	my_strchr(char *s, int c);
 int	map_valid_char(char **world);
 int	check_map(char **world);
+
+//raycasting.c
+void	raycasting(t_game *game);
+void raylaser(t_game *game, t_player *player, float end_x, float end_y);
 
 #endif

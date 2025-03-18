@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: santiago <santiago@student.42.fr>          +#+  +:+       +#+         #
+#    By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/12 16:24:59 by mabrigo           #+#    #+#              #
-#    Updated: 2025/03/14 22:13:11 by santiago         ###   ########.fr        #
+#    Updated: 2025/03/18 19:43:09 by damoncad         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,7 @@ CC = gcc
 CFLAGS = -Wall -Werror -Wextra
 LIBS = -Lminilibx-linux -lmlx -lXext -lX11 -lm
 GNL = get_next_line/get_next_line.c get_next_line/get_next_line_utils.c
-SRC = $(GNL) cub3d.c draw.c free_shit.c init.c key_events.c parsing.c player.c rotate_that_booty.c map_checks.c
+SRC = $(GNL) cub3d.c draw.c free_shit.c init.c key_events.c parsing.c player.c rotate_that_booty.c map_checks.c raycasting.c
 
 MINI_REPO = https://github.com/42Paris/minilibx-linux.git
 MINI_PATH = minilibx-linux
