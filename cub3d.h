@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mariel <mariel@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 12:40:01 by mabrigo           #+#    #+#             */
-/*   Updated: 2025/03/15 19:17:30 by mariel           ###   ########.fr       */
+/*   Updated: 2025/03/18 19:42:26 by mabrigo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,13 +81,6 @@ typedef struct s_map_data
 	char		*ceiling_color;
 	char		*floor_color;
 }				t_map_data;
-
-typedef struct s_map_analisys
-{
-	int start;
-	int	end;
-	int	len;
-} t_analisys;
 
 typedef struct s_game
 {
