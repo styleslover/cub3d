@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: santiago <santiago@student.42.fr>          +#+  +:+       +#+        */
+/*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 23:45:26 by mariel            #+#    #+#             */
-/*   Updated: 2025/03/16 20:32:12 by santiago         ###   ########.fr       */
+/*   Updated: 2025/03/18 18:54:01 by damoncad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,6 +131,9 @@ void	init_game(char *name_win, t_game *game, t_map_data *map)
 	if (map->offset_x < 0) map->offset_x = 0;
 	if (map->offset_y < 0) map->offset_y = 0;
 
+	game->cos_rot_speed = cos(ROTASPEED);
+	game->sin_rot_speed = sin(ROTASPEED);
+	
 	init_player(game->player, map, map->offset_x, map->offset_y);
 
 	// Crea la finestra

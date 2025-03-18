@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: santiago <santiago@student.42.fr>          +#+  +:+       +#+        */
+/*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 12:40:01 by mabrigo           #+#    #+#             */
-/*   Updated: 2025/03/16 17:50:08 by santiago         ###   ########.fr       */
+/*   Updated: 2025/03/18 18:59:52 by damoncad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@
 # define WHITE 0xFFFFFF
 
 # define PI 3.14159265359
+# define ROTASPEED 0.15f
 
 typedef struct s_player
 {
@@ -97,6 +98,8 @@ typedef struct s_game
 
 	int			screen_w;
 	int			screen_h;
+	float		cos_rot_speed;
+	float		sin_rot_speed;
 
 	t_player	*player;
 	t_map_data	*map;

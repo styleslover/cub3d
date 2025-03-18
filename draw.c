@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: santiago <santiago@student.42.fr>          +#+  +:+       +#+        */
+/*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 23:30:39 by mariel            #+#    #+#             */
-/*   Updated: 2025/03/17 12:03:52 by santiago         ###   ########.fr       */
+/*   Updated: 2025/03/17 12:55:12 by damoncad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,8 @@ void	draw_direction_line(t_game *game, t_player *player, int length, int color)
 	float	temp_y;
 
 	//calcola la fine della linea in base alla direzione del giocatore
-	end_x = player->x + cosf(player->dir) * length;	//il cosf e' per i float
-	end_y = player->y + sinf(player->dir) * length;	//il sinf e' per i float
+	end_x = player->x + player->dir_x * length;	//il cosf e' per i float
+	end_y = player->y + player->dir_y * length;	//il sinf e' per i float
 	//calcola la fine della linea in base alla direzione del giocatore
 	delta_x = end_x - player->x;
 	delta_y = end_y - player->y;

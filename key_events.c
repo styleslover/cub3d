@@ -3,40 +3,66 @@
 /*                                                        :::      ::::::::   */
 /*   key_events.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mariel <mariel@student.42.fr>              +#+  +:+       +#+        */
+/*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 23:27:56 by mariel            #+#    #+#             */
-/*   Updated: 2025/02/24 23:33:00 by mariel           ###   ########.fr       */
+/*   Updated: 2025/03/18 18:57:50 by damoncad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-int	key_press(int keycode, t_game *game)
+int key_press(int keycode, t_game *game)
 {
-	t_player	*player;
-
+    t_player *player;
+	
 	player = game->player;
-	if (keycode == W)
-		player->key_up = true;
-	if (keycode == S)
-		player->key_down = true;
-	if (keycode == A)
-		player->key_left = true;
-	if (keycode == D)
-		player->key_right = true;
-	if (keycode == LEFT)
-		player->dir -= 0.1f;
-	if (keycode == RIGHT)
-		player->dir += 0.1f;
-	if (keycode == ESC)
-	{
-		free_game_resources(game);
-		printf("fine programma;)\n");
-		exit (0);
+
+    if (keycode == W)
+        player->key_up = true;
+    if (keycode == S)
+        player->key_down = true;
+    if (keycode == A)
+        player->key_left = true;
+    if (keycode == D)
+        player->key_right = true;
+
+    // Rotazione con frecce
+    if (keycode == LEFT)  // Ruota a sinistra
+    {
+        float old_dir_x = player->dir_x;
+        player->dir_x = player->dir_x * cos(-ROTASPEED) - player->dir_y * sin(-ROTASPEED);
+        player->dir_y = old_dir_x * sin(-ROTASPEED) + player->dir_y * cos(-ROTASPEED);
+
+        float old_plane_x = player->plane_x;
+        player->plane_x = player->plane_x * cos(-ROTASPEED) - player->plane_y * sin(-ROTASPEED);
+        player->plane_y = old_plane_x * sin(-ROTASPEED) + player->plane_y * cos(-ROTASPEED);
+
+        printf("Rotated left. New direction: (%f, %f)\n", player->dir_x, player->dir_y);  // Debug
+    }
+
+    if (keycode == RIGHT)  // Ruota a destra
+    {
+        float old_dir_x = player->dir_x;
+        player->dir_x = player->dir_x * cos(ROTASPEED) - player->dir_y * sin(ROTASPEED);
+        player->dir_y = old_dir_x * sin(ROTASPEED) + player->dir_y * cos(ROTASPEED);
+
+        float old_plane_x = player->plane_x;
+        player->plane_x = player->plane_x * cos(ROTASPEED) - player->plane_y * sin(ROTASPEED);
+        player->plane_y = old_plane_x * sin(ROTASPEED) + player->plane_y * cos(ROTASPEED);
+
+        printf("Rotated right. New direction: (%f, %f)\n", player->dir_x, player->dir_y);  // Debug
+    }
+	
+    if (keycode == ESC)
+    {
+        free_game_resources(game);
+        printf("fine programma;)\n");
+        exit(0);
 	}
-	return (0);
+    return (0);
 }
+
 
 int	key_release(int keycode, t_game *game)
 {
