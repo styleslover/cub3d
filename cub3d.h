@@ -6,7 +6,7 @@
 /*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 12:40:01 by mabrigo           #+#    #+#             */
-/*   Updated: 2025/03/20 18:52:09 by mabrigo          ###   ########.fr       */
+/*   Updated: 2025/03/20 20:33:05 by mabrigo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,13 +41,19 @@
 # define GREEN 0x00FF00
 # define BLUE 0x0000FF
 # define WHITE 0xFFFFFF
+# define PURPLE 0x800080
 
-# define PI 3.14159265359
+# define PI 3.14159265
+# define FOV (PI / 3)
+# define NUM_RAYS 100
+# define ROTASPEED 0.15f
 
 typedef struct s_player
 {
 	float	x;
 	float	y;
+	int		tile_x;
+	int		tile_y;
 	float	dir;
 
 	bool	key_up;
@@ -95,6 +101,8 @@ typedef struct s_game
 
 	int			screen_w;
 	int			screen_h;
+	float		cos_rot_speed;
+	float		sin_rot_speed;
 
 	t_player	*player;
 	t_map_data	*map;
@@ -141,13 +149,20 @@ char	**load_map(char *av, int *map_start_line);
 void	parse_file(char **av, int fd, t_map_data *map);
 
 //move_player
+bool	is_valid_position(t_map_data *map, float x, float y);
 void	move_player(t_player *player, t_game *game);
 float	get_direction(t_player *player, char c);
 void    rotate_point(float *x, float *y, float center_x, float center_y, float angle);
 
 //map_checks.c
-int	my_strchr(char *s, int c);
-int	map_valid_char(char **world);
-int	check_map(char **world);
+int		my_strchr(char *s, int c);
+int		map_valid_char(char **world);
+void	get_line_data(t_line *line, char *str);
+int		check_cardinals(char **world, int i, int j);
+int		is_map_closed(char **world, t_line *line);
+int		check_map(char **world);
+
+void	raycasting(t_game *game);
+void 	raylaser(t_game *game, t_player *player, float end_x, float end_y);
 
 #endif

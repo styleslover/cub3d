@@ -6,7 +6,7 @@
 /*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 23:30:39 by mariel            #+#    #+#             */
-/*   Updated: 2025/03/10 12:41:43 by mabrigo          ###   ########.fr       */
+/*   Updated: 2025/03/20 20:28:09 by mabrigo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,8 @@ void	draw_direction_line(t_game *game, t_player *player, int length, int color)
 	float	temp_y;
 
 	//calcola la fine della linea in base alla direzione del giocatore
-	end_x = player->x + cosf(player->dir) * length;	//il cosf e' per i float
-	end_y = player->y + sinf(player->dir) * length;	//il sinf e' per i float
+	end_x = player->x + player->dir_x * length;	//il cosf e' per i float
+	end_y = player->y + player->dir_y * length;	//il sinf e' per i float
 	//calcola la fine della linea in base alla direzione del giocatore
 	delta_x = end_x - player->x;
 	delta_y = end_y - player->y;
@@ -75,11 +75,20 @@ void	draw_player(t_game *game, t_player *player, int size, int color)
 	float	x;
 	float	y;
 
+	// Debug: stampa la posizione del giocatore
+   //printf("Player position during drawing: (%f, %f)\n", player->x, player->y);
+	
 	// Calcola il centro del quadrato (personaggio)
-	center_x = player->x;
-	center_y = player->y;
+	center_x = (int)player->x;
+	center_y = (int)player->y;
 	half_size = size / 2.0f;
 
+	/*
+	center_x = (int)(player->tile_x * TILE_SIZE + TILE_SIZE / 2) + game->map->offset_x;
+    center_y = (int)(player->tile_y * TILE_SIZE + TILE_SIZE / 2) + game->map->offset_y;
+    half_size = size / 2.0f;*/
+	
+	
 	// Disegna il quadrato ruotato (personaggio)
 	i = -half_size;
 	while (i <= half_size)
@@ -98,7 +107,7 @@ void	draw_player(t_game *game, t_player *player, int size, int color)
 		i++;
 	}
 	//disegna la linea di direzione
-	draw_direction_line(game, player, size * 2, GREEN);	//linea verde
+	draw_direction_line(game, player, size * 4, GREEN);	//linea verde
 
 	// draw_square(center_x - size / 2, center_y - size / 2, size, game, color);
 
@@ -115,10 +124,10 @@ void	draw_grid(t_game *game, t_map_data *map, int tile_size)
 		print_error("Errore draw_grid");
 	// Linee orizzontali
 	y = map->offset_y;
-	while (y < map->offset_y + map->map_height * tile_size)
+	while (y <= map->offset_y + map->map_height * tile_size)
 	{
 		x = map->offset_x;
-		while (x < map->offset_x + map->map_width * tile_size)
+		while (x <= map->offset_x + map->map_width * tile_size)
 		{
 			my_pixel_put(x, y, game, 0xFFFFFF);  // Linea orizzontale bianca
 			x++;
@@ -128,10 +137,10 @@ void	draw_grid(t_game *game, t_map_data *map, int tile_size)
 
 	// Linee verticali
 	x = map->offset_x;
-	while (x < map->offset_x + map->map_width * tile_size)
+	while (x <= map->offset_x + map->map_width * tile_size)
 	{
 		y = map->offset_y;
-		while (y < map->offset_y + map->map_height * tile_size)
+		while (y <= map->offset_y + map->map_height * tile_size)
 		{
 			my_pixel_put(x, y, game, 0xFFFFFF);  // Linea verticale bianca
 			y++;
@@ -170,13 +179,13 @@ void	draw_map(t_game *game, t_map_data *map)
 		printf("Error: Map not loaded or empty\n");
 		return ;
 	}
-	map->map_width = (ft_strlen(map->world[0]) - 1);
+	map->map_width = (ft_strlen(map->world[0]));
 	map->map_height = 0;
 	while (map->world[map->map_height] != NULL)
 		map->map_height++;
 
-	map->offset_x = (game->screen_w - map->map_width * TILE_SIZE) / 2;
-	map->offset_y = (game->screen_h - map->map_height * TILE_SIZE) / 2;
+	map->offset_x = (game->screen_w - (map->map_width * TILE_SIZE)) / 2;
+	map->offset_y = (game->screen_h - (map->map_height * TILE_SIZE)) / 2;
 	i = 0;
 	while (map->world[i] != NULL)
 	{
@@ -211,6 +220,9 @@ void	draw_map(t_game *game, t_map_data *map)
 
 int	draw_loop(t_game *game)
 {
+	//debug
+	//printf("Player position at start of draw_loop: (%f, %f)\n", game->player->x, game->player->y);
+	
     move_player(game->player, game);
 	if (game->img)
 		mlx_destroy_image(game->mlx, game->img);
@@ -219,9 +231,10 @@ int	draw_loop(t_game *game)
 			&game->endian);
 	if (!game->map)
 		print_error("Errore caricamento mappa");
+	//raycasting(game);
 	draw_map(game, game->map);
-	draw_player(game, game->player, 15, GREEN);
-
+	draw_player(game, game->player, 12, GREEN);
+	raycasting(game);
 	mlx_put_image_to_window(game->mlx, game->win, game->img, 0, 0);
 	return (0);
 }
