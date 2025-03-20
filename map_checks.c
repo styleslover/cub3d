@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/14 21:33:29 by santiago          #+#    #+#             */
-/*   Updated: 2025/03/18 20:47:26 by mabrigo          ###   ########.fr       */
+/*   Created: 2025/03/20 18:39:22 by mabrigo           #+#    #+#             */
+/*   Updated: 2025/03/20 20:15:55 by mabrigo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,67 +38,88 @@ int	map_valid_char(char **world)
 			j++;
 		while (world[i][j])
 		{
-			if (!my_strchr("01NSEW ", world[i][j]))
-			{
+			if (!my_strchr("01NSEW \t", world[i][j]))
 				return (0);
-			}
-			if (world[i][j] == 32)
-				world[i][j] = '1';
 			if (my_strchr("NSEW", world[i][j]))
-			{
-				if (j != 0 && world[i][j + 1])
-					player++;
-				else
-					print_error("Error: Bad player position");
-				printf("Player in line %d: %c\n", i, world[i][j]);
-			}
+				player++;
 			j++;
 		}
 		i++;
 	}
 	if (player != 1)
-		print_error("Error: player must be one");
+		return (0);
 	printf("Ciao esco correttamente da map valid char\n");
 	return (1);
 }
 
-void	flood_fill(char **world, int i, int j, int rows, int cols)
+void	get_line_data(t_line *line, char *str)
 {
-	if (i < 0 || j < 0 || i >= rows || j >= cols)
-		return ;
-	world[i][j] = 'X';
-	flood_fill(world, i + 1, j, rows, cols);
-	flood_fill(world, i - 1, j, rows, cols);
-	flood_fill(world, i, j + 1, rows, cols);
-	flood_fill(world, i, j - 1, rows, cols);
+	int	i;
+
+	i = 0;
+	line->end = 0;
+	line->start = 0;
+
+	while (str[i] == 32 || (str[i] >= 9 && str[i] <= 13))
+		i++;
+	line->start = i;
+	while (str[i])
+	{
+		if (ft_strchr("01NSEW", str[i]))
+			line->end = i;
+		i++;
+	}
 }
 
-int	flood_fill_check(char **og_world)
+int	check_cardinals(char **world, int i, int j)
 {
-	//todo
+	if (i == 0 || j == 0 || !world[i + 1] || !world[i][j + 1])
+		return (0);
+	if (my_strchr("0NSEW", world[i][j]))
+	{
+		if (my_strchr("01NSEW", world[i + 1][j])
+			&& my_strchr("01NSEW", world[i - 1][j])
+			&& my_strchr("01NSEW", world[i][j + 1])
+			&& my_strchr("01NSEW", world[i][j - 1]))
+			return (1);
+	}
+	return (0);
+}
+
+int	is_map_closed(char **world, t_line *line)
+{
+	int		i;
+	int		j;
+
+	i = 0;
+	while (world[i])
+	{
+		get_line_data(line, world[i]);
+		j = line->start;
+		while (j <= line->end)
+		{
+			if (my_strchr("0NSEW", world[i][j]))
+			{
+				if (i == 0 || j == 0 || !world[i + 1] || !world[i][j + 1])
+					return (0);
+				if (!check_cardinals(world, i, j))
+					return (0);
+			}
+			j++;
+		}
+		i++;
+	}
+	return (1);
 }
 
 int	check_map(char **world)
 {
-	int	lines;
-	int	cols;
-	int	i;
-	int	len;
+	t_line	line;
 
-	lines = 0;
-	cols = 0;
-	i = 0;
-	while (world[i])
+    if (!map_valid_char(world) || !is_map_closed(world, &line))
 	{
-		len = ft_strlen(world[i]);
-		if (len > cols)
-			cols = len;
-		lines++;
-		i++;
+		printf("Error: Invalid map\n");
+		return (0);
 	}
-	if	(!map_valid_char(world))
-		print_error("Error: Invalid map\n");
-	if (flood_fill_check(world))
-        print_error("Error: Map is open to the outside\n");
 	return (1);
 }

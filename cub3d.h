@@ -6,7 +6,7 @@
 /*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 12:40:01 by mabrigo           #+#    #+#             */
-/*   Updated: 2025/03/18 19:42:26 by mabrigo          ###   ########.fr       */
+/*   Updated: 2025/03/20 18:52:09 by mabrigo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,6 +99,13 @@ typedef struct s_game
 	t_player	*player;
 	t_map_data	*map;
 }			t_game;
+
+typedef struct s_line_data
+{
+	int	start;
+	int	end;
+}	t_line;
+
 
 //cub3d.c
 int	print_error(char *str);
