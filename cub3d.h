@@ -6,7 +6,7 @@
 /*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 12:40:01 by mabrigo           #+#    #+#             */
-/*   Updated: 2025/03/18 20:44:34 by damoncad         ###   ########.fr       */
+/*   Updated: 2025/03/21 10:42:20 by damoncad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,6 +108,13 @@ typedef struct s_game
 	t_map_data	*map;
 }			t_game;
 
+typedef struct s_line_data
+{
+	int	start;
+	int	end;
+}	t_line;
+
+
 //cub3d.c
 int	print_error(char *str);
 
@@ -148,6 +155,7 @@ float	get_direction(t_player *player, char c);
 void    rotate_point(float *x, float *y, float center_x, float center_y, float angle);
 
 //map_checks.c
+<<<<<<< HEAD
 int	my_strchr(char *s, int c);
 int	map_valid_char(char **world);
 int	check_map(char **world);
@@ -155,5 +163,16 @@ int	check_map(char **world);
 //raycasting.c
 void	raycasting(t_game *game);
 void raylaser(t_game *game, t_player *player, float end_x, float end_y);
+=======
+int		my_strchr(char *s, int c);
+int		map_valid_char(char **world);
+void	get_line_data(t_line *line, char *str);
+int		check_cardinals(char **world, int i, int j);
+int		is_map_closed(char **world, t_line *line);
+int		check_map(char **world);
+
+void	raycasting(t_game *game);
+void 	raylaser(t_game *game, t_player *player, float end_x, float end_y);
+>>>>>>> main
 
 #endif

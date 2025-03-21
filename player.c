@@ -1,3 +1,4 @@
+
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
@@ -93,7 +94,11 @@ bool is_valid_position(t_map_data *map, float x, float y)
 void move_player(t_player *player, t_game *game)
 {
 	t_map_data *map = game->map;
+<<<<<<< HEAD
 	float	move_speed = 2.0f; // Velocità movimento
+=======
+	float	move_speed = 5.0f; // Velocità movimento
+>>>>>>> main
 	float	new_x;
 	float	new_y;
 	//float	old_dir_x;
