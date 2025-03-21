@@ -63,11 +63,11 @@ bool is_valid_position(t_map_data *map, float x, float y)
 	tile_y = (int)(map_y / TILE_SIZE);
 	
 	//debug
-	printf("tile: (%d, %d)\n", tile_x, tile_y);
+	//printf("tile: (%d, %d)\n", tile_x, tile_y);
 
 
 	//debug
-	printf("checking position: (%f, %f) -> Tile: (%d, %d)\n", x, y, tile_x, tile_y);
+	//printf("checking position: (%f, %f) -> Tile: (%d, %d)\n", x, y, tile_x, tile_y);
 	//printf("tile content: %c\n", map->world[tile_y][tile_x]);
 	
     // Controlla se la tile è valida (non è un muro e non è fuori dalla mappa)
@@ -78,7 +78,7 @@ bool is_valid_position(t_map_data *map, float x, float y)
 	}
 	
 	//debug
-	printf("tile content: %c\n", map->world[tile_y][tile_x]);
+	//printf("tile content: %c\n", map->world[tile_y][tile_x]);
 	
 	tile = map->world[tile_y][tile_x];
 	if (tile == '1')// Muro

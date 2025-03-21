@@ -6,7 +6,7 @@
 /*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 22:52:55 by mariel            #+#    #+#             */
-/*   Updated: 2025/03/17 10:28:24 by mabrigo          ###   ########.fr       */
+/*   Updated: 2025/03/21 12:08:20 by mabrigo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,21 +17,35 @@ char	*strcmp_from_i(int i, char *src)
 	int		j;
 	int		len;
 	char	*dest;
-
+	
 	if (!src)
-		return (NULL);
+	return (NULL);
 	len = ft_strlen(src) - i + 1;
 	if (len <= 0)
-		return (NULL);
+	return (NULL);
 	dest = malloc(sizeof(char) * len);
 	if (!dest)
-		return (NULL);
+	return (NULL);
 	j = 0;
 	while (src[i])
-		dest[j++] = src[i++];
+	dest[j++] = src[i++];
 	dest[j] = '\0';
 	dest = ft_strtrim(dest, " ");
 	return (dest);
+}
+
+int	is_empty_line(char *str)
+{
+	if (!str)
+		return (1);  // Linea nulla è considerata vuota
+
+	while (*str)
+	{
+		if (*str != ' ' && *str != '\t' && *str != '\n')
+			return (0);  // La linea non è vuota
+		str++;
+	}
+	return (1);  // La linea è vuota
 }
 
 void	parse_config_line(char *str, t_map_data *map)
@@ -40,7 +54,7 @@ void	parse_config_line(char *str, t_map_data *map)
 
 	i = 0;
 	while (str[i] == 32 || (str[i] >= 9 && str[i] <= 13))
-		i++;
+	i++;
 	if (ft_strncmp(str, "NO ", 3) == 0)
 		map->north_txtr = strcmp_from_i(i + 3, str);
 	else if (ft_strncmp(str, "SO ", 3) == 0)
@@ -62,7 +76,7 @@ int	is_map_line(char *str)
 	i = 0;
 	if (!str[i])
 		return (0);
-	while (str[i] && (str[i] == ' ' || str[i] == '\t'))
+	while (str[i] && (str[i] == ' ' || str[i] == '\t' || str[i] == '\v'))
 		i++;
 	if (!str[i])
 		return (0);
@@ -96,96 +110,6 @@ int	count_lines(char *av, int fd)
 	return (lines);
 }
 
-// Funzione per caricare la mappa
-// char	**load_map(char *av, int fd)
-// {
-// 	int		i;
-// 	int		lines;
-// 	char	**map;
-
-//     if (fd < 0)
-// 		return (0);
-// 	lines = count_lines(av, fd);
-// 	if (lines <= 0)
-// 		return (NULL);
-// 	map = malloc((lines + 1) * sizeof(char *));  // +1 per NULL finale
-// 	if (!map)
-// 		return (NULL);
-// 	fd = open(av, O_RDONLY);
-// 	if (fd < 0)
-// 	{
-// 		free(map);
-// 		return (NULL);
-// 	}
-// 	i = 0;
-// 	while (i < lines)
-// 	{
-// 		map[i] = get_next_line(fd);
-// 		if (!map[i])  // Se get_next_line fallisce
-// 		{
-// 			while (i > 0)
-// 				free(map[--i]);
-// 			free(map);
-// 			close(fd);
-// 			return (NULL);
-// 		}
-// 		printf("Map line %d: %s\n", i, map[i]);//debug
-// 		i++;
-// 	}
-// 	map[i] = NULL;  // Terminatore NULL per l'array di stringhe
-// 	close(fd);
-// 	// if (check_map(map))
-// 	return (map);
-// }
-
-// char	**load_map(char *av)
-// {
-// 	int		fd;
-// 	int		i;
-// 	int		lines;
-// 	char	**map;
-
-// 	fd = open(av, O_RDONLY);
-//     if (fd < 0)
-// 		return (0);
-// 	lines = count_lines(av, fd);
-// 	if (lines <= 0)
-// 	{
-// 		close(fd);
-// 		return (NULL);
-// 	}
-// 	map = malloc((lines + 1) * sizeof(char *));  // +1 per NULL finale
-// 	if (!map)
-// 	{
-// 		close(fd);
-// 		return (NULL);
-// 	}
-// 	fd = open(av, O_RDONLY);
-// 	if (fd < 0)
-// 	{
-// 		free(map);
-// 		return (NULL);
-// 	}
-// 	i = 0;
-// 	while (i < lines)
-// 	{
-// 		map[i] = get_next_line(fd);
-// 		if (!map[i])  // Se get_next_line fallisce
-// 		{
-// 			while (i > 0)
-// 				free(map[--i]);
-// 			free(map);
-// 			close(fd);
-// 			return (NULL);
-// 		}
-// 		printf("Map line %d: %s\n", i, map[i]);//debug
-// 		i++;
-// 	}
-// 	map[i] = NULL;  // Terminatore NULL per l'array di stringhe
-// 	close(fd);
-// 	// if (check_map(map))
-// 	return (map);
-// }
 char *trim_newline(char *line)
 {
 	int len = strlen(line);
@@ -235,10 +159,12 @@ char	**load_map(char *av, int *map_start_line)
 	i = 0;
 	while ((line = get_next_line(fd)))
 	{
-		if (is_map_line(line))
+		//debug
+		printf("line: %s\n", line);
+		if (is_map_line(line) || is_empty_line(line))
 		{
 			map[i] = line;
-			map[i] =trim_newline(map[i]);
+			map[i] = trim_newline(map[i]);
 			i++;
 		}
 		else
@@ -252,21 +178,6 @@ char	**load_map(char *av, int *map_start_line)
 }
 
 
-//rimuove caratteri iniziali e finali di una stringa
-int	is_empty_line(char *str)
-{
-	if (!str)
-		return (1);  // Linea nulla è considerata vuota
-
-	while (*str)
-	{
-		if (*str != ' ' && *str != '\t' && *str != '\n')
-			return (0);  // La linea non è vuota
-		str++;
-	}
-	return (1);  // La linea è vuota
-}
-
 
 void	parse_file(char **av, int fd, t_map_data *map)
 {
@@ -274,28 +185,37 @@ void	parse_file(char **av, int fd, t_map_data *map)
 	int		line_len;
 	int		config_done;
 	int		map_start_line;
+	int		current_line;
 
 	init_map(map);
 	line_len = 0;
 	config_done = 0;
 	map_start_line = 0;
+	current_line = 0;
 	while ((line = get_next_line(fd)))
 	{
-		printf("processing line: %s\n", line);
+		//debug
+		//printf("processing line: %s\n", line);
+		current_line++;
 		if (is_empty_line(line))
 		{
 			printf("Ignoring empty line: %s\n", line);
 			free(line);
 			continue;
 		}
+		//debug
+		//printf("config done: %d\n", config_done);
 		if (config_done)
 		{
+			
 			if (is_map_line(line) != 0)
 			{
 				line_len = ft_strlen(line);
 				if (line_len > map->win_width)
 					map->win_width = line_len;
 				map->win_height++;
+				if (map_start_line == 0)
+					map_start_line = current_line - 1;
 			}
 			else
 			{
@@ -346,17 +266,19 @@ void	parse_file(char **av, int fd, t_map_data *map)
         map->map_height++;
     printf("Map dimensions after loading: %d x %d\n", map->map_width, map->map_height);
 	
-	printf("North Texture: %s\n", map->north_txtr);
-	printf("South Texture: %s\n", map->south_txtr);
-	printf("West Texture: %s\n", map->west_txtr);
-	printf("East Texture: %s\n", map->east_txtr);
-	printf("Floor Color: %s\n", map->floor_color);
-	printf("Ceiling Color: %s\n", map->ceiling_color);
-	printf("Win Size (pxl): %d x %d\n", map->win_width, map->win_height);
+	//debug
+	// printf("North Texture: %s\n", map->north_txtr);
+	// printf("South Texture: %s\n", map->south_txtr);
+	// printf("West Texture: %s\n", map->west_txtr);
+	// printf("East Texture: %s\n", map->east_txtr);
+	// printf("Floor Color: %s\n", map->floor_color);
+	// printf("Ceiling Color: %s\n", map->ceiling_color);
+	// printf("Win Size (pxl): %d x %d\n", map->win_width, map->win_height);
 	int i = 0;
 	while (map->world[i])
 	{
-		printf("map line [%d]: %s\n", i, map->world[i]);
+		//debug
+		//printf("map line [%d]: %s\n", i, map->world[i]);
 		i++;
 	}
 	

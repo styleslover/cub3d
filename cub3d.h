@@ -6,7 +6,7 @@
 /*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 12:40:01 by mabrigo           #+#    #+#             */
-/*   Updated: 2025/03/20 20:33:05 by mabrigo          ###   ########.fr       */
+/*   Updated: 2025/03/21 11:33:50 by mabrigo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,6 +143,7 @@ int		close_window(void *param);
 //parsing.c
 char	*strcmp_from_i(int i, char *src);
 void	parse_config_line(char *str, t_map_data *map);
+int		is_empty_line(char *str);
 int		is_map_line(char *str);
 int		count_lines(char *av, int fd);
 char	**load_map(char *av, int *map_start_line);

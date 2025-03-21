@@ -6,7 +6,7 @@
 /*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 19:12:27 by damoncad          #+#    #+#             */
-/*   Updated: 2025/03/20 20:30:03 by mabrigo          ###   ########.fr       */
+/*   Updated: 2025/03/21 11:13:30 by mabrigo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -203,7 +203,7 @@ void raylaser(t_game *game, t_player *player, float end_x, float end_y)
     float start_y = player->y;
 
     // Debug: stampa le coordinate di inizio e fine
-    printf("Start: (%f, %f), End: (%f, %f)\n", start_x, start_y, end_x, end_y);
+    //printf("Start: (%f, %f), End: (%f, %f)\n", start_x, start_y, end_x, end_y);
 
     float delta_x = end_x - start_x;
     float delta_y = end_y - start_y;
@@ -283,8 +283,8 @@ void raycasting(t_game *game)
     }
 }
 
-
-		printf("Start: (%f, %f), End: (%f, %f)\n", game->player->x, game->player->y, pos_x, pos_y);
+		//debug
+		//printf("Start: (%f, %f), End: (%f, %f)\n", game->player->x, game->player->y, pos_x, pos_y);
 
         // Disegna la linea del raggio in 2D (dal giocatore al punto di intersezione)
         draw_direction_line(game, game->player, pos_x, pos_y);

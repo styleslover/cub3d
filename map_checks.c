@@ -6,7 +6,7 @@
 /*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 18:39:22 by mabrigo           #+#    #+#             */
-/*   Updated: 2025/03/20 20:15:55 by mabrigo          ###   ########.fr       */
+/*   Updated: 2025/03/21 12:40:59 by mabrigo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,8 @@ int	map_valid_char(char **world)
 	while (world[i])
 	{
 		j = 0;
+		if (is_empty_line(world[i]))
+			return (0);
 		while (world[i][j] == 32 || (world[i][j] >= 9 && world[i][j] <= 13))
 			j++;
 		while (world[i][j])
