@@ -6,7 +6,7 @@
 /*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 12:40:01 by mabrigo           #+#    #+#             */
-/*   Updated: 2025/03/21 11:33:50 by mabrigo          ###   ########.fr       */
+/*   Updated: 2025/03/23 16:50:31 by mabrigo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,8 +84,8 @@ typedef struct s_map_data
 	char		*south_txtr;
 	char		*east_txtr;
 
-	char		*ceiling_color;
-	char		*floor_color;
+	int			*ceiling_color;
+	int			*floor_color;
 }				t_map_data;
 
 typedef struct s_game
@@ -128,6 +128,7 @@ void	draw_map(t_game *game, t_map_data *map);
 int		draw_loop(t_game *game);
 
 //free_shit.c
+void	free_matrix(char **map);
 void	free_map(t_map_data *map);
 void	free_mlx(t_game *game);
 void	free_game_resources(t_game *game);
@@ -157,6 +158,7 @@ void    rotate_point(float *x, float *y, float center_x, float center_y, float a
 
 //map_checks.c
 int		my_strchr(char *s, int c);
+int		map_empty_lines(char **world);
 int		map_valid_char(char **world);
 void	get_line_data(t_line *line, char *str);
 int		check_cardinals(char **world, int i, int j);

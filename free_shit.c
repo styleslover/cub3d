@@ -3,14 +3,27 @@
 /*                                                        :::      ::::::::   */
 /*   free_shit.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: damoncad <damoncad@student.42.fr>          #+#  +:+       +#+        */
+/*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025-02-18 13:03:51 by damoncad          #+#    #+#             */
-/*   Updated: 2025-02-18 13:03:51 by damoncad         ###   ########.fr       */
+/*   Created: 2025/02/18 13:03:51 by damoncad          #+#    #+#             */
+/*   Updated: 2025/03/23 16:43:35 by mabrigo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+
+void	free_matrix(char **map)
+{
+	int	i;
+
+    if (map)
+    {
+        i = 0;
+        while (map[i])
+            free(map[i++]);
+        free(map);
+    }
+}
 
 void	free_map(t_map_data *map)
 {

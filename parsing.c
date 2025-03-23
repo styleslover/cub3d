@@ -6,7 +6,7 @@
 /*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 22:52:55 by mariel            #+#    #+#             */
-/*   Updated: 2025/03/21 12:08:20 by mabrigo          ###   ########.fr       */
+/*   Updated: 2025/03/23 17:01:47 by mabrigo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,20 +41,64 @@ int	is_empty_line(char *str)
 
 	while (*str)
 	{
-		if (*str != ' ' && *str != '\t' && *str != '\n')
+		if (*str != 32 && !(*str >= 9 && *str <= 13))
 			return (0);  // La linea non è vuota
 		str++;
 	}
 	return (1);  // La linea è vuota
 }
 
+int	*parse_rgb_values(char *str)
+{
+	char	**splitted;
+	int		*rgb_values;
+	char	*trimmed;
+	int		i;
+
+	splitted = ft_split(str, ',');
+	if (!splitted)
+		return (0);
+	rgb_values = (int *)malloc(sizeof(int) * 3);
+	if (!rgb_values)
+	{
+		free_matrix(splitted);
+		return (0);
+	}
+	i = 0;
+	while (i < 3 && splitted[i])
+	{
+		trimmed = ft_strtrim(splitted[i], " \t\n\r");
+		rgb_values[i] = ft_atoi(trimmed);
+		if (rgb_values[i] < 0 || rgb_values[i] > 255)
+		{
+			//debug
+			printf("errore in ceiling o floor\n");
+			free(trimmed);
+			free_matrix(splitted);
+			free(rgb_values);
+			return (0);
+		}
+		free(trimmed);
+		i++;
+	}
+	free_matrix(splitted);
+	if (i != 3)
+	{
+		free(rgb_values);
+		return (NULL);
+	}
+	return (rgb_values);
+}
+
 void	parse_config_line(char *str, t_map_data *map)
 {
-	int	i;
+	int		i;
+	char	*floor;
+	char	*ceiling;
 
 	i = 0;
 	while (str[i] == 32 || (str[i] >= 9 && str[i] <= 13))
-	i++;
+		i++;
 	if (ft_strncmp(str, "NO ", 3) == 0)
 		map->north_txtr = strcmp_from_i(i + 3, str);
 	else if (ft_strncmp(str, "SO ", 3) == 0)
@@ -64,9 +108,17 @@ void	parse_config_line(char *str, t_map_data *map)
 	else if (ft_strncmp(str, "EA ", 3) == 0)
 		map->east_txtr = strcmp_from_i(i + 3, str);
 	else if (ft_strncmp(str, "F ", 2) == 0)
-		map->floor_color = strcmp_from_i(i + 2, str);
+	{
+		floor = strcmp_from_i(i + 2, str);
+		map->floor_color = parse_rgb_values(floor);
+		free(floor);
+	}
 	else if (ft_strncmp(str, "C ", 2) == 0)
-		map->ceiling_color = strcmp_from_i(i + 2, str);
+	{
+		ceiling = strcmp_from_i(i + 2, str);
+		map->ceiling_color = parse_rgb_values(ceiling);
+		free(ceiling);
+	}
 }
 
 int	is_map_line(char *str)
@@ -160,7 +212,7 @@ char	**load_map(char *av, int *map_start_line)
 	while ((line = get_next_line(fd)))
 	{
 		//debug
-		printf("line: %s\n", line);
+		//printf("line: %s\n", line);
 		if (is_map_line(line) || is_empty_line(line))
 		{
 			map[i] = line;
@@ -246,6 +298,12 @@ void	parse_file(char **av, int fd, t_map_data *map)
 	}
 	close(fd);
 	map->world = load_map(av[1], &map_start_line);
+	int x = 0;
+	while (map->world[x])
+	{
+		printf("world[%d]: %s\n", x, map->world[x]);
+		x++;
+	}
 	if (!check_map(map->world))
 	{
 		printf("Error: Failed to load map\n");
@@ -271,8 +329,18 @@ void	parse_file(char **av, int fd, t_map_data *map)
 	// printf("South Texture: %s\n", map->south_txtr);
 	// printf("West Texture: %s\n", map->west_txtr);
 	// printf("East Texture: %s\n", map->east_txtr);
-	// printf("Floor Color: %s\n", map->floor_color);
-	// printf("Ceiling Color: %s\n", map->ceiling_color);
+	int	f = 0;
+	while (map->floor_color[f])
+	{
+		printf("Floor Color: %d\n", map->floor_color[f]);
+		f++;
+	}
+	f = 0;
+	while (map->ceiling_color[f])
+	{
+		printf("Ceiling Color: %d\n", map->ceiling_color[f]);
+		f++;
+	}
 	// printf("Win Size (pxl): %d x %d\n", map->win_width, map->win_height);
 	int i = 0;
 	while (map->world[i])
