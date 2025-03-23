@@ -6,7 +6,7 @@
 /*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 23:30:39 by mariel            #+#    #+#             */
-/*   Updated: 2025/03/20 20:28:09 by mabrigo          ###   ########.fr       */
+/*   Updated: 2025/03/23 18:28:21 by mabrigo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -217,6 +217,56 @@ void	draw_map(t_game *game, t_map_data *map)
 	//printf("Map drawn successfully\n");//debug
 }
 
+void	paint_floor_ceiling(t_game *game, int floor, int ceiling)
+{
+	int	x;
+	int	y;
+
+	y = 0;
+	while (y < game->screen_h)
+	{
+		x = 0;
+		while (x < game->screen_w)
+		{
+			if (y < game->screen_h / 2)
+				my_pixel_put(x, y, game, ceiling);
+			else
+				my_pixel_put(x, y, game, floor);
+			x++;
+		}
+		y++;
+	}
+}
+
+void	draw_floor_ceiling(t_game *game, t_map_data *map)
+{
+	int	floor_color;
+	int	ceiling_color;
+
+	if (map->floor_color)
+	{
+		floor_color = ((map->floor_color[0] << 16)
+				| (map->floor_color[1] << 8) | (map->floor_color[2]));
+	}
+	else
+	{
+		printf("Warning: Invalid floor color, using default color (black).\n");
+        floor_color = 0x000000;
+	}
+	if (map->ceiling_color)
+	{
+		ceiling_color = ((map->ceiling_color[0] << 16)
+				| (map->ceiling_color[1] << 8) | (map->ceiling_color[2]));
+	}
+	else
+	{
+		printf("Warning: Invalid ceiling color, using default color (white).\n");
+        ceiling_color = 0xFFFFFF;
+		return ;
+	}
+	paint_floor_ceiling(game, floor_color, ceiling_color);
+}
+
 
 int	draw_loop(t_game *game)
 {
@@ -232,6 +282,7 @@ int	draw_loop(t_game *game)
 	if (!game->map)
 		print_error("Errore caricamento mappa");
 	//raycasting(game);
+	draw_floor_ceiling(game, game->map);
 	draw_map(game, game->map);
 	draw_player(game, game->player, 12, GREEN);
 	raycasting(game);
