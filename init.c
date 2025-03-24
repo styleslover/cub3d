@@ -6,7 +6,7 @@
 /*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 23:45:26 by mariel            #+#    #+#             */
-/*   Updated: 2025/03/24 15:33:29 by damoncad         ###   ########.fr       */
+/*   Updated: 2025/03/24 16:27:27 by damoncad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,17 +63,18 @@ void	init_player(t_player *player, t_map_data *map, int offset_x, int offset_y)
 				get_direction(player, map->world[i][j]);
 
 				//debug
-				printf("player direction: %f\n", player->dir);
+				//printf("player direction: %f\n", player->dir);
 				
 				//piano della camera(modifica il FOV)
 				player->plane_x = 0.66f;	//0.66 valore standard per il fov
 				player->plane_y = 0.0f;
 
 				map->world[i][j] = '0';
-				printf("Tile coordinates: (%d, %d)\n", j, i);
-				printf("TILE_SIZE: %d\n", TILE_SIZE);
-				printf("Offset X: %d, Offset Y: %d\n", offset_x, offset_y);
-				printf("Player spawn position: (%f, %f)\n", player->x, player->y);
+				//debug
+				// printf("Tile coordinates: (%d, %d)\n", j, i);
+				// printf("TILE_SIZE: %d\n", TILE_SIZE);
+				// printf("Offset X: %d, Offset Y: %d\n", offset_x, offset_y);
+				// printf("Player spawn position: (%f, %f)\n", player->x, player->y);
 				return ;
 			}
 			j++;

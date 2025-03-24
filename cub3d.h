@@ -6,7 +6,7 @@
 /*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 12:40:01 by mabrigo           #+#    #+#             */
-/*   Updated: 2025/03/24 16:12:35 by damoncad         ###   ########.fr       */
+/*   Updated: 2025/03/24 16:26:24 by damoncad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,8 +88,8 @@ typedef struct s_map_data
 	char		*south_txtr;
 	char		*east_txtr;
 
-	int		*ceiling_color;
-	int		*floor_color;
+	int			*ceiling_color;
+	int			*floor_color;
 }				t_map_data;
 
 typedef struct s_game
@@ -162,6 +162,7 @@ void    rotate_point(float *x, float *y, float center_x, float center_y, float a
 
 //map_checks.c
 int		my_strchr(char *s, int c);
+int		map_empty_lines(char **world);
 int		map_valid_char(char **world);
 void	get_line_data(t_line *line, char *str);
 int		check_cardinals(char **world, int i, int j);
