@@ -6,7 +6,7 @@
 /*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 19:12:27 by damoncad          #+#    #+#             */
-/*   Updated: 2025/03/24 16:28:10 by damoncad         ###   ########.fr       */
+/*   Updated: 2025/03/24 16:34:16 by damoncad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -499,7 +499,7 @@ void raycasting(t_game *game) {
         if (draw_end >= game->screen_h) draw_end = game->screen_h - 1;
 
         // 6. Colore in base al lato del muro
-        int color = (side == 1) ? 0x808080 : 0xFFFFFF; // Grigio per y-side, bianco per x-side
+        int color = (side == 1) ? 0x4c4c4c : 0xFFFFFF; // Grigio per y-side, bianco per x-side
 
         // 7. Disegna la linea verticale
         for (int y = draw_start; y < draw_end; y++) {

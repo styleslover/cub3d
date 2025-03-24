@@ -3,8 +3,8 @@ SO ./path/to/south_texture.xpm
 WE ./path/to/west_texture.xpm
 EA ./path/to/east_texture.xpm
 
-F 173,216,230
-C 139,136,120
+C 173,216,230
+F 139, 134, 130
 
 111111111111111
 100000000000001
