@@ -6,7 +6,7 @@
 /*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 23:30:39 by mariel            #+#    #+#             */
-/*   Updated: 2025/03/24 16:48:21 by damoncad         ###   ########.fr       */
+/*   Updated: 2025/03/24 16:50:57 by damoncad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -584,8 +584,8 @@ int	draw_loop(t_game *game)
 	if (!game->map)
 		print_error("Errore caricamento mappa");
 	//raycasting(game);
-	raycasting(game);
 	draw_floor_ceiling(game, game->map);
+	raycasting(game);
 	draw_map(game, game->map);
 	draw_player(game, game->player, 8, GREEN);
 	mlx_put_image_to_window(game->mlx, game->win, game->img, 0, 0);
