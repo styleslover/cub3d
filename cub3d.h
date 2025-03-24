@@ -6,7 +6,7 @@
 /*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 12:40:01 by mabrigo           #+#    #+#             */
-/*   Updated: 2025/03/24 11:48:10 by damoncad         ###   ########.fr       */
+/*   Updated: 2025/03/24 16:12:35 by damoncad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,8 @@
 # define ESC 65307
 
 # define TILE_SIZE 32
+#define MINIMAP_SIZE 8  // Scala la mappa al 20% della grandezza originale
+
 
 # define RED 0xFF0000
 # define GREEN 0x00FF00
@@ -78,6 +80,8 @@ typedef struct s_map_data
 	int			map_height;
 	int			offset_x;
 	int			offset_y;
+	int			offset_minimap_x;
+	int			offset_minimap_y;
 
 	char		*north_txtr;
 	char		*west_txtr;
@@ -167,5 +171,30 @@ int		check_map(char **world);
 //raycasting.c
 void	raycasting(t_game *game);
 void 	raylaser(t_game *game, t_player *player, float end_x, float end_y);
+
+
+
+//test mappa
+void draw_line(int x0, int y0, int x1, int y1, t_game *game, int color);
+void draw_circle(int center_x, int center_y, int radius, t_game *game, int color);
+void draw_player_minimap(t_game *game, int center_x, int center_y, int size, int color);
+
+
+
+
+
+
+
+//test mappa tonda
+void draw_player_minimap(t_game *game, int center_x, int center_y, int size, int color);
+void draw_square(int x, int y, int size, t_game *game, int color);
+void draw_circle_outline(int center_x, int center_y, int radius, t_game *game, int color);
+void draw_player_direction(t_game *game, int center_x, int center_y, int length, int color);
+
+
+
+
+
+
 
 #endif
