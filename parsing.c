@@ -6,7 +6,7 @@
 /*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 22:52:55 by mariel            #+#    #+#             */
-/*   Updated: 2025/03/21 10:43:29 by damoncad         ###   ########.fr       */
+/*   Updated: 2025/03/24 10:22:40 by damoncad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -340,13 +340,6 @@ void	parse_file(char **av, int fd, t_map_data *map)
 		map->win_height = map->win_height;
 	}
 	*/
-<<<<<<< HEAD
-	printf("loaded map:\n");
-	for (int i = 0; map->world[i] != NULL; i++)//debug
-		printf("%s\n", map->world[i]);
-	
-=======
->>>>>>> main
 	map->map_width = ft_strlen(map->world[0]);  // Larghezza della mappa
     map->map_height = 0;
     while (map->world[map->map_height] != NULL)
