@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map_checks.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/14 21:33:29 by santiago          #+#    #+#             */
-/*   Updated: 2025/03/24 10:22:32 by damoncad         ###   ########.fr       */
+/*   Created: 2025/03/20 18:39:22 by mabrigo           #+#    #+#             */
+/*   Updated: 2025/03/23 16:25:46 by mabrigo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,24 @@ int	my_strchr(char *s, int c)
 		s++;
 	}
 	return (0);
+}
+
+int	map_empty_lines(char **world)
+{
+	int	i;
+	int	empty_line_found;
+
+	i = 0;
+	empty_line_found = 0;
+	while (world[i])
+	{
+		if (is_empty_line(world[i]))
+			empty_line_found = 1;
+		else if (empty_line_found)
+			return (0);
+		i++;
+	}
+	return (1);
 }
 
 int	map_valid_char(char **world)
@@ -48,7 +66,6 @@ int	map_valid_char(char **world)
 	}
 	if (player != 1)
 		return (0);
-	printf("Ciao esco correttamente da map valid char\n");
 	return (1);
 }
 
@@ -116,7 +133,8 @@ int	check_map(char **world)
 {
 	t_line	line;
 
-    if (!map_valid_char(world) || !is_map_closed(world, &line))
+    if (!map_valid_char(world) || !is_map_closed(world, &line)
+		|| !map_empty_lines(world))
 	{
 		printf("Error: Invalid map\n");
 		return (0);

@@ -6,7 +6,7 @@
 /*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 12:40:01 by mabrigo           #+#    #+#             */
-/*   Updated: 2025/03/24 10:22:05 by damoncad         ###   ########.fr       */
+/*   Updated: 2025/03/24 11:48:10 by damoncad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,8 +84,8 @@ typedef struct s_map_data
 	char		*south_txtr;
 	char		*east_txtr;
 
-	char		*ceiling_color;
-	char		*floor_color;
+	int		*ceiling_color;
+	int		*floor_color;
 }				t_map_data;
 
 typedef struct s_game
@@ -128,6 +128,7 @@ void	draw_map(t_game *game, t_map_data *map);
 int		draw_loop(t_game *game);
 
 //free_shit.c
+void	free_matrix(char **map);
 void	free_map(t_map_data *map);
 void	free_mlx(t_game *game);
 void	free_game_resources(t_game *game);
@@ -143,6 +144,7 @@ int		close_window(void *param);
 //parsing.c
 char	*strcmp_from_i(int i, char *src);
 void	parse_config_line(char *str, t_map_data *map);
+int		is_empty_line(char *str);
 int		is_map_line(char *str);
 int		count_lines(char *av, int fd);
 char	**load_map(char *av, int *map_start_line);
@@ -162,6 +164,7 @@ int		check_cardinals(char **world, int i, int j);
 int		is_map_closed(char **world, t_line *line);
 int		check_map(char **world);
 
+//raycasting.c
 void	raycasting(t_game *game);
 void 	raylaser(t_game *game, t_player *player, float end_x, float end_y);
 
