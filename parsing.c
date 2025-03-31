@@ -3,35 +3,48 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 22:52:55 by mariel            #+#    #+#             */
-/*   Updated: 2025/03/31 19:29:24 by damoncad         ###   ########.fr       */
+/*   Updated: 2025/03/31 20:18:24 by mabrigo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
+char	*trim_end_spaces(char *s)
+{
+	int	i;
+
+	if (!s)
+		return (0);
+	i = ft_strlen(s) - 1;
+	while (i >= 0 && ft_strchr(" \t\v\r\n", s[i]))
+		i--;
+	s[i + 1] = '\0';
+	return (s);
+}
 
 char	*strcmp_from_i(int i, char *src)
 {
 	int		j;
 	int		len;
 	char	*dest;
-	
+
 	if (!src)
-	return (NULL);
+		return (NULL);
 	len = ft_strlen(src) - i + 1;
 	if (len <= 0)
-	return (NULL);
+		return (NULL);
 	dest = malloc(sizeof(char) * len);
 	if (!dest)
-	return (NULL);
+		return (NULL);
 	j = 0;
 	while (src[i])
-	dest[j++] = src[i++];
+		dest[j++] = src[i++];
 	dest[j] = '\0';
 	dest = ft_strtrim(dest, " ");
+	dest = trim_end_spaces(dest);
 	return (dest);
 }
 
