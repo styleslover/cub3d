@@ -6,7 +6,7 @@
 /*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 23:45:26 by mariel            #+#    #+#             */
-/*   Updated: 2025/03/31 16:35:50 by damoncad         ###   ########.fr       */
+/*   Updated: 2025/03/31 16:56:40 by damoncad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,16 @@
 
 void load_texture(t_game *game, t_textures *texture, char *path)
 {
-    texture->img = mlx_xpm_file_to_image(game->mlx, "textures/wall_texture.xpm", 
-                                        &texture->width, &texture->height);
-	printf("texture->img: %p\n", texture->img);
+	char *clean_path;
+	
+	clean_path = ft_strtrim(path, "\t\n\r");//da trovare soluzione migliore
+    texture->img = mlx_xpm_file_to_image(game->mlx, clean_path, &texture->width, &texture->height);
+	
+	printf("path: %s\n", path);
+	printf("north: %p\n", game->map->north_txtr);
+	printf("south: %p\n", game->map->south_txtr);
+	printf("east: %p\n", game->map->east_txtr);
+	printf("west: %p\n", game->map->west_txtr);
     if (!texture->img)
     {
         printf("Error: Could not load texture %s\n", path);
