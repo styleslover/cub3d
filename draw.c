@@ -6,7 +6,7 @@
 /*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 23:30:39 by mariel            #+#    #+#             */
-/*   Updated: 2025/03/24 16:50:57 by damoncad         ###   ########.fr       */
+/*   Updated: 2025/03/31 14:50:02 by damoncad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -567,8 +567,62 @@ void draw_player_minimap(t_game *game, int center_x, int center_y, int size, int
     //draw_line(center_x, center_y, (int)end_x, (int)end_y, game, color);
 }
 */
+void draw_meme_gun(t_game *game) {
+    int gun_width = 200;
+    int gun_height = 150;
+    int start_x = (game->screen_w - gun_width) / 2;
+    int start_y = game->screen_h - gun_height - 40; // Alza un po' l'arma
 
+    // Colori base
+    int metal_color = 0x7A7A7A;    // Grigio metallico
+    int grip_color = 0x2D2D2D;     // Grigio scuro
+    int barrel_color = 0x5A5A5A;   // Grigio medio
+    //int accent_color = 0xFFD700;   // Oro per dettagli
 
+    // Parte principale (corpo)
+    for (int y = 0; y < gun_height * 0.7; y++) {
+        for (int x = gun_width * 0.2; x < gun_width * 0.8; x++) {
+            my_pixel_put(start_x + x, start_y + y, game, metal_color);
+        }
+    }
+
+    // Impugnatura (angolo stile mitra)
+    for (int y = gun_height * 0.4; y < gun_height; y++) {
+        for (int x = 0; x < gun_width * 0.3; x++) {
+            my_pixel_put(start_x + x, start_y + y, game, grip_color);
+        }
+    }
+
+    // Canna (allungata)
+    for (int y = gun_height * 0.1; y < gun_height * 0.6; y++) {
+        for (int x = gun_width * 0.8; x < gun_width; x++) {
+            my_pixel_put(start_x + x, start_y + y, game, barrel_color);
+        }
+    }
+
+    // Dettagli (crosshair stile ologramma)
+    int sight_size = 15;
+    int sight_x = start_x + gun_width * 0.9;
+    int sight_y = start_y + gun_height * 0.3;
+    
+    // Cerchio centrale
+    for (int i = -sight_size; i <= sight_size; i++) {
+        for (int j = -sight_size; j <= sight_size; j++) {
+            if (i*i + j*j <= sight_size*sight_size) {
+                my_pixel_put(sight_x + i, sight_y + j, game, 0x00FF00); // Verde
+            }
+        }
+    }
+
+    // Testo meme (solo se hai mlx_string_put)
+if (game->mlx && game->win) {
+    mlx_string_put(game->mlx, game->win, 
+                   start_x + gun_width / 2 - 30, 
+                   start_y + 40, // Sposta la scritta più in basso
+                   BLACK, "BRRRRT!"); // Usa bianco per maggiore visibilità
+}
+
+}
 
 int	draw_loop(t_game *game)
 {
@@ -588,6 +642,7 @@ int	draw_loop(t_game *game)
 	raycasting(game);
 	draw_map(game, game->map);
 	draw_player(game, game->player, 8, GREEN);
+	draw_meme_gun(game);
 	mlx_put_image_to_window(game->mlx, game->win, game->img, 0, 0);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 12:52:13 by mabrigo           #+#    #+#             */
-/*   Updated: 2025/03/24 12:26:43 by damoncad         ###   ########.fr       */
+/*   Updated: 2025/03/31 16:23:19 by damoncad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,9 @@ int	main(int ac, char **av)
 		return (printf("Error: invalid fd"));
 	parse_file(av, map.fd, &map);
 	close(map.fd);
+	char cwd[1024];
+	getcwd(cwd, sizeof(cwd));
+	printf("Current dir: %s\n", cwd);
 	init_game(av[1], &game, &map);
 	//printf("SONO QUI\n");
 	draw_map(&game, &map);

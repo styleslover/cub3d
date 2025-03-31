@@ -6,7 +6,7 @@
 /*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 12:40:01 by mabrigo           #+#    #+#             */
-/*   Updated: 2025/03/24 16:26:24 by damoncad         ###   ########.fr       */
+/*   Updated: 2025/03/31 15:08:57 by damoncad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@
 # define D 100
 # define LEFT 65361
 # define RIGHT 65363
+# define SPACE 32
 
 # define ESC 65307
 
@@ -44,11 +45,23 @@
 # define BLUE 0x0000FF
 # define WHITE 0xFFFFFF
 # define PURPLE 0x800080
+# define BLACK 0x000000
 
 # define PI 3.14159265
 # define FOV (PI / 3)
 # define NUM_RAYS 100
-# define ROTASPEED 0.15f
+# define ROTASPEED 0.04f
+
+typedef struct s_textures
+{
+	void    *img;
+    char    *addr;
+    int     width;
+    int     height;
+    int     bpp;
+    int     line_length;
+    int     endian;
+} t_textures;
 
 typedef struct s_player
 {
@@ -108,6 +121,7 @@ typedef struct s_game
 	float		cos_rot_speed;
 	float		sin_rot_speed;
 
+	t_textures	textures[4];
 	t_player	*player;
 	t_map_data	*map;
 }			t_game;
@@ -173,6 +187,9 @@ int		check_map(char **world);
 void	raycasting(t_game *game);
 void 	raylaser(t_game *game, t_player *player, float end_x, float end_y);
 
+
+//int get_texture_color(t_game *game, int tex_x, int tex_y, int side);
+int get_texture_pixel(t_textures *texture, int x, int y);
 
 
 //test mappa

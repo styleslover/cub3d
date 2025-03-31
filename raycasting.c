@@ -6,7 +6,7 @@
 /*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 19:12:27 by damoncad          #+#    #+#             */
-/*   Updated: 2025/03/24 16:34:16 by damoncad         ###   ########.fr       */
+/*   Updated: 2025/03/31 15:48:41 by damoncad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -317,115 +317,236 @@ void    raycasting(t_game *game)
 
 
 
+/*
+void raycasting(t_game *game) {
+    t_player *player = game->player;
+    int x = 0;
 
-// void raycasting(t_game *game) {
-//     t_player *player = game->player;
-//     int x = 0;
+    player->plane_x = 0.66f * player->dir_y;  // Se dir_y = 0
+    player->plane_y = 0.66f * player->dir_x;  // Se dir_x = 0
+    while (x < game->screen_w) {
+        // Calcola la posizione e la direzione del raggio
+        double camera_x = 2 * x / (double)game->screen_w - 1;
+        double ray_dir_x = player->dir_x + player->plane_x * camera_x;
+        double ray_dir_y = player->dir_y + player->plane_y * camera_x;
 
-//     player->plane_x = 0.66f * player->dir_y;  // Se dir_y = 0
-//     player->plane_y = 0.66f * player->dir_x;  // Se dir_x = 0
-//     while (x < game->screen_w) {
-//         // Calcola la posizione e la direzione del raggio
-//         double camera_x = 2 * x / (double)game->screen_w - 1;
-//         double ray_dir_x = player->dir_x + player->plane_x * camera_x;
-//         double ray_dir_y = player->dir_y + player->plane_y * camera_x;
+        // Posizione iniziale del raggio (posizione del giocatore)
+        double ray_pos_x = player->x - game->map->offset_x;
+        double ray_pos_y = player->y - game->map->offset_y;
 
-//         // Posizione iniziale del raggio (posizione del giocatore)
-//         double ray_pos_x = player->x - game->map->offset_x;
-//         double ray_pos_y = player->y - game->map->offset_y;
+        // Delta distance e side distance
+        double delta_dist_x = fabs(1 / ray_dir_x);
+        double delta_dist_y = fabs(1 / ray_dir_y);
 
-//         // Delta distance e side distance
+        int step_x, step_y;
+        double side_dist_x, side_dist_y;
+        int hit = 0;
+        int side; // 0 = x-side, 1 = y-side
+
+        // Calcola step e side_dist iniziale
+        if (ray_dir_x < 0) {
+            step_x = -1;
+            side_dist_x = (ray_pos_x - (int)ray_pos_x) * delta_dist_x;
+        } else {
+            step_x = 1;
+            side_dist_x = ((int)ray_pos_x + 1.0 - ray_pos_x) * delta_dist_x;
+        }
+        if (ray_dir_y < 0) {
+            step_y = -1;
+            side_dist_y = (ray_pos_y - (int)ray_pos_y) * delta_dist_y;
+        } else {
+            step_y = 1;
+            side_dist_y = ((int)ray_pos_y + 1.0 - ray_pos_y) * delta_dist_y;
+        }
+
+        // DDA Algorithm
+        while (hit == 0) {
+            if (side_dist_x < side_dist_y) {
+                side_dist_x += delta_dist_x;
+                ray_pos_x += step_x;
+                side = 0;
+            } else {
+                side_dist_y += delta_dist_y;
+                ray_pos_y += step_y;
+                side = 1;
+            }
+            // Controlla se il raggio ha colpito un muro
+            int map_x = (int)ray_pos_x;
+            int map_y = (int)ray_pos_y;
+            if (map_x < 0 || map_x >= game->map->map_width || 
+               map_y < 0 || map_y >= game->map->map_height)
+                hit = 1; // Raggio uscito dalla mappa
+            else if (game->map->world[map_y][map_x] == '1') {
+                hit = 1; // Muro colpito
+            }
+        }
+
+        // Calcola la distanza corretta (senza fisheye)
+        double perp_wall_dist;
+        if (side == 0) {
+            perp_wall_dist = (ray_pos_x - player->x + (1 - step_x) / 2) / ray_dir_x;
+        } else {
+            perp_wall_dist = (ray_pos_y - player->y + (1 - step_y) / 2) / ray_dir_y;
+        }
+
+        // Calcola l'altezza della linea da disegnare
+        int line_height = (int)(game->screen_h / perp_wall_dist);
+        int draw_start = -line_height / 2 + game->screen_h / 2;
+        if (draw_start < 0) draw_start = 0;
+        int draw_end = line_height / 2 + game->screen_h / 2;
+        if (draw_end >= game->screen_h) draw_end = game->screen_h - 1;
+
+        // Scegli il colore in base al lato del muro
+        int color = (side == 1) ? 0x606060 : 0xFFFFFF; // Grigio per y-side, bianco per x-side
+
+        // Disegna la linea verticale
+        for (int y = draw_start; y < draw_end; y++) {
+            my_pixel_put(x, y, game, color);
+        }
+        x++;
+        printf("Processing column: %d/%d\n", x, game->screen_w);
+
+    }
+}
+*/
+
+
+
+
+
+//TENTATIVO INTEGRAZIONE TEXTURES
+// int get_texture_color(t_game *game, int tex_x, int tex_y, int side) {
+//     //char    *pixel_data;
+//     int     *texture;
+//     int     bpp;
+//     int     size_line;
+//     int     endian;
+
+//     // Scegli la texture in base al lato del muro
+//     if (side == 0) {
+//         texture = (int *)mlx_get_data_addr(game->textures.east, &bpp, &size_line, &endian);
+//     } else if (side == 1) {
+//         texture = (int *)mlx_get_data_addr(game->textures.west, &bpp, &size_line, &endian);
+//     } else if (side == 2) {
+//         texture = (int *)mlx_get_data_addr(game->textures.north, &bpp, &size_line, &endian);
+//     } else {
+//         texture = (int *)mlx_get_data_addr(game->textures.south, &bpp, &size_line, &endian);
+//     }
+
+//     return texture[tex_y * (size_line / 4) + tex_x];
+// }
+
+
+// void raycasting(t_game *game)
+// {
+//     t_player *p = game->player;
+//     t_map_data *map = game->map;
+
+//     for (int x = 0; x < game->screen_w; x++)
+//     {
+//         // 1. Calcolo direzione del raggio
+//         double camera_x = 2 * x / (double)game->screen_w - 1; // Range: [-1, 1]
+//         double ray_dir_x = p->dir_x + p->plane_x * camera_x;
+//         double ray_dir_y = p->dir_y + p->plane_y * camera_x;
+
+//         // 2. Posizione iniziale (in coordinate mappa)
+//         double ray_x = (p->x - map->offset_x) / TILE_SIZE;
+//         double ray_y = (p->y - map->offset_y) / TILE_SIZE;
+
+//         // 3. DDA Algorithm
 //         double delta_dist_x = fabs(1 / ray_dir_x);
 //         double delta_dist_y = fabs(1 / ray_dir_y);
-
-//         int step_x, step_y;
+        
+//         int map_x = (int)ray_x;
+//         int map_y = (int)ray_y;
+        
 //         double side_dist_x, side_dist_y;
+//         int step_x, step_y;
 //         int hit = 0;
 //         int side; // 0 = x-side, 1 = y-side
 
-//         // Calcola step e side_dist iniziale
+//         // Calcolo step e side_dist iniziale
 //         if (ray_dir_x < 0) {
 //             step_x = -1;
-//             side_dist_x = (ray_pos_x - (int)ray_pos_x) * delta_dist_x;
+//             side_dist_x = (ray_x - map_x) * delta_dist_x;
 //         } else {
 //             step_x = 1;
-//             side_dist_x = ((int)ray_pos_x + 1.0 - ray_pos_x) * delta_dist_x;
+//             side_dist_x = (map_x + 1.0 - ray_x) * delta_dist_x;
 //         }
 //         if (ray_dir_y < 0) {
 //             step_y = -1;
-//             side_dist_y = (ray_pos_y - (int)ray_pos_y) * delta_dist_y;
+//             side_dist_y = (ray_y - map_y) * delta_dist_y;
 //         } else {
 //             step_y = 1;
-//             side_dist_y = ((int)ray_pos_y + 1.0 - ray_pos_y) * delta_dist_y;
+//             side_dist_y = (map_y + 1.0 - ray_y) * delta_dist_y;
 //         }
 
-//         // DDA Algorithm
+//         // Lancio del raggio
 //         while (hit == 0) {
-//             if (side_dist_x < side_dist_y) {
+//             if (side_dist_x < side_dist_y)
+//             {
 //                 side_dist_x += delta_dist_x;
-//                 ray_pos_x += step_x;
+//                 map_x += step_x;
 //                 side = 0;
-//             } else {
+//             }
+//             else
+//             {
 //                 side_dist_y += delta_dist_y;
-//                 ray_pos_y += step_y;
+//                 map_y += step_y;
 //                 side = 1;
 //             }
-//             // Controlla se il raggio ha colpito un muro
-//             int map_x = (int)ray_pos_x;
-//             int map_y = (int)ray_pos_y;
-//             if (map_x < 0 || map_x >= game->map->map_width || 
-//                map_y < 0 || map_y >= game->map->map_height)
+//             // Controllo collisione con muro o uscita dalla mappa
+//             if (map_x < 0 || map_x >= map->map_width || 
+//                 map_y < 0 || map_y >= map->map_height)
+//             {
 //                 hit = 1; // Raggio uscito dalla mappa
-//             else if (game->map->world[map_y][map_x] == '1') {
+//             }
+//             else if (map->world[map_y][map_x] == '1')
+//             {
 //                 hit = 1; // Muro colpito
 //             }
 //         }
 
-//         // Calcola la distanza corretta (senza fisheye)
+//         // 4. Calcolo distanza (senza fisheye)
 //         double perp_wall_dist;
 //         if (side == 0) {
-//             perp_wall_dist = (ray_pos_x - player->x + (1 - step_x) / 2) / ray_dir_x;
+//             perp_wall_dist = (map_x - ray_x + (1 - step_x) / 2) / ray_dir_x;
 //         } else {
-//             perp_wall_dist = (ray_pos_y - player->y + (1 - step_y) / 2) / ray_dir_y;
+//             perp_wall_dist = (map_y - ray_y + (1 - step_y) / 2) / ray_dir_y;
 //         }
 
-//         // Calcola l'altezza della linea da disegnare
+//         // 5. Altezza della linea da disegnare
 //         int line_height = (int)(game->screen_h / perp_wall_dist);
 //         int draw_start = -line_height / 2 + game->screen_h / 2;
 //         if (draw_start < 0) draw_start = 0;
 //         int draw_end = line_height / 2 + game->screen_h / 2;
 //         if (draw_end >= game->screen_h) draw_end = game->screen_h - 1;
 
-//         // Scegli il colore in base al lato del muro
-//         int color = (side == 1) ? 0x606060 : 0xFFFFFF; // Grigio per y-side, bianco per x-side
+//         // 6. Colore in base al lato del muro
+//         int color = (side == 1) ? 0x4c4c4c : 0xFFFFFF; // Grigio per y-side, bianco per x-side
 
-//         // Disegna la linea verticale
+//         // 7. Disegna la linea verticale
 //         for (int y = draw_start; y < draw_end; y++) {
 //             my_pixel_put(x, y, game, color);
 //         }
-//         x++;
-//         printf("Processing column: %d/%d\n", x, game->screen_w);
-
 //     }
 // }
 
 
+int get_texture_pixel(t_textures *texture, int x, int y)
+{
+    char *pixel = texture->addr + (y * texture->line_length + 
+                                  x * (texture->bpp / 8));
+    return *(int *)pixel;
+}
 
-
-
-
-
-
-
-
-
-#include "cub3d.h"
-
-void raycasting(t_game *game) {
+void raycasting(t_game *game)
+{
     t_player *p = game->player;
     t_map_data *map = game->map;
 
-    for (int x = 0; x < game->screen_w; x++) {
+    for (int x = 0; x < game->screen_w; x++)
+    {
         // 1. Calcolo direzione del raggio
         double camera_x = 2 * x / (double)game->screen_w - 1; // Range: [-1, 1]
         double ray_dir_x = p->dir_x + p->plane_x * camera_x;
@@ -465,44 +586,62 @@ void raycasting(t_game *game) {
 
         // Lancio del raggio
         while (hit == 0) {
-            if (side_dist_x < side_dist_y) {
+            if (side_dist_x < side_dist_y)
+            {
                 side_dist_x += delta_dist_x;
                 map_x += step_x;
                 side = 0;
-            } else {
+            }
+            else
+            {
                 side_dist_y += delta_dist_y;
                 map_y += step_y;
                 side = 1;
             }
             // Controllo collisione con muro o uscita dalla mappa
             if (map_x < 0 || map_x >= map->map_width || 
-                map_y < 0 || map_y >= map->map_height) {
+                map_y < 0 || map_y >= map->map_height)
+            {
                 hit = 1; // Raggio uscito dalla mappa
-            } else if (map->world[map_y][map_x] == '1') {
+            }
+            else if (map->world[map_y][map_x] == '1')
+            {
                 hit = 1; // Muro colpito
             }
         }
 
         // 4. Calcolo distanza (senza fisheye)
         double perp_wall_dist;
-        if (side == 0) {
+        if (side == 0)
             perp_wall_dist = (map_x - ray_x + (1 - step_x) / 2) / ray_dir_x;
-        } else {
+        else
             perp_wall_dist = (map_y - ray_y + (1 - step_y) / 2) / ray_dir_y;
-        }
 
-        // 5. Altezza della linea da disegnare
+        // [5] Calcolo altezza linea da disegnare
         int line_height = (int)(game->screen_h / perp_wall_dist);
         int draw_start = -line_height / 2 + game->screen_h / 2;
         if (draw_start < 0) draw_start = 0;
         int draw_end = line_height / 2 + game->screen_h / 2;
         if (draw_end >= game->screen_h) draw_end = game->screen_h - 1;
 
-        // 6. Colore in base al lato del muro
-        int color = (side == 1) ? 0x4c4c4c : 0xFFFFFF; // Grigio per y-side, bianco per x-side
+        // [6] Calcolo coordinate texture
+        double wall_x;
+        if (side == 0)
+            wall_x = p->y + perp_wall_dist * ray_dir_y;
+        else
+            wall_x = p->x + perp_wall_dist * ray_dir_x;
+        wall_x -= floor(wall_x);
 
-        // 7. Disegna la linea verticale
-        for (int y = draw_start; y < draw_end; y++) {
+        int tex_x = (int)(wall_x * (double)game->textures[0].width);
+        if (side == 0 && ray_dir_x > 0) tex_x = game->textures[0].width - tex_x - 1;
+        if (side == 1 && ray_dir_y < 0) tex_x = game->textures[0].width - tex_x - 1;
+
+        // [7] Disegno della linea verticale con texture
+        for (int y = draw_start; y < draw_end; y++)
+        {
+            int tex_y = (y * 2 - game->screen_h + line_height) * 
+                       (game->textures[0].height / 2) / line_height;
+            int color = get_texture_pixel(&game->textures[side], tex_x, tex_y);
             my_pixel_put(x, y, game, color);
         }
     }

@@ -6,11 +6,35 @@
 /*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 23:45:26 by mariel            #+#    #+#             */
-/*   Updated: 2025/03/24 16:27:27 by damoncad         ###   ########.fr       */
+/*   Updated: 2025/03/31 16:35:50 by damoncad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+
+
+void load_texture(t_game *game, t_textures *texture, char *path)
+{
+    texture->img = mlx_xpm_file_to_image(game->mlx, "textures/wall_texture.xpm", 
+                                        &texture->width, &texture->height);
+	printf("texture->img: %p\n", texture->img);
+    if (!texture->img)
+    {
+        printf("Error: Could not load texture %s\n", path);
+		perror("Reason");
+        exit(1);
+    }
+    texture->addr = mlx_get_data_addr(texture->img, &texture->bpp, 
+                                     &texture->line_length, &texture->endian);
+}
+
+void init_textures(t_game *game, t_map_data *map)
+{
+    load_texture(game, &game->textures[0], map->north_txtr); // Nord
+    load_texture(game, &game->textures[1], map->south_txtr); // Sud
+    load_texture(game, &game->textures[2], map->east_txtr);  // Est
+    load_texture(game, &game->textures[3], map->west_txtr);  // Ovest
+}
 
 void	init_map(t_map_data *map)
 {
@@ -135,6 +159,8 @@ void	init_game(char *name_win, t_game *game, t_map_data *map)
 	game->cos_rot_speed = cos(ROTASPEED);
 	game->sin_rot_speed = sin(ROTASPEED);
 	
+	//load_textures(game);//PER CARICARE LE TEXTURES, DA CAPIRE DOVE VA PER BENE
+	
 	init_player(game->player, map, map->offset_x, map->offset_y);
 
 	// Crea la finestra
@@ -159,7 +185,7 @@ void	init_game(char *name_win, t_game *game, t_map_data *map)
 		perror("Errore in mlx_get_data_addr\n");
 		exit (1);
 	}
-
+	init_textures(game, map);
 	mlx_put_image_to_window(game->mlx, game->win, game->img, 0, 0);
 	printf("Game initialized successfully\n");
 }
