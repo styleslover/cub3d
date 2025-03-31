@@ -6,7 +6,7 @@
 /*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 23:45:26 by mariel            #+#    #+#             */
-/*   Updated: 2025/03/31 16:56:40 by damoncad         ###   ########.fr       */
+/*   Updated: 2025/03/31 19:40:44 by damoncad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 void load_texture(t_game *game, t_textures *texture, char *path)
 {
 	char *clean_path;
-	
+
 	clean_path = ft_strtrim(path, "\t\n\r");//da trovare soluzione migliore
     texture->img = mlx_xpm_file_to_image(game->mlx, clean_path, &texture->width, &texture->height);
 	
@@ -137,7 +137,6 @@ void	init_game(char *name_win, t_game *game, t_map_data *map)
 		perror("Errore: Dimensioni della mappa non valide\n");
 		exit(1);
 	}
-
 	// Ottieni la dimensione massima dello schermo
 	game->mlx = mlx_init();
 	mlx_get_screen_size(game->mlx, &game->screen_w, &game->screen_h);
@@ -167,7 +166,7 @@ void	init_game(char *name_win, t_game *game, t_map_data *map)
 	game->sin_rot_speed = sin(ROTASPEED);
 	
 	//load_textures(game);//PER CARICARE LE TEXTURES, DA CAPIRE DOVE VA PER BENE
-	
+	init_textures(game, map);
 	init_player(game->player, map, map->offset_x, map->offset_y);
 
 	// Crea la finestra
@@ -192,7 +191,6 @@ void	init_game(char *name_win, t_game *game, t_map_data *map)
 		perror("Errore in mlx_get_data_addr\n");
 		exit (1);
 	}
-	init_textures(game, map);
 	mlx_put_image_to_window(game->mlx, game->win, game->img, 0, 0);
 	printf("Game initialized successfully\n");
 }

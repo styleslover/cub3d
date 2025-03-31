@@ -6,7 +6,7 @@
 /*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 19:12:27 by damoncad          #+#    #+#             */
-/*   Updated: 2025/03/31 15:48:41 by damoncad         ###   ########.fr       */
+/*   Updated: 2025/03/31 17:31:33 by damoncad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -616,7 +616,7 @@ void raycasting(t_game *game)
             perp_wall_dist = (map_x - ray_x + (1 - step_x) / 2) / ray_dir_x;
         else
             perp_wall_dist = (map_y - ray_y + (1 - step_y) / 2) / ray_dir_y;
-
+       
         // [5] Calcolo altezza linea da disegnare
         int line_height = (int)(game->screen_h / perp_wall_dist);
         int draw_start = -line_height / 2 + game->screen_h / 2;
@@ -625,7 +625,7 @@ void raycasting(t_game *game)
         if (draw_end >= game->screen_h) draw_end = game->screen_h - 1;
 
         // [6] Calcolo coordinate texture
-        double wall_x;
+        float wall_x;
         if (side == 0)
             wall_x = p->y + perp_wall_dist * ray_dir_y;
         else

@@ -1,7 +1,7 @@
-NO ./textures/wall_texture.xpm
-SO ./textures/wall_texture.xpm
-WE ./textures/wall_texture.xpm
-EA ./textures/wall_texture.xpm
+NO textures/brown.xpm
+SO textures/wall_texture.xpm
+WE textures/wall_texture.xpm
+EA textures/wall_texture.xpm
 
 C 173,216,230
 F 139, 134, 130
@@ -11,9 +11,9 @@ F 139, 134, 130
 100000000000001
 100000000000001
 100000000000001
-100000000000001
-100000000000001
-100000000000001
+100000111000001
+100000111000001
+100000001000001
 100000000000001
 100000000000001
 100N00000000001

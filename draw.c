@@ -6,7 +6,7 @@
 /*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 23:30:39 by mariel            #+#    #+#             */
-/*   Updated: 2025/03/31 14:50:02 by damoncad         ###   ########.fr       */
+/*   Updated: 2025/03/31 19:45:34 by damoncad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -306,41 +306,41 @@ void	draw_grid(t_game *game, t_map_data *map, int tile_size)
 	}
 }
 
-void draw_minimap_border(t_game *game, t_map_data *map)
-{
-    // Calcola la posizione di partenza per il bordo
-    int minimap_width = map->map_width * MINIMAP_SIZE;
-    int minimap_height = map->map_height * MINIMAP_SIZE;
+// void draw_minimap_border(t_game *game, t_map_data *map)
+// {
+//     // Calcola la posizione di partenza per il bordo
+//     int minimap_width = map->map_width * MINIMAP_SIZE;
+//     int minimap_height = map->map_height * MINIMAP_SIZE;
 
-    int offset_x = map->offset_minimap_x;
-    int offset_y = map->offset_minimap_y;
+//     int offset_x = map->offset_minimap_x;
+//     int offset_y = map->offset_minimap_y;
 
-    // Colore del bordo
-    int border_color = 0xFFFFFF;  // Bianco, ma puoi cambiarlo come vuoi
+//     // Colore del bordo
+//     int border_color = 0xFFFFFF;  // Bianco, ma puoi cambiarlo come vuoi
 
-    // Disegna il bordo: 4 linee (superiore, inferiore, sinistra, destra)
-    int x, y;
+//     // Disegna il bordo: 4 linee (superiore, inferiore, sinistra, destra)
+//     int x, y;
 
-    // Bordo superiore
-    for (x = offset_x; x < offset_x + minimap_width; x++) {
-        my_pixel_put(x, offset_y, game, border_color);  // Linea orizzontale in alto
-    }
+//     // Bordo superiore
+//     for (x = offset_x; x < offset_x + minimap_width; x++) {
+//         my_pixel_put(x, offset_y, game, border_color);  // Linea orizzontale in alto
+//     }
 
-    // Bordo inferiore
-    for (x = offset_x; x < offset_x + minimap_width; x++) {
-        my_pixel_put(x, offset_y + minimap_height - 1, game, border_color);  // Linea orizzontale in basso
-    }
+//     // Bordo inferiore
+//     for (x = offset_x; x < offset_x + minimap_width; x++) {
+//         my_pixel_put(x, offset_y + minimap_height - 1, game, border_color);  // Linea orizzontale in basso
+//     }
 
-    // Bordo sinistro
-    for (y = offset_y; y < offset_y + minimap_height; y++) {
-        my_pixel_put(offset_x, y, game, border_color);  // Linea verticale a sinistra
-    }
+//     // Bordo sinistro
+//     for (y = offset_y; y < offset_y + minimap_height; y++) {
+//         my_pixel_put(offset_x, y, game, border_color);  // Linea verticale a sinistra
+//     }
 
-    // Bordo destro
-    for (y = offset_y; y < offset_y + minimap_height; y++) {
-        my_pixel_put(offset_x + minimap_width - 1, y, game, border_color);  // Linea verticale a destra
-    }
-}
+//     // Bordo destro
+//     for (y = offset_y; y < offset_y + minimap_height; y++) {
+//         my_pixel_put(offset_x + minimap_width - 1, y, game, border_color);  // Linea verticale a destra
+//     }
+// }
 
 //il draw_map per fare la minimappa ultimo buono
 void	draw_map(t_game *game, t_map_data *map)
@@ -390,7 +390,7 @@ void	draw_map(t_game *game, t_map_data *map)
 		i++;
 	}
 
-	draw_minimap_border(game, map);  // Disegna il bordo della minimappa
+	//draw_minimap_border(game, map);  // Disegna il bordo della minimappa
 	// Aggiunge la griglia alla minimappa (opzionale)
 	//draw_grid(game, map, 15 * TILE_SIZE);
 }

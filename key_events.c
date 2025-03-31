@@ -6,7 +6,7 @@
 /*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 23:27:56 by mariel            #+#    #+#             */
-/*   Updated: 2025/03/24 18:35:00 by damoncad         ###   ########.fr       */
+/*   Updated: 2025/03/31 17:18:03 by damoncad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ int key_press(int keycode, t_game *game)
         color = (color == 0xFF0000) ? 0x00FF00 : 0xFF0000;  // Alterna rosso/verde
         for (int x = 0; x < 100; x++) {
             for (int y = 0; y < 20; y++) {
-                my_pixel_put(game->screen_w/2 - 50 + x, game->screen_h - 100 + y, game, color);
+                my_pixel_put(game->screen_w/2 - 20 + x, game->screen_h - 100 + y, game, color);
             }
         }
     }
