@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 12:40:01 by mabrigo           #+#    #+#             */
-/*   Updated: 2025/03/31 15:08:57 by damoncad         ###   ########.fr       */
+/*   Updated: 2025/04/01 19:44:42 by mabrigo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,10 +139,13 @@ int	print_error(char *str);
 //draw.c
 void	my_pixel_put(int x, int y, t_game *game, int color);
 void	draw_direction_line(t_game *game, t_player *player, int length, int color);
+void	draw_square(int x, int y, int size, t_game *game, int color);
 void	draw_player(t_game *game, t_player *player, int size, int color);
 void	draw_grid(t_game *game, t_map_data *map, int tile_size);
-void	draw_square(int x, int y, int size, t_game *game, int color);
 void	draw_map(t_game *game, t_map_data *map);
+void	paint_floor_ceiling(t_game *game, int floor, int ceiling);
+void	draw_floor_ceiling(t_game *game, t_map_data *map);
+void 	draw_meme_gun(t_game *game);
 int		draw_loop(t_game *game);
 
 //free_shit.c
@@ -152,30 +155,36 @@ void	free_mlx(t_game *game);
 void	free_game_resources(t_game *game);
 
 //init.c
+void	load_texture(t_game *game, t_textures *texture, char *path);
+void 	init_textures(t_game *game, t_map_data *map);
 void	init_map(t_map_data *map);
 void	init_player(t_player *player, t_map_data *map, int offset_x, int offset_y);
 void	init_game(char *name_win, t_game *game, t_map_data *map);
+
+//key_events.c
 int		key_press(int keycode, t_game *game);
 int		key_release(int keycode, t_game *game);
 int		close_window(void *param);
 
 //parsing.c
-char	*strcmp_from_i(int i, char *src);
-void	parse_config_line(char *str, t_map_data *map);
 int		is_empty_line(char *str);
+int		*parse_rgb_values(char *str);
+void	assign_texture(char **txtr, char *value, char *err_msg);
+void	parse_floor_ceiling(int i, char *str, t_map_data *map);
+void	parse_config_line(char *str, t_map_data *map);
 int		is_map_line(char *str);
-int		count_lines(char *av, int fd);
 char	**load_map(char *av, int *map_start_line);
 void	parse_file(char **av, int fd, t_map_data *map);
 
-//move_player
-bool	is_valid_position(t_map_data *map, float x, float y);
-void	move_player(t_player *player, t_game *game);
+//player
 float	get_direction(t_player *player, char c);
+bool	is_valid_position(t_map_data *map, float x, float y);
+void	move_player(t_player *player, t_game *game); //a che serve
+
+//rotate_that_booty
 void    rotate_point(float *x, float *y, float center_x, float center_y, float angle);
 
 //map_checks.c
-int		my_strchr(char *s, int c);
 int		map_empty_lines(char **world);
 int		map_valid_char(char **world);
 void	get_line_data(t_line *line, char *str);
@@ -184,8 +193,16 @@ int		is_map_closed(char **world, t_line *line);
 int		check_map(char **world);
 
 //raycasting.c
+int 	get_texture_pixel(t_textures *texture, int x, int y);
 void	raycasting(t_game *game);
-void 	raylaser(t_game *game, t_player *player, float end_x, float end_y);
+//void 	raylaser(t_game *game, t_player *player, float end_x, float end_y);
+
+//utils.c
+int		my_strchr(char *s, int c);
+char	*trim_end_spaces(char *s);
+char	*strcmp_from_i(int i, char *src);
+int		count_lines(char *av, int fd);
+char 	*trim_newline(char *line);
 
 
 //int get_texture_color(t_game *game, int tex_x, int tex_y, int side);

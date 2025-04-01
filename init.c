@@ -3,23 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 23:45:26 by mariel            #+#    #+#             */
-/*   Updated: 2025/03/31 19:40:44 by damoncad         ###   ########.fr       */
+/*   Updated: 2025/04/01 19:39:21 by mabrigo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-
-void load_texture(t_game *game, t_textures *texture, char *path)
+void	load_texture(t_game *game, t_textures *texture, char *path)
 {
-	char *clean_path;
+	char	*clean_path;
 
-	clean_path = ft_strtrim(path, "\t\n\r");//da trovare soluzione migliore
-    texture->img = mlx_xpm_file_to_image(game->mlx, clean_path, &texture->width, &texture->height);
-	
+	clean_path = ft_strtrim(path, "\t\n\r");
+    texture->img = mlx_xpm_file_to_image(game->mlx, clean_path,
+			&texture->width, &texture->height);
 	printf("path: %s\n", path);
 	printf("north: %p\n", game->map->north_txtr);
 	printf("south: %p\n", game->map->south_txtr);
@@ -35,7 +34,7 @@ void load_texture(t_game *game, t_textures *texture, char *path)
                                      &texture->line_length, &texture->endian);
 }
 
-void init_textures(t_game *game, t_map_data *map)
+void	init_textures(t_game *game, t_map_data *map)
 {
     load_texture(game, &game->textures[0], map->north_txtr); // Nord
     load_texture(game, &game->textures[1], map->south_txtr); // Sud

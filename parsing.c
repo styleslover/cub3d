@@ -6,47 +6,11 @@
 /*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 22:52:55 by mariel            #+#    #+#             */
-/*   Updated: 2025/03/31 20:18:24 by mabrigo          ###   ########.fr       */
+/*   Updated: 2025/04/01 19:32:21 by mabrigo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
-
-char	*trim_end_spaces(char *s)
-{
-	int	i;
-
-	if (!s)
-		return (0);
-	i = ft_strlen(s) - 1;
-	while (i >= 0 && ft_strchr(" \t\v\r\n", s[i]))
-		i--;
-	s[i + 1] = '\0';
-	return (s);
-}
-
-char	*strcmp_from_i(int i, char *src)
-{
-	int		j;
-	int		len;
-	char	*dest;
-
-	if (!src)
-		return (NULL);
-	len = ft_strlen(src) - i + 1;
-	if (len <= 0)
-		return (NULL);
-	dest = malloc(sizeof(char) * len);
-	if (!dest)
-		return (NULL);
-	j = 0;
-	while (src[i])
-		dest[j++] = src[i++];
-	dest[j] = '\0';
-	dest = ft_strtrim(dest, " ");
-	dest = trim_end_spaces(dest);
-	return (dest);
-}
 
 int	is_empty_line(char *str)
 {
@@ -104,35 +68,66 @@ int	*parse_rgb_values(char *str)
 	return (rgb_values);
 }
 
+void	assign_texture(char **txtr, char *value, char *err_msg)
+{
+	if (*txtr)
+	{
+		free(*txtr);
+		print_error(err_msg);
+	}
+	else
+		*txtr = value;
+}
+
+void	parse_floor_ceiling(int i, char *str, t_map_data *map)
+{
+	char	*fc;
+	int		**target;
+
+	fc = 0;
+	target = 0;
+	if (ft_strncmp(str, "F ", 2) == 0)
+		target = &map->floor_color;
+	else if (ft_strncmp(str, "C ", 2) == 0)
+		target = &map->ceiling_color;
+	if (!target || !str[i + 2])
+        print_error("Error: invalid color line\n");
+	if (*target)
+	{
+		free(*target);
+		*target = NULL;
+		print_error("Error: double configuration\n");
+	}
+	fc = strcmp_from_i(i + 2, str);
+	if (!fc)
+		print_error("Error: invalid color format\n");
+	*target = parse_rgb_values(fc);
+	free(fc);
+	if (!*target)
+		print_error("Error: invalid color values\n");
+}
+
 void	parse_config_line(char *str, t_map_data *map)
 {
 	int		i;
-	char	*floor;
-	char	*ceiling;
 
 	i = 0;
 	while (str[i] == 32 || (str[i] >= 9 && str[i] <= 13))
 		i++;
-	if (ft_strncmp(str, "NO ", 3) == 0)
-		map->north_txtr = strcmp_from_i(i + 3, str);
-	else if (ft_strncmp(str, "SO ", 3) == 0)
-		map->south_txtr = strcmp_from_i(i + 3, str);
-	else if (ft_strncmp(str, "WE ", 3) == 0)
-		map->west_txtr = strcmp_from_i(i + 3, str);
-	else if (ft_strncmp(str, "EA ", 3) == 0)
-		map->east_txtr = strcmp_from_i(i + 3, str);
-	else if (ft_strncmp(str, "F ", 2) == 0)
-	{
-		floor = strcmp_from_i(i + 2, str);
-		map->floor_color = parse_rgb_values(floor);
-		free(floor);
-	}
-	else if (ft_strncmp(str, "C ", 2) == 0)
-	{
-		ceiling = strcmp_from_i(i + 2, str);
-		map->ceiling_color = parse_rgb_values(ceiling);
-		free(ceiling);
-	}
+	if (!ft_strncmp(str + i, "NO ", 3))
+		assign_texture(&map->north_txtr, strcmp_from_i(i + 3, str),
+			"Error: NO texture\n");
+	else if (!ft_strncmp(str + i, "SO ", 3))
+		assign_texture(&map->south_txtr, strcmp_from_i(i + 3, str),
+			"Error: SO texture\n");
+	else if (!ft_strncmp(str + i, "WE ", 3))
+		assign_texture(&map->west_txtr, strcmp_from_i(i + 3, str),
+			"Error: WE texture\n");
+	else if (!ft_strncmp(str + i, "EA ", 3))
+		assign_texture(&map->east_txtr, strcmp_from_i(i + 3, str),
+			"Error: EA texture\n");
+	else if (ft_strncmp(str, "F ", 2) == 0 || ft_strncmp(str, "C ", 2) == 0)
+		parse_floor_ceiling(i, str, map);
 }
 
 int	is_map_line(char *str)
@@ -156,32 +151,6 @@ int	is_map_line(char *str)
 		return (1);
 	}
 	return (0);
-}
-
-int	count_lines(char *av, int fd)
-{
-	int		lines;
-	char	*line;
-
-	lines = 0;
-	fd = open(av, O_RDONLY);
-	if (fd < 0)
-		return (0);
-	while ((line = get_next_line(fd)))
-	{
-		lines++;
-		free(line);
-	}
-	close(fd);
-	return (lines);
-}
-
-char *trim_newline(char *line)
-{
-	int len = strlen(line);
-	if (len > 0 && line[len - 1] == '\n')
-		line[len - 1] = '\0';
-	return line;
 }
 
 char	**load_map(char *av, int *map_start_line)
@@ -265,7 +234,7 @@ void	parse_file(char **av, int fd, t_map_data *map)
 		current_line++;
 		if (is_empty_line(line))
 		{
-			printf("Ignoring empty line: %s\n", line);
+			printf(": %s\n", line);
 			free(line);
 			continue;
 		}
@@ -285,6 +254,7 @@ void	parse_file(char **av, int fd, t_map_data *map)
 			}
 			else
 			{
+				//debug
 				printf("Error: invalid line in map: %s\n", line);	//da mettere funz error per tutte
 				free(line);
 				exit(1);

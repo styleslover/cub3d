@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 23:30:39 by mariel            #+#    #+#             */
-/*   Updated: 2025/03/31 19:45:34 by damoncad         ###   ########.fr       */
+/*   Updated: 2025/04/01 19:38:25 by mabrigo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -567,7 +567,8 @@ void draw_player_minimap(t_game *game, int center_x, int center_y, int size, int
     //draw_line(center_x, center_y, (int)end_x, (int)end_y, game, color);
 }
 */
-void draw_meme_gun(t_game *game) {
+void draw_meme_gun(t_game *game)
+{
     int gun_width = 200;
     int gun_height = 150;
     int start_x = (game->screen_w - gun_width) / 2;

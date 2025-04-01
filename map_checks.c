@@ -6,22 +6,11 @@
 /*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 18:39:22 by mabrigo           #+#    #+#             */
-/*   Updated: 2025/03/23 16:25:46 by mabrigo          ###   ########.fr       */
+/*   Updated: 2025/04/01 19:40:33 by mabrigo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
-
-int	my_strchr(char *s, int c)
-{
-	while (*s)
-	{
-		if (*s == (char)c)
-			return (1);
-		s++;
-	}
-	return (0);
-}
 
 int	map_empty_lines(char **world)
 {
