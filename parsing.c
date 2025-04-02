@@ -6,7 +6,7 @@
 /*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 22:52:55 by mariel            #+#    #+#             */
-/*   Updated: 2025/04/01 19:32:21 by mabrigo          ###   ########.fr       */
+/*   Updated: 2025/04/02 16:38:45 by mabrigo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,9 +86,9 @@ void	parse_floor_ceiling(int i, char *str, t_map_data *map)
 
 	fc = 0;
 	target = 0;
-	if (ft_strncmp(str, "F ", 2) == 0)
+	if (ft_strncmp(str + i, "F ", 2) == 0)
 		target = &map->floor_color;
-	else if (ft_strncmp(str, "C ", 2) == 0)
+	else if (ft_strncmp(str + i, "C ", 2) == 0)
 		target = &map->ceiling_color;
 	if (!target || !str[i + 2])
         print_error("Error: invalid color line\n");
@@ -126,7 +126,7 @@ void	parse_config_line(char *str, t_map_data *map)
 	else if (!ft_strncmp(str + i, "EA ", 3))
 		assign_texture(&map->east_txtr, strcmp_from_i(i + 3, str),
 			"Error: EA texture\n");
-	else if (ft_strncmp(str, "F ", 2) == 0 || ft_strncmp(str, "C ", 2) == 0)
+	else if (ft_strncmp(str + i, "F ", 2) == 0 || ft_strncmp(str + i, "C ", 2) == 0)
 		parse_floor_ceiling(i, str, map);
 }
 
@@ -208,7 +208,6 @@ char	**load_map(char *av, int *map_start_line)
 	
 	map[i] = NULL;  // Terminatore NULL per l'array di stringhe
 	close(fd);
-	// if (check_map(map))
 	return (map);
 }
 

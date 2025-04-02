@@ -1,13 +1,10 @@
-NO textures/bbrown.xpm
-SO textures/wall_texture.xpm
-WE textures/wall_texture.xpm
-EA textures/wall_texture.xpm
+NO textures/wall_texture.xpm
+SO textures/a.xpm
+EA textures/brown.xpm
+WE textures/t.xpm
 
 C 173,216,230
 F 139, 134, 130
-
-
-
 
 111111111111111
 100000000000001
