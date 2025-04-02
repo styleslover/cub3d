@@ -6,7 +6,7 @@
 /*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 23:45:26 by mariel            #+#    #+#             */
-/*   Updated: 2025/03/31 19:40:44 by damoncad         ###   ########.fr       */
+/*   Updated: 2025/03/31 20:27:49 by damoncad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ void load_texture(t_game *game, t_textures *texture, char *path)
     }
     texture->addr = mlx_get_data_addr(texture->img, &texture->bpp, 
                                      &texture->line_length, &texture->endian);
+	printf("Texture loaded: %s (Size: %dx%d)\n", path, texture->width, texture->height);
 }
 
 void init_textures(t_game *game, t_map_data *map)

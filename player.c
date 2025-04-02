@@ -54,7 +54,7 @@ bool is_valid_position(t_map_data *map, float x, float y)
 	char	tile;
 	
 	// Debug: stampa le coordinate
-	printf("Checking position: (%f, %f)\n", x, y);
+	//printf("Checking position: (%f, %f)\n", x, y);
 	
 	float map_x = x - map->offset_x;
 	float map_y = y - map->offset_y;
@@ -86,7 +86,7 @@ bool is_valid_position(t_map_data *map, float x, float y)
 		printf("Error: position is a wall\n");
 		return false;
 	}
-	printf("position is valid.\n");
+	//printf("position is valid.\n");
 	return true;
 }
 

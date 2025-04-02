@@ -6,7 +6,7 @@
 /*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 19:12:27 by damoncad          #+#    #+#             */
-/*   Updated: 2025/03/31 17:31:33 by damoncad         ###   ########.fr       */
+/*   Updated: 2025/03/31 20:43:04 by damoncad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -631,18 +631,18 @@ void raycasting(t_game *game)
         else
             wall_x = p->x + perp_wall_dist * ray_dir_x;
         wall_x -= floor(wall_x);
-
-        int tex_x = (int)(wall_x * (double)game->textures[0].width);
+        
+        int tex_x = (int)(floor(wall_x * game->textures[0].width));
         if (side == 0 && ray_dir_x > 0) tex_x = game->textures[0].width - tex_x - 1;
         if (side == 1 && ray_dir_y < 0) tex_x = game->textures[0].width - tex_x - 1;
 
         // [7] Disegno della linea verticale con texture
         for (int y = draw_start; y < draw_end; y++)
         {
-            int tex_y = (y * 2 - game->screen_h + line_height) * 
-                       (game->textures[0].height / 2) / line_height;
+            int tex_y = ((y - draw_start) * game->textures[0].height) / line_height; 
             int color = get_texture_pixel(&game->textures[side], tex_x, tex_y);
             my_pixel_put(x, y, game, color);
         }
+        printf("wall_x: %f, tex_x: %d\n", wall_x, tex_x);
     }
 }
