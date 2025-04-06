@@ -6,7 +6,7 @@
 /*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 12:40:01 by mabrigo           #+#    #+#             */
-/*   Updated: 2025/04/01 19:44:42 by mabrigo          ###   ########.fr       */
+/*   Updated: 2025/04/06 16:41:02 by mabrigo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,6 +135,7 @@ typedef struct s_line_data
 
 //cub3d.c
 int	print_error(char *str);
+int	check_filename(char *av);
 
 //draw.c
 void	my_pixel_put(int x, int y, t_game *game, int color);

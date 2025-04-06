@@ -6,7 +6,7 @@
 /*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 12:52:13 by mabrigo           #+#    #+#             */
-/*   Updated: 2025/04/01 19:25:56 by mabrigo          ###   ########.fr       */
+/*   Updated: 2025/04/06 16:41:36 by mabrigo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,18 @@ int	print_error(char *str)
 	exit(1);
 }
 
+int	check_filename(char *av)
+{
+	int	len;
+
+	len = ft_strlen(av);
+	if (!av)
+		return (0);
+	if (ft_strncmp(av + len - 4, ".cub", 4) != 0)
+		return (0);
+	return (1);
+}
+
 int	main(int ac, char **av)
 {
 	t_game			game;
@@ -25,6 +37,8 @@ int	main(int ac, char **av)
 
 	if (ac != 2)
 		return (printf("Error, please check your input"));
+	if (!check_filename(av[1]))
+		return (printf("Error: invalid type of fd\n"));
 	map.fd = open(av[1], O_RDONLY);
 	if (map.fd == -1)
 		return (printf("Error: invalid fd"));

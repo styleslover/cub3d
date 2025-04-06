@@ -6,7 +6,7 @@
 /*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 22:52:55 by mariel            #+#    #+#             */
-/*   Updated: 2025/04/02 16:38:45 by mabrigo          ###   ########.fr       */
+/*   Updated: 2025/04/06 16:35:29 by mabrigo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -195,7 +195,7 @@ char	**load_map(char *av, int *map_start_line)
 	while ((line = get_next_line(fd)))
 	{
 		//debug
-		//printf("line: %s\n", line);
+		printf("line: %s\n", line);
 		if (is_map_line(line) || is_empty_line(line))
 		{
 			map[i] = line;
@@ -205,7 +205,6 @@ char	**load_map(char *av, int *map_start_line)
 		else
 			free(line);
 	}
-	
 	map[i] = NULL;  // Terminatore NULL per l'array di stringhe
 	close(fd);
 	return (map);
@@ -280,6 +279,12 @@ void	parse_file(char **av, int fd, t_map_data *map)
 		free(line);
 	}
 	close(fd);
+	if (!current_line)
+	{
+		//debug
+		printf("Error: empty file\n");
+		return ;
+	}
 	map->world = load_map(av[1], &map_start_line);
 	int x = 0;
 	while (map->world[x])
@@ -332,6 +337,7 @@ void	parse_file(char **av, int fd, t_map_data *map)
 		//printf("map line [%d]: %s\n", i, map->world[i]);
 		i++;
 	}
+	
 	
 	//map_check(map); //todo: check delle texture (no spazi o altro), check valori f e c, mappa chiusa
 }

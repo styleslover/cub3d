@@ -6,7 +6,7 @@
 /*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 18:39:22 by mabrigo           #+#    #+#             */
-/*   Updated: 2025/04/01 19:40:33 by mabrigo          ###   ########.fr       */
+/*   Updated: 2025/04/06 13:09:07 by mabrigo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,13 @@ int	map_valid_char(char **world)
 			j++;
 		while (world[i][j])
 		{
-			if (!my_strchr("01NSEW \t", world[i][j]))
+			if (world[i][j] == '\t')
+			{
+				//debug
+				printf("Error: tab is an invalin character!\n");
+				return (0);
+			}
+			if (!my_strchr("01NSEW ", world[i][j]))
 				return (0);
 			if (my_strchr("NSEW", world[i][j]))
 				player++;
