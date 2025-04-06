@@ -6,7 +6,7 @@
 /*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 22:52:55 by mariel            #+#    #+#             */
-/*   Updated: 2025/03/31 19:29:24 by damoncad         ###   ########.fr       */
+/*   Updated: 2025/04/06 19:15:54 by damoncad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,13 +20,13 @@ char	*strcmp_from_i(int i, char *src)
 	char	*dest;
 	
 	if (!src)
-	return (NULL);
+		return (NULL);
 	len = ft_strlen(src) - i + 1;
 	if (len <= 0)
-	return (NULL);
+		return (NULL);
 	dest = malloc(sizeof(char) * len);
 	if (!dest)
-	return (NULL);
+		return (NULL);
 	j = 0;
 	while (src[i])
 	dest[j++] = src[i++];

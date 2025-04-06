@@ -6,7 +6,7 @@
 /*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 23:45:26 by mariel            #+#    #+#             */
-/*   Updated: 2025/03/31 20:27:49 by damoncad         ###   ########.fr       */
+/*   Updated: 2025/04/06 19:18:14 by damoncad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,8 +98,8 @@ void	init_player(t_player *player, t_map_data *map, int offset_x, int offset_y)
 				//printf("player direction: %f\n", player->dir);
 				
 				//piano della camera(modifica il FOV)
-				player->plane_x = 0.66f;	//0.66 valore standard per il fov
-				player->plane_y = 0.0f;
+				//player->plane_x = 0.66f;	//0.66 valore standard per il fov
+				//player->plane_y = 0.0f;
 
 				map->world[i][j] = '0';
 				//debug
@@ -113,15 +113,6 @@ void	init_player(t_player *player, t_map_data *map, int offset_x, int offset_y)
 		}
 		i++;
 	}
-	player->tile_x = map->map_width / 2;
-	player->tile_y = map->map_height / 2;
-	player->x = (float)(map->win_width / 2);
-	player->y = (float)(map->win_height / 2);
-	player->dir_x = 1.0f;
-	player->dir_y = 0.0f;
-	player->plane_x = 0.0f;
-	player->plane_y = 0.66f;
-	printf("Posizione non trovata sulla mappa, posizionato al centro dello schermo\n");
 }
 
 void	init_game(char *name_win, t_game *game, t_map_data *map)

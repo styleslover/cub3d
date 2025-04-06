@@ -6,7 +6,7 @@
 /*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 12:40:01 by mabrigo           #+#    #+#             */
-/*   Updated: 2025/03/31 15:08:57 by damoncad         ###   ########.fr       */
+/*   Updated: 2025/04/06 19:08:41 by damoncad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,6 +150,7 @@ void	free_matrix(char **map);
 void	free_map(t_map_data *map);
 void	free_mlx(t_game *game);
 void	free_game_resources(t_game *game);
+void	free_textures(t_game *game);
 
 //init.c
 void	init_map(t_map_data *map);
