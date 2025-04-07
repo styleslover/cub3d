@@ -6,7 +6,7 @@
 /*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 13:03:51 by damoncad          #+#    #+#             */
-/*   Updated: 2025/04/07 19:41:51 by mabrigo          ###   ########.fr       */
+/*   Updated: 2025/04/07 20:52:44 by mabrigo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,14 @@ void	free_game_resources(t_game *game)
     printf("Liberando risorse...\n");
     if (!game)
         return;
+    if (game->mlx)
+    {
+        for (int i = 0; i < 4; i++)
+        {
+            if (game->textures[i].img)
+                mlx_destroy_image(game->mlx, game->textures[i].img);
+        }
+    }
     if (game->player)
     {
         free(game->player);

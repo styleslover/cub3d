@@ -6,7 +6,7 @@
 /*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 22:52:55 by mariel            #+#    #+#             */
-/*   Updated: 2025/04/07 19:45:24 by mabrigo          ###   ########.fr       */
+/*   Updated: 2025/04/07 20:47:02 by mabrigo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,6 @@ int	*parse_rgb_values(char *str)
 		trimmed = ft_strtrim(splitted[i], " \t\n\r");
 		if (!check_single_value(splitted[i]))
 		{
-			//debug
 			free(trimmed);
 			free_matrix(splitted);
 			free(rgb_values);
@@ -94,8 +93,6 @@ int	*parse_rgb_values(char *str)
 		rgb_values[i] = ft_atoi(trimmed);
 		if (rgb_values[i] < 0 || rgb_values[i] > 255)
 		{
-			//debug
-			printf("errore in ceiling o floor\n");
 			free(trimmed);
 			free_matrix(splitted);
 			free(rgb_values);
@@ -118,40 +115,49 @@ void	assign_texture(char **txtr, char *value, char *err_msg)
 	if (*txtr)
 	{
 		free(*txtr);
+		*txtr = NULL;
 		print_error(err_msg);
 	}
-	else
-		*txtr = value;
+	*txtr = value;
 }
 
-void	parse_floor_ceiling(int i, char *str, t_map_data *map)
+void parse_floor_ceiling(int i, char *str, t_map_data *map)
 {
-	char	*fc;
-	int		**target;
+    char *fc = strcmp_from_i(i + 2, str);
+    if (!fc)
+    {
+        print_error("Error: invalid color format\n");
+        return;
+    }
 
-	fc = 0;
-	target = 0;
-	if (ft_strncmp(str + i, "F ", 2) == 0)
-		target = &map->floor_color;
-	else if (ft_strncmp(str + i, "C ", 2) == 0)
-		target = &map->ceiling_color;
-	if (!target || !str[i + 2])
+    int **target = NULL;
+    if (ft_strncmp(str + i, "F ", 2) == 0)
+        target = &map->floor_color;
+    else if (ft_strncmp(str + i, "C ", 2) == 0)
+        target = &map->ceiling_color;
+
+    if (!target)
+    {
+        free(fc);  // Libera la stringa allocata
         print_error("Error: invalid color line\n");
-	if (*target)
-	{
-		free(*target);
-		*target = NULL;
-		print_error("Error: double configuration\n");
-	}
-	fc = strcmp_from_i(i + 2, str);
-	if (!fc)
-		print_error("Error: invalid color format\n");
-	*target = parse_rgb_values(fc);
-	free(fc);
-	if (!*target)
-		print_error("Error: invalid color values\n");
-}
+        return;
+    }
 
+    if (*target)
+    {
+        free(*target);
+        *target = NULL;
+        free(fc);  // Libera la stringa allocata
+        print_error("Error: double configuration\n");
+        return;
+    }
+
+    *target = parse_rgb_values(fc);
+    free(fc);  // Libera la stringa allocata dopo l'uso
+    
+    if (!*target)
+        print_error("Error: invalid color values\n");
+}
 int is_valid_config_line(char *str)
 {
     int i = 0;
@@ -169,32 +175,53 @@ int is_valid_config_line(char *str)
            ft_strncmp(str + i, "C ", 2) == 0);
 }
 
-void	parse_config_line(char *str, t_map_data *map)
+void parse_config_line(char *str, t_map_data *map)
 {
-	int		i;
+    int i = 0;
+    while (str[i] == 32 || (str[i] >= 9 && str[i] <= 13))
+        i++;
 
-	i = 0;
-	while (str[i] == 32 || (str[i] >= 9 && str[i] <= 13))
-		i++;
-	if (!is_valid_config_line(str))
-	{
-		printf("Error: invalid configuration line: '%s'\n", str);
-		exit(1);
-	}
-	if (!ft_strncmp(str + i, "NO ", 3))
-		assign_texture(&map->north_txtr, strcmp_from_i(i + 3, str),
-			"Error: NO texture\n");
-	else if (!ft_strncmp(str + i, "SO ", 3))
-		assign_texture(&map->south_txtr, strcmp_from_i(i + 3, str),
-			"Error: SO texture\n");
-	else if (!ft_strncmp(str + i, "WE ", 3))
-		assign_texture(&map->west_txtr, strcmp_from_i(i + 3, str),
-			"Error: WE texture\n");
-	else if (!ft_strncmp(str + i, "EA ", 3))
-		assign_texture(&map->east_txtr, strcmp_from_i(i + 3, str),
-			"Error: EA texture\n");
-	else if (!ft_strncmp(str + i, "F ", 2) || !ft_strncmp(str + i, "C ", 2))
-		parse_floor_ceiling(i, str, map);
+    if (!is_valid_config_line(str))
+    {
+        printf("Error: invalid configuration line: '%s'\n", str);
+        exit(1);
+    }
+
+    char *value = strcmp_from_i(i + (str[i+1] == ' ' ? 3 : 2), str);
+    if (!value)
+    {
+        printf("Error: invalid texture path\n");
+        exit(1);
+    }
+
+    // Gestione più sicura delle texture
+    char **target_texture = NULL;
+    if (!ft_strncmp(str + i, "NO ", 3))
+        target_texture = &map->north_txtr;
+    else if (!ft_strncmp(str + i, "SO ", 3))
+        target_texture = &map->south_txtr;
+    else if (!ft_strncmp(str + i, "WE ", 3))
+        target_texture = &map->west_txtr;
+    else if (!ft_strncmp(str + i, "EA ", 3))
+        target_texture = &map->east_txtr;
+
+    if (target_texture)
+    {
+        if (*target_texture)
+            free(*target_texture);
+        *target_texture = value;
+    }
+    else if (!ft_strncmp(str + i, "F ", 2) || !ft_strncmp(str + i, "C ", 2))
+    {
+        free(value);  // Libera la stringa poiché parse_floor_ceiling ne crea una nuova
+        parse_floor_ceiling(i, str, map);
+    }
+    else
+    {
+        free(value);  // Libera la stringa se non è stata usata
+        printf("Error: unknown configuration line: '%s'\n", str + i);
+        exit(1);
+    }
 }
 
 int	is_map_line(char *str)
@@ -261,8 +288,6 @@ char	**load_map(char *av, int *map_start_line)
 	i = 0;
 	while ((line = get_next_line(fd)))
 	{
-		//debug
-		printf("line: %s\n", line);
 		if (is_map_line(line) || is_empty_line(line))
 		{
 			map[i] = line;
@@ -284,7 +309,6 @@ void	parse_file(char **av, int fd, t_map_data *map)
 	int		config_done;
 	int		map_start_line;
 	int		current_line;
-	int		i;
 
 	init_map(map);
 	line_len = 0;
@@ -293,17 +317,12 @@ void	parse_file(char **av, int fd, t_map_data *map)
 	current_line = 0;
 	while ((line = get_next_line(fd)))
 	{
-		//debug
-		//printf("processing line: %s\n", line);
 		current_line++;
 		if (is_empty_line(line))
 		{
-			printf("empty valid line: %s\n", line);
 			free(line);
 			continue;
 		}
-		//debug
-		//printf("config done: %d\n", config_done);
 		if (config_done)
 		{
 			
@@ -318,8 +337,6 @@ void	parse_file(char **av, int fd, t_map_data *map)
 			}
 			else
 			{
-				//debug
-				printf("Error: invalid line in map: %s\n", line);	//da mettere funz error per tutte
 				free(line);
 				exit(1);
 			}	
@@ -328,7 +345,6 @@ void	parse_file(char **av, int fd, t_map_data *map)
 		{
 			if (is_map_line(line))
 			{
-				printf("Error: map line before configurations: %s\n", line);
 				free(line);
 				exit(1);
 			}
@@ -347,7 +363,6 @@ void	parse_file(char **av, int fd, t_map_data *map)
 	close(fd);
 	if (!current_line)
 	{
-		//debug
 		printf("Error: empty file\n");
 		return ;
 	}
@@ -355,7 +370,6 @@ void	parse_file(char **av, int fd, t_map_data *map)
 	int x = 0;
 	while (map->world[x])
 	{
-		printf("world[%d]: %s\n", x, map->world[x]);
 		x++;
 	}
 	if (!check_map(map->world))
@@ -363,47 +377,8 @@ void	parse_file(char **av, int fd, t_map_data *map)
 		printf("Error: Failed to load map\n");
 		exit(1);
 	}
-	/*
-	map->win_width *= TILE_SIZE;
-	map->win_height *= TILE_SIZE;
-	if (map->win_width >= WIDTH || map->win_height >= HEIGHT)
-	{
-		map->win_width = map->win_width;
-		map->win_height = map->win_height;
-	}
-	*/
 	map->map_width = ft_strlen(map->world[0]);  // Larghezza della mappa
     map->map_height = 0;
     while (map->world[map->map_height] != NULL)
         map->map_height++;
-    printf("Map dimensions after loading: %d x %d\n", map->map_width, map->map_height);
-	
-	//debug
-	// printf("North Texture: %s\n", map->north_txtr);
-	// printf("South Texture: %s\n", map->south_txtr);
-	// printf("West Texture: %s\n", map->west_txtr);
-	// printf("East Texture: %s\n", map->east_txtr);
-	int	f = 0;
-	while (map->floor_color[f])
-	{
-		printf("Floor Color: %d\n", map->floor_color[f]);
-		f++;
-	}
-	f = 0;
-	while (map->ceiling_color[f])
-	{
-		printf("Ceiling Color: %d\n", map->ceiling_color[f]);
-		f++;
-	}
-	// printf("Win Size (pxl): %d x %d\n", map->win_width, map->win_height);
-	i = 0;
-	while (map->world[i])
-	{
-		//debug
-		//printf("map line [%d]: %s\n", i, map->world[i]);
-		i++;
-	}
-	
-	
-	//map_check(map); //todo: check delle texture (no spazi o altro), check valori f e c, mappa chiusa
 }

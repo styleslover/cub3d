@@ -6,7 +6,7 @@
 /*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 19:31:10 by mabrigo           #+#    #+#             */
-/*   Updated: 2025/04/01 19:40:03 by mabrigo          ###   ########.fr       */
+/*   Updated: 2025/04/07 20:49:28 by mabrigo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,27 +36,18 @@ char	*trim_end_spaces(char *s)
 	return (s);
 }
 
-char	*strcmp_from_i(int i, char *src)
+char *strcmp_from_i(int i, char *src)
 {
-	int		j;
-	int		len;
-	char	*dest;
+    if (!src || !src[i])
+        return NULL;
 
-	if (!src)
-		return (NULL);
-	len = ft_strlen(src) - i + 1;
-	if (len <= 0)
-		return (NULL);
-	dest = malloc(sizeof(char) * len);
-	if (!dest)
-		return (NULL);
-	j = 0;
-	while (src[i])
-		dest[j++] = src[i++];
-	dest[j] = '\0';
-	dest = ft_strtrim(dest, " ");
-	dest = trim_end_spaces(dest);
-	return (dest);
+    char *trimmed = ft_strtrim(src + i, " \t\r\n");
+    if (!trimmed)
+        return NULL;
+
+    char *result = ft_strdup(trimmed);
+    free(trimmed);
+    return result;
 }
 
 int	count_lines(char *av, int fd)
