@@ -6,7 +6,7 @@
 /*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 19:12:27 by damoncad          #+#    #+#             */
-/*   Updated: 2025/04/02 18:22:52 by damoncad         ###   ########.fr       */
+/*   Updated: 2025/04/07 11:44:19 by damoncad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -646,7 +646,8 @@ void raycasting(t_game *game)
         // [7] Disegno della linea verticale con texture
         for (int y = draw_start; y < draw_end; y++)
         {
-            int tex_y = ((y - draw_start) * game->textures[side].height) / line_height; 
+            int tex_y = (y * 2 - game->screen_h + line_height) *
+                (game->textures[side].height / 2) / line_height; 
             int color = get_texture_pixel(&game->textures[side], tex_x, tex_y);
             my_pixel_put(x, y, game, color);
         }
