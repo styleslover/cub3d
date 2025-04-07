@@ -6,7 +6,7 @@
 /*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 19:12:27 by damoncad          #+#    #+#             */
-/*   Updated: 2025/04/07 11:44:19 by damoncad         ###   ########.fr       */
+/*   Updated: 2025/04/07 19:09:05 by damoncad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -620,7 +620,7 @@ void raycasting(t_game *game)
             perp_wall_dist = (map_x - ray_x + (1 - step_x) / 2) / ray_dir_x;
         else
             perp_wall_dist = (map_y - ray_y + (1 - step_y) / 2) / ray_dir_y;
-       
+
         // [5] Calcolo altezza linea da disegnare
         int line_height = (int)(game->screen_h / perp_wall_dist);
         int draw_start = -line_height / 2 + game->screen_h / 2;
@@ -631,6 +631,12 @@ void raycasting(t_game *game)
         if (draw_end >= game->screen_h)
             draw_end = game->screen_h - 1;
 
+        int texture_index;
+
+        if (side == 0)
+            texture_index = (ray_dir_x > 0 ? 2 : 3);
+        else
+            texture_index = (ray_dir_y > 0 ? 1 : 0);
         // [6] Calcolo coordinate texture
         float wall_x;
         if (side == 0)
@@ -638,19 +644,20 @@ void raycasting(t_game *game)
         else
             wall_x = ray_x + perp_wall_dist * ray_dir_x;
         wall_x -= floor(wall_x);
-        
-        int tex_x = (int)(wall_x * game->textures[side].width);
-        if (side == 0 && ray_dir_x > 0) tex_x = game->textures[side].width - tex_x - 1;
-        if (side == 1 && ray_dir_y < 0) tex_x = game->textures[side].width - tex_x - 1;
 
+        int tex_x = (int)(wall_x * (double)game->textures[texture_index].width);
+        if (side == 0 && ray_dir_x > 0) tex_x = game->textures[texture_index].width - tex_x - 1;
+        if (side == 1 && ray_dir_y < 0) tex_x = game->textures[texture_index].width - tex_x - 1;
+        
         // [7] Disegno della linea verticale con texture
         for (int y = draw_start; y < draw_end; y++)
         {
-            int tex_y = (y * 2 - game->screen_h + line_height) *
-                (game->textures[side].height / 2) / line_height; 
-            int color = get_texture_pixel(&game->textures[side], tex_x, tex_y);
+            int tex_y = (y * 2 - game->screen_h + line_height) * 
+                       (game->textures[0].height / 2) / line_height;
+            int color = get_texture_pixel(&game->textures[texture_index], tex_x, tex_y);
             my_pixel_put(x, y, game, color);
         }
-        printf("wall_x: %f, tex_x: %d\n", wall_x, tex_x);
     }
 }
+
+
