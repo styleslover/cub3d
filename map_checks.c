@@ -6,7 +6,7 @@
 /*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 18:39:22 by mabrigo           #+#    #+#             */
-/*   Updated: 2025/04/06 13:09:07 by mabrigo          ###   ########.fr       */
+/*   Updated: 2025/04/07 19:19:31 by mabrigo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,14 +30,10 @@ int	map_empty_lines(char **world)
 	return (1);
 }
 
-int	map_valid_char(char **world)
+int	map_valid_char(char **world, int i, int player)
 {
-	int	i;
 	int	j;
-	int	player;
 
-	i = 0;
-	player = 0;
 	while (world[i])
 	{
 		j = 0;
@@ -47,7 +43,6 @@ int	map_valid_char(char **world)
 		{
 			if (world[i][j] == '\t')
 			{
-				//debug
 				printf("Error: tab is an invalin character!\n");
 				return (0);
 			}
@@ -127,8 +122,12 @@ int	is_map_closed(char **world, t_line *line)
 int	check_map(char **world)
 {
 	t_line	line;
+	int		i;
+	int		player;
 
-    if (!map_valid_char(world) || !is_map_closed(world, &line)
+	i = 0;
+	player = 0;
+    if (!map_valid_char(world, i, player) || !is_map_closed(world, &line)
 		|| !map_empty_lines(world))
 	{
 		printf("Error: Invalid map\n");

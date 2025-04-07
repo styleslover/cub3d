@@ -6,7 +6,7 @@
 /*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 12:40:01 by mabrigo           #+#    #+#             */
-/*   Updated: 2025/04/06 16:41:02 by mabrigo          ###   ########.fr       */
+/*   Updated: 2025/04/07 19:20:07 by mabrigo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -169,9 +169,11 @@ int		close_window(void *param);
 
 //parsing.c
 int		is_empty_line(char *str);
+int	check_single_value(char *str);
 int		*parse_rgb_values(char *str);
 void	assign_texture(char **txtr, char *value, char *err_msg);
 void	parse_floor_ceiling(int i, char *str, t_map_data *map);
+int is_valid_config_line(char *str);
 void	parse_config_line(char *str, t_map_data *map);
 int		is_map_line(char *str);
 char	**load_map(char *av, int *map_start_line);
@@ -187,7 +189,7 @@ void    rotate_point(float *x, float *y, float center_x, float center_y, float a
 
 //map_checks.c
 int		map_empty_lines(char **world);
-int		map_valid_char(char **world);
+int	map_valid_char(char **world, int i, int player);
 void	get_line_data(t_line *line, char *str);
 int		check_cardinals(char **world, int i, int j);
 int		is_map_closed(char **world, t_line *line);

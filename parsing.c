@@ -6,7 +6,7 @@
 /*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 22:52:55 by mariel            #+#    #+#             */
-/*   Updated: 2025/04/07 12:43:45 by mabrigo          ###   ########.fr       */
+/*   Updated: 2025/04/07 19:45:24 by mabrigo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,9 @@ int	*parse_rgb_values(char *str)
 		if (!check_single_value(splitted[i]))
 		{
 			//debug
+			free(trimmed);
+			free_matrix(splitted);
+			free(rgb_values);
 			printf("Error: something's wrong in color values\n");
 			return (0);
 		}

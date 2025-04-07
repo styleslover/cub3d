@@ -6,7 +6,7 @@
 /*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 23:30:39 by mariel            #+#    #+#             */
-/*   Updated: 2025/04/01 19:38:25 by mabrigo          ###   ########.fr       */
+/*   Updated: 2025/04/07 19:16:26 by mabrigo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -171,63 +171,6 @@ void	draw_square(int x, int y, int size, t_game *game, int color)
 		i++;
 	}
 }
-//vecchio classico draw_map
-// void	draw_map(t_game *game, t_map_data *map)
-// {
-// 	int			color;
-// 	int			i;
-// 	int			j;
-
-// 	//printf("PORCODIO\n");
-// 	if (!map->world || !map->world[0])
-// 	{
-// 		printf("Error: Map not loaded or empty\n");
-// 		return ;
-// 	}
-// 	map->map_width = (ft_strlen(map->world[0]));
-// 	map->map_height = 0;
-// 	while (map->world[map->map_height] != NULL)
-// 		map->map_height++;
-
-// 	map->offset_x = (game->screen_w - (map->map_width * TILE_SIZE)) / 2;
-// 	map->offset_y = (game->screen_h - (map->map_height * TILE_SIZE)) / 2;
-// 	i = 0;
-// 	while (map->world[i] != NULL)
-// 	{
-// 		j = 0;
-// 		while (map->world[i][j] != '\0')
-// 		{
-// 			if (map->world[i][j] == '1')
-// 				color = RED;
-// 			else if (map->world[i][j] == '0')
-// 				color = BLUE;
-// 			else if (map->world[i][j] == 'W' || map->world[i][j] == 'S'
-// 					|| map->world[i][j] == 'E' || map->world[i][j] == 'N')	// IGNORA 'N' O GESTISCI IL GIOCATORE	
-// 				color = WHITE; //debugging reasons, da cambiare con BLUE
-// 			//per qualche motivo N non me lo trova
-// 			else
-// 			{
-// 				j++;
-// 				continue;
-// 			}
-// 				draw_square(j * TILE_SIZE + map->offset_x,
-// 				i * TILE_SIZE + map->offset_y, TILE_SIZE, game, color);
-// 			j++;
-// 		}
-// 		i++;
-// 	}
-// 	//printf("Fuori while\n");
-// 	//AGGIUNGE LA GRIGLIA DI DEBUG
-// 	draw_grid(game, map, TILE_SIZE);
-// 	//printf("Map drawn successfully\n");//debug
-// }
-
-
-
-
-
-
-
 
 void	draw_player(t_game *game, t_player *player, int size, int color)
 {
@@ -306,43 +249,6 @@ void	draw_grid(t_game *game, t_map_data *map, int tile_size)
 	}
 }
 
-// void draw_minimap_border(t_game *game, t_map_data *map)
-// {
-//     // Calcola la posizione di partenza per il bordo
-//     int minimap_width = map->map_width * MINIMAP_SIZE;
-//     int minimap_height = map->map_height * MINIMAP_SIZE;
-
-//     int offset_x = map->offset_minimap_x;
-//     int offset_y = map->offset_minimap_y;
-
-//     // Colore del bordo
-//     int border_color = 0xFFFFFF;  // Bianco, ma puoi cambiarlo come vuoi
-
-//     // Disegna il bordo: 4 linee (superiore, inferiore, sinistra, destra)
-//     int x, y;
-
-//     // Bordo superiore
-//     for (x = offset_x; x < offset_x + minimap_width; x++) {
-//         my_pixel_put(x, offset_y, game, border_color);  // Linea orizzontale in alto
-//     }
-
-//     // Bordo inferiore
-//     for (x = offset_x; x < offset_x + minimap_width; x++) {
-//         my_pixel_put(x, offset_y + minimap_height - 1, game, border_color);  // Linea orizzontale in basso
-//     }
-
-//     // Bordo sinistro
-//     for (y = offset_y; y < offset_y + minimap_height; y++) {
-//         my_pixel_put(offset_x, y, game, border_color);  // Linea verticale a sinistra
-//     }
-
-//     // Bordo destro
-//     for (y = offset_y; y < offset_y + minimap_height; y++) {
-//         my_pixel_put(offset_x + minimap_width - 1, y, game, border_color);  // Linea verticale a destra
-//     }
-// }
-
-//il draw_map per fare la minimappa ultimo buono
 void	draw_map(t_game *game, t_map_data *map)
 {
 	int			color;
