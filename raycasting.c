@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   raycasting.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 19:12:27 by damoncad          #+#    #+#             */
-/*   Updated: 2025/03/31 17:31:33 by damoncad         ###   ########.fr       */
+/*   Updated: 2025/04/06 16:59:19 by mabrigo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -624,17 +624,23 @@ void raycasting(t_game *game)
         int draw_end = line_height / 2 + game->screen_h / 2;
         if (draw_end >= game->screen_h) draw_end = game->screen_h - 1;
 
+        int texture_index;
+
+        if (side == 0)
+            texture_index = (ray_dir_x > 0 ? 2 : 3);
+        else
+            texture_index = (ray_dir_y > 0 ? 1 : 0);
         // [6] Calcolo coordinate texture
         float wall_x;
         if (side == 0)
-            wall_x = p->y + perp_wall_dist * ray_dir_y;
+            wall_x = ray_y + perp_wall_dist * ray_dir_y;
         else
-            wall_x = p->x + perp_wall_dist * ray_dir_x;
+            wall_x = ray_x + perp_wall_dist * ray_dir_x;
         wall_x -= floor(wall_x);
 
-        int tex_x = (int)(wall_x * (double)game->textures[0].width);
-        if (side == 0 && ray_dir_x > 0) tex_x = game->textures[0].width - tex_x - 1;
-        if (side == 1 && ray_dir_y < 0) tex_x = game->textures[0].width - tex_x - 1;
+        int tex_x = (int)(wall_x * (double)game->textures[texture_index].width);
+        if (side == 0 && ray_dir_x > 0) tex_x = game->textures[texture_index].width - tex_x - 1;
+        if (side == 1 && ray_dir_y < 0) tex_x = game->textures[texture_index].width - tex_x - 1;
 
         // [7] Disegno della linea verticale con texture
         for (int y = draw_start; y < draw_end; y++)

@@ -6,7 +6,7 @@
 /*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 22:52:55 by mariel            #+#    #+#             */
-/*   Updated: 2025/04/06 16:35:29 by mabrigo          ###   ########.fr       */
+/*   Updated: 2025/04/07 12:43:45 by mabrigo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,34 @@ int	is_empty_line(char *str)
 	return (1);  // La linea è vuota
 }
 
+int	check_single_value(char *str)
+{
+    int i;
+    int digit_found;
+
+	i = 0;
+	digit_found = 0;
+	while (str[i] == 32 || (str[i] >= 9 && str[i] <= 13))
+		i++;
+	while (str[i])
+	{
+		if (ft_isdigit(str[i]))
+		{
+			digit_found = 1;
+			i++;
+		}
+		else if (str[i] == ' ' || str[i] == '\t')
+		{
+			i++;
+			while (str[i] == ' ' || str[i] == '\t')
+				i++;
+		}
+	}
+	if (str[i] != '\0')
+		return (0);
+	return (digit_found);
+}
+
 int	*parse_rgb_values(char *str)
 {
 	char	**splitted;
@@ -36,6 +64,14 @@ int	*parse_rgb_values(char *str)
 	splitted = ft_split(str, ',');
 	if (!splitted)
 		return (0);
+	i = 0;
+	while (splitted[i])
+		i++;
+	if (i != 3)
+	{
+		free_matrix(splitted);
+		return (NULL);
+	}
 	rgb_values = (int *)malloc(sizeof(int) * 3);
 	if (!rgb_values)
 	{
@@ -46,6 +82,12 @@ int	*parse_rgb_values(char *str)
 	while (i < 3 && splitted[i])
 	{
 		trimmed = ft_strtrim(splitted[i], " \t\n\r");
+		if (!check_single_value(splitted[i]))
+		{
+			//debug
+			printf("Error: something's wrong in color values\n");
+			return (0);
+		}
 		rgb_values[i] = ft_atoi(trimmed);
 		if (rgb_values[i] < 0 || rgb_values[i] > 255)
 		{
@@ -107,6 +149,23 @@ void	parse_floor_ceiling(int i, char *str, t_map_data *map)
 		print_error("Error: invalid color values\n");
 }
 
+int is_valid_config_line(char *str)
+{
+    int i = 0;
+    
+    // Salta spazi iniziali
+    while (str[i] == 32 || (str[i] >= 9 && str[i] <= 13))
+        i++;
+		
+    // Verifica se è una configurazione valida
+    return (ft_strncmp(str + i, "NO ", 3) == 0 ||
+           ft_strncmp(str + i, "SO ", 3) == 0 ||
+           ft_strncmp(str + i, "WE ", 3) == 0 ||
+           ft_strncmp(str + i, "EA ", 3) == 0 ||
+           ft_strncmp(str + i, "F ", 2) == 0 ||
+           ft_strncmp(str + i, "C ", 2) == 0);
+}
+
 void	parse_config_line(char *str, t_map_data *map)
 {
 	int		i;
@@ -114,6 +173,11 @@ void	parse_config_line(char *str, t_map_data *map)
 	i = 0;
 	while (str[i] == 32 || (str[i] >= 9 && str[i] <= 13))
 		i++;
+	if (!is_valid_config_line(str))
+	{
+		printf("Error: invalid configuration line: '%s'\n", str);
+		exit(1);
+	}
 	if (!ft_strncmp(str + i, "NO ", 3))
 		assign_texture(&map->north_txtr, strcmp_from_i(i + 3, str),
 			"Error: NO texture\n");
@@ -126,14 +190,14 @@ void	parse_config_line(char *str, t_map_data *map)
 	else if (!ft_strncmp(str + i, "EA ", 3))
 		assign_texture(&map->east_txtr, strcmp_from_i(i + 3, str),
 			"Error: EA texture\n");
-	else if (ft_strncmp(str + i, "F ", 2) == 0 || ft_strncmp(str + i, "C ", 2) == 0)
+	else if (!ft_strncmp(str + i, "F ", 2) || !ft_strncmp(str + i, "C ", 2))
 		parse_floor_ceiling(i, str, map);
 }
 
 int	is_map_line(char *str)
 {
 	int	i;
-
+	
 	i = 0;
 	if (!str[i])
 		return (0);
@@ -144,9 +208,9 @@ int	is_map_line(char *str)
 	if (str[i] == '1' || str[i] == '0' || str[i] == 'N'
 		|| str[i] == 'S' || str[i] == 'E' || str[i] == 'W')
 	{
-		if (ft_strncmp(&str[i], "NO ", 3) == 0 || ft_strncmp(&str[i], "SO ", 3) == 0
-			|| ft_strncmp(&str[i], "WE ", 3) == 0 || ft_strncmp(&str[i], "EA ", 3) == 0
-			|| ft_strncmp(&str[i], "F ", 2) == 0 || ft_strncmp(&str[i], "C ", 2) == 0)
+		if (!ft_strncmp(&str[i], "NO ", 3) || !ft_strncmp(&str[i], "SO ", 3)
+			|| !ft_strncmp(&str[i], "WE ", 3) || !ft_strncmp(&str[i], "EA ", 3)
+			|| !ft_strncmp(&str[i], "F ", 2) || !ft_strncmp(&str[i], "C ", 2))
 			return (0);
 		return (1);
 	}
@@ -210,8 +274,6 @@ char	**load_map(char *av, int *map_start_line)
 	return (map);
 }
 
-
-
 void	parse_file(char **av, int fd, t_map_data *map)
 {
 	char	*line;
@@ -219,6 +281,7 @@ void	parse_file(char **av, int fd, t_map_data *map)
 	int		config_done;
 	int		map_start_line;
 	int		current_line;
+	int		i;
 
 	init_map(map);
 	line_len = 0;
@@ -232,7 +295,7 @@ void	parse_file(char **av, int fd, t_map_data *map)
 		current_line++;
 		if (is_empty_line(line))
 		{
-			printf(": %s\n", line);
+			printf("empty valid line: %s\n", line);
 			free(line);
 			continue;
 		}
@@ -330,7 +393,7 @@ void	parse_file(char **av, int fd, t_map_data *map)
 		f++;
 	}
 	// printf("Win Size (pxl): %d x %d\n", map->win_width, map->win_height);
-	int i = 0;
+	i = 0;
 	while (map->world[i])
 	{
 		//debug
