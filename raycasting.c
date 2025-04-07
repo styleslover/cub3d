@@ -6,7 +6,7 @@
 /*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 19:12:27 by damoncad          #+#    #+#             */
-/*   Updated: 2025/04/06 16:59:19 by mabrigo          ###   ########.fr       */
+/*   Updated: 2025/04/07 18:55:41 by mabrigo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -535,6 +535,9 @@ void raycasting(t_game *game) {
 
 int get_texture_pixel(t_textures *texture, int x, int y)
 {
+    if (x < 0 || x >= texture->width || y < 0 || y >= texture->height) 
+    return 0xFFFFFF; // Colore di debug (bianco)
+
     char *pixel = texture->addr + (y * texture->line_length + 
                                   x * (texture->bpp / 8));
     return *(int *)pixel;
@@ -647,7 +650,7 @@ void raycasting(t_game *game)
         {
             int tex_y = (y * 2 - game->screen_h + line_height) * 
                        (game->textures[0].height / 2) / line_height;
-            int color = get_texture_pixel(&game->textures[side], tex_x, tex_y);
+            int color = get_texture_pixel(&game->textures[texture_index], tex_x, tex_y);
             my_pixel_put(x, y, game, color);
         }
     }
