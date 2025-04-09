@@ -1,6 +1,6 @@
 
 
-NO a.xpm
+NO textures/a.xpm
 SO textures/t.xpm
 EA textures/t.xpm
 WE textures/t.xpm
@@ -10,7 +10,7 @@ F 20,20,20
 C 200,200,200
 
 11111
-1S001
+1SN01
 10001
 10001
 10001
