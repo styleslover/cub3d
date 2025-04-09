@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 23:45:26 by mariel            #+#    #+#             */
-/*   Updated: 2025/04/06 19:18:14 by damoncad         ###   ########.fr       */
+/*   Updated: 2025/04/09 18:55:52 by mabrigo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,21 +19,22 @@ void load_texture(t_game *game, t_textures *texture, char *path)
 
 	clean_path = ft_strtrim(path, "\t\n\r");//da trovare soluzione migliore
     texture->img = mlx_xpm_file_to_image(game->mlx, clean_path, &texture->width, &texture->height);
-	
+	if (!texture->img)
+    {
+        printf("Error: Could not load texture %s\n", path);
+        perror("Reason");
+        free(clean_path); // Libera la memoria allocata prima di uscire
+        exit(1);
+    }
 	printf("path: %s\n", path);
 	printf("north: %p\n", game->map->north_txtr);
 	printf("south: %p\n", game->map->south_txtr);
 	printf("east: %p\n", game->map->east_txtr);
 	printf("west: %p\n", game->map->west_txtr);
-    if (!texture->img)
-    {
-        printf("Error: Could not load texture %s\n", path);
-		perror("Reason");
-        exit(1);
-    }
     texture->addr = mlx_get_data_addr(texture->img, &texture->bpp, 
                                      &texture->line_length, &texture->endian);
 	printf("Texture loaded: %s (Size: %dx%d)\n", path, texture->width, texture->height);
+	free(clean_path);
 }
 
 void init_textures(t_game *game, t_map_data *map)
