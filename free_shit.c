@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_shit.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
+/*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 13:03:51 by damoncad          #+#    #+#             */
-/*   Updated: 2025/04/07 20:52:44 by mabrigo          ###   ########.fr       */
+/*   Updated: 2025/04/09 19:21:37 by damoncad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,19 +36,7 @@ void	free_map(t_map_data *map)
             free(map->world[i++]);
         free(map->world);
     }
-    // Aggiunto per liberare le texture e i colori
-    if (map->north_txtr)
-        free(map->north_txtr);
-    if (map->south_txtr)
-        free(map->south_txtr);
-    if (map->east_txtr)
-        free(map->east_txtr);
-    if (map->west_txtr)
-        free(map->west_txtr);
-    if (map->floor_color)
-        free(map->floor_color);
-    if (map->ceiling_color)
-        free(map->ceiling_color);
+    
 }
 
 void	free_mlx(t_game *game)
