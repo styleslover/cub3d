@@ -6,7 +6,7 @@
 /*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 13:03:51 by damoncad          #+#    #+#             */
-/*   Updated: 2025/04/09 19:21:37 by damoncad         ###   ########.fr       */
+/*   Updated: 2025/04/09 20:46:22 by damoncad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,10 @@ void	free_map(t_map_data *map)
             free(map->world[i++]);
         free(map->world);
     }
+    if (map->floor_color)
+        free(map->floor_color);
+    if (map->ceiling_color)
+        free(map->ceiling_color);
     
 }
 
@@ -81,12 +85,12 @@ void	free_game_resources(t_game *game)
 		mlx_destroy_window(game->mlx, game->win);
         game->win = NULL;
     }
-    if (game->mlx)
-    {
-        mlx_destroy_display(game->mlx);
-        free(game->mlx);
-        game->mlx = NULL;
-    }
+    // if (game->mlx)
+    // {
+    //     mlx_destroy_display(game->mlx);
+    //     free(game->mlx);
+    //     game->mlx = NULL;
+    // }
     printf("Risorse liberate correttamente.\n");
 }
 

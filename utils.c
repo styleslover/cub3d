@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
+/*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 19:31:10 by mabrigo           #+#    #+#             */
-/*   Updated: 2025/04/07 20:49:28 by mabrigo          ###   ########.fr       */
+/*   Updated: 2025/04/09 19:17:32 by damoncad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ char *strcmp_from_i(int i, char *src)
     if (!trimmed)
         return NULL;
 
-    char *result = ft_strdup(trimmed);
+    char *result = strdup(trimmed);
     free(trimmed);
     return result;
 }

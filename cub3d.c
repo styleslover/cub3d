@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
+/*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 12:52:13 by mabrigo           #+#    #+#             */
-/*   Updated: 2025/04/09 18:28:54 by mabrigo          ###   ########.fr       */
+/*   Updated: 2025/04/09 20:41:02 by damoncad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int	main(int ac, char **av)
 	map.fd = open(av[1], O_RDONLY);
 	if (map.fd == -1)
 		return (printf("Error: invalid fd"));
-	init_map(&map);
+	//init_map(&map);
 	parse_file(av, map.fd, &map);
 	close(map.fd);
 	init_game(av[1], &game, &map);

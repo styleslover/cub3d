@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
+/*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 12:40:01 by mabrigo           #+#    #+#             */
-/*   Updated: 2025/04/07 19:20:07 by mabrigo          ###   ########.fr       */
+/*   Updated: 2025/04/09 20:38:07 by damoncad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -228,10 +228,6 @@ void draw_player_minimap(t_game *game, int center_x, int center_y, int size, int
 void draw_square(int x, int y, int size, t_game *game, int color);
 void draw_circle_outline(int center_x, int center_y, int radius, t_game *game, int color);
 void draw_player_direction(t_game *game, int center_x, int center_y, int length, int color);
-
-
-
-
 
 
 
