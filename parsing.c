@@ -6,7 +6,7 @@
 /*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 22:52:55 by mariel            #+#    #+#             */
-/*   Updated: 2025/04/07 19:45:24 by mabrigo          ###   ########.fr       */
+/*   Updated: 2025/04/09 20:48:58 by mabrigo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,28 +30,48 @@ int	check_single_value(char *str)
 {
     int i;
     int digit_found;
+    int in_number;
 
-	i = 0;
-	digit_found = 0;
-	while (str[i] == 32 || (str[i] >= 9 && str[i] <= 13))
-		i++;
-	while (str[i])
+    i = 0;
+    digit_found = 0;
+    in_number = 0;
+    
+    // Salta spazi iniziali
+    while (str[i] == 32 || (str[i] >= 9 && str[i] <= 13))
+        i++;
+    
+    // Gestisci segno opzionale
+    if (str[i] == '+')
+        i++;
+    if (str[i] == '-')
 	{
-		if (ft_isdigit(str[i]))
-		{
-			digit_found = 1;
-			i++;
-		}
-		else if (str[i] == ' ' || str[i] == '\t')
-		{
-			i++;
-			while (str[i] == ' ' || str[i] == '\t')
-				i++;
-		}
-	}
-	if (str[i] != '\0')
 		return (0);
-	return (digit_found);
+	}
+	
+    while (str[i])
+    {
+        if (ft_isdigit(str[i]))
+        {
+            if (in_number == 2) // Se abbiamo già lasciato il numero (spazi dopo cifre)
+                return (0);     // Non accettiamo altre cifre
+            digit_found = 1;
+            in_number = 1;      // Siamo dentro un numero
+            i++;
+        }
+        else if (str[i] == ' ' || str[i] == '\t')
+        {
+            if (in_number == 1) // Se abbiamo appena finito un numero
+                in_number = 2;   // Segnala che siamo dopo il numero
+            i++;
+            while (str[i] == ' ' || str[i] == '\t')
+                i++;
+        }
+        else
+        {
+            return (0); // Carattere non valido
+        }
+    }
+    return (digit_found);
 }
 
 int	*parse_rgb_values(char *str)
@@ -82,9 +102,8 @@ int	*parse_rgb_values(char *str)
 	while (i < 3 && splitted[i])
 	{
 		trimmed = ft_strtrim(splitted[i], " \t\n\r");
-		if (!check_single_value(splitted[i]))
+		if (!trimmed || !check_single_value(trimmed))
 		{
-			//debug
 			free(trimmed);
 			free_matrix(splitted);
 			free(rgb_values);
@@ -145,11 +164,17 @@ void	parse_floor_ceiling(int i, char *str, t_map_data *map)
 	}
 	fc = strcmp_from_i(i + 2, str);
 	if (!fc)
+	{
 		print_error("Error: invalid color format\n");
+		exit(1);
+	}
 	*target = parse_rgb_values(fc);
 	free(fc);
 	if (!*target)
+	{
 		print_error("Error: invalid color values\n");
+		exit (1);
+	}
 }
 
 int is_valid_config_line(char *str)
