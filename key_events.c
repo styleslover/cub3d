@@ -6,7 +6,7 @@
 /*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 23:27:56 by mariel            #+#    #+#             */
-/*   Updated: 2025/04/06 19:09:45 by damoncad         ###   ########.fr       */
+/*   Updated: 2025/04/09 21:26:00 by damoncad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,6 @@ int key_press(int keycode, t_game *game)
         
         player->plane_x = player->plane_x * cos(ROTASPEED) + player->plane_y * sin(ROTASPEED);
         player->plane_y = -old_plane_x * sin(ROTASPEED) + player->plane_y * cos(ROTASPEED);
-
-        printf("Rotated left. New direction: (%f, %f)\n", player->dir_x, player->dir_y);  // Debug
     }
 
     if (keycode == RIGHT)  // Ruota a destra
@@ -52,8 +50,6 @@ int key_press(int keycode, t_game *game)
         
         player->plane_x = player->plane_x * cos(-ROTASPEED) + player->plane_y * sin(-ROTASPEED);
         player->plane_y = -old_plane_x * sin(-ROTASPEED) + player->plane_y * cos(-ROTASPEED);
-
-        printf("Rotated right. New direction: (%f, %f)\n", player->dir_x, player->dir_y);  // Debug
     }
     
     if (keycode == SPACE) {  // Codice per SPACE

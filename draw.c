@@ -6,7 +6,7 @@
 /*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 23:30:39 by mariel            #+#    #+#             */
-/*   Updated: 2025/04/06 19:11:26 by damoncad         ###   ########.fr       */
+/*   Updated: 2025/04/09 21:24:27 by damoncad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,94 +64,6 @@ void	draw_direction_line(t_game *game, t_player *player, int length, int color)
 		i++;
 	}
 }
-//draw_player originale quello classico
-// void	draw_player(t_game *game, t_player *player, int size, int color)
-// {
-// 	int		i;
-// 	int		j;
-// 	float	half_size;
-// 	int		center_x;
-// 	int		center_y;
-// 	float	x;
-// 	float	y;
-
-// 	// Debug: stampa la posizione del giocatore
-//    //printf("Player position during drawing: (%f, %f)\n", player->x, player->y);
-	
-// 	// Calcola il centro del quadrato (personaggio)
-// 	center_x = (int)player->x;
-// 	center_y = (int)player->y;
-// 	half_size = size / 2.0f;
-
-// 	/*
-// 	center_x = (int)(player->tile_x * TILE_SIZE + TILE_SIZE / 2) + game->map->offset_x;
-//     center_y = (int)(player->tile_y * TILE_SIZE + TILE_SIZE / 2) + game->map->offset_y;
-//     half_size = size / 2.0f;*/
-	
-	
-// 	// Disegna il quadrato ruotato (personaggio)
-// 	i = -half_size;
-// 	while (i <= half_size)
-// 	{
-// 		j = -half_size;
-// 		while (j <= half_size)
-// 		{
-// 			//calcola coordinate ruotate yeeeeeah
-// 			x = center_x + j;
-// 			y = center_y + i;
-// 			rotate_point(&x, &y, center_x, center_y, player->dir);
-// 			//disegna il pixel ruotato
-// 			my_pixel_put((int)x, (int)y, game, color);
-// 			j++;
-// 		}
-// 		i++;
-// 	}
-// 	//disegna la linea di direzione
-// 	draw_direction_line(game, player, size * 4, GREEN);	//linea verde
-
-// 	// draw_square(center_x - size / 2, center_y - size / 2, size, game, color);
-
-// 	// // Disegna la linea di direzione
-// 	// draw_direction_line(game, player, size * 2, GREEN); // Linea verde
-// }
-
-
-
-
-//draw_grid originale
-// void	draw_grid(t_game *game, t_map_data *map, int tile_size)
-// {
-// 	int	x;
-// 	int	y;
-
-// 	if (!map)
-// 		print_error("Errore draw_grid");
-// 	// Linee orizzontali
-// 	y = map->offset_y;
-// 	while (y <= map->offset_y + map->map_height * tile_size)
-// 	{
-// 		x = map->offset_x;
-// 		while (x <= map->offset_x + map->map_width * tile_size)
-// 		{
-// 			my_pixel_put(x, y, game, 0xFFFFFF);  // Linea orizzontale bianca
-// 			x++;
-// 		}
-// 		y += tile_size;
-// 	}
-
-// 	// Linee verticali
-// 	x = map->offset_x;
-// 	while (x <= map->offset_x + map->map_width * tile_size)
-// 	{
-// 		y = map->offset_y;
-// 		while (y <= map->offset_y + map->map_height * tile_size)
-// 		{
-// 			my_pixel_put(x, y, game, 0xFFFFFF);  // Linea verticale bianca
-// 			y++;
-// 		}
-// 		x += tile_size;
-// 	}
-// }
 
 //draw_quare quello buono
 void	draw_square(int x, int y, int size, t_game *game, int color)
@@ -171,63 +83,6 @@ void	draw_square(int x, int y, int size, t_game *game, int color)
 		i++;
 	}
 }
-//vecchio classico draw_map
-// void	draw_map(t_game *game, t_map_data *map)
-// {
-// 	int			color;
-// 	int			i;
-// 	int			j;
-
-// 	//printf("PORCODIO\n");
-// 	if (!map->world || !map->world[0])
-// 	{
-// 		printf("Error: Map not loaded or empty\n");
-// 		return ;
-// 	}
-// 	map->map_width = (ft_strlen(map->world[0]));
-// 	map->map_height = 0;
-// 	while (map->world[map->map_height] != NULL)
-// 		map->map_height++;
-
-// 	map->offset_x = (game->screen_w - (map->map_width * TILE_SIZE)) / 2;
-// 	map->offset_y = (game->screen_h - (map->map_height * TILE_SIZE)) / 2;
-// 	i = 0;
-// 	while (map->world[i] != NULL)
-// 	{
-// 		j = 0;
-// 		while (map->world[i][j] != '\0')
-// 		{
-// 			if (map->world[i][j] == '1')
-// 				color = RED;
-// 			else if (map->world[i][j] == '0')
-// 				color = BLUE;
-// 			else if (map->world[i][j] == 'W' || map->world[i][j] == 'S'
-// 					|| map->world[i][j] == 'E' || map->world[i][j] == 'N')	// IGNORA 'N' O GESTISCI IL GIOCATORE	
-// 				color = WHITE; //debugging reasons, da cambiare con BLUE
-// 			//per qualche motivo N non me lo trova
-// 			else
-// 			{
-// 				j++;
-// 				continue;
-// 			}
-// 				draw_square(j * TILE_SIZE + map->offset_x,
-// 				i * TILE_SIZE + map->offset_y, TILE_SIZE, game, color);
-// 			j++;
-// 		}
-// 		i++;
-// 	}
-// 	//printf("Fuori while\n");
-// 	//AGGIUNGE LA GRIGLIA DI DEBUG
-// 	draw_grid(game, map, TILE_SIZE);
-// 	//printf("Map drawn successfully\n");//debug
-// }
-
-
-
-
-
-
-
 
 void	draw_player(t_game *game, t_player *player, int size, int color)
 {
@@ -306,43 +161,6 @@ void	draw_grid(t_game *game, t_map_data *map, int tile_size)
 	}
 }
 
-// void draw_minimap_border(t_game *game, t_map_data *map)
-// {
-//     // Calcola la posizione di partenza per il bordo
-//     int minimap_width = map->map_width * MINIMAP_SIZE;
-//     int minimap_height = map->map_height * MINIMAP_SIZE;
-
-//     int offset_x = map->offset_minimap_x;
-//     int offset_y = map->offset_minimap_y;
-
-//     // Colore del bordo
-//     int border_color = 0xFFFFFF;  // Bianco, ma puoi cambiarlo come vuoi
-
-//     // Disegna il bordo: 4 linee (superiore, inferiore, sinistra, destra)
-//     int x, y;
-
-//     // Bordo superiore
-//     for (x = offset_x; x < offset_x + minimap_width; x++) {
-//         my_pixel_put(x, offset_y, game, border_color);  // Linea orizzontale in alto
-//     }
-
-//     // Bordo inferiore
-//     for (x = offset_x; x < offset_x + minimap_width; x++) {
-//         my_pixel_put(x, offset_y + minimap_height - 1, game, border_color);  // Linea orizzontale in basso
-//     }
-
-//     // Bordo sinistro
-//     for (y = offset_y; y < offset_y + minimap_height; y++) {
-//         my_pixel_put(offset_x, y, game, border_color);  // Linea verticale a sinistra
-//     }
-
-//     // Bordo destro
-//     for (y = offset_y; y < offset_y + minimap_height; y++) {
-//         my_pixel_put(offset_x + minimap_width - 1, y, game, border_color);  // Linea verticale a destra
-//     }
-// }
-
-//il draw_map per fare la minimappa ultimo buono
 void	draw_map(t_game *game, t_map_data *map)
 {
 	int			color;
@@ -428,8 +246,7 @@ void	draw_floor_ceiling(t_game *game, t_map_data *map)
 	}
 	else
 	{
-		printf("Warning: Invalid floor color, using default color (black).\n");
-        floor_color = 0x000000;
+		printf("Warning: Invalid floor color\n");
 	}
 	if (map->ceiling_color)
 	{
@@ -438,136 +255,14 @@ void	draw_floor_ceiling(t_game *game, t_map_data *map)
 	}
 	else
 	{
-		printf("Warning: Invalid ceiling color, using default color (white).\n");
-        ceiling_color = 0xFFFFFF;
+		printf("Warning: Invalid ceiling color.\n");
 		return ;
 	}
 	paint_floor_ceiling(game, floor_color, ceiling_color);
 }
 
-
-
-
-
-
-
-
-
-
-
-
-//MINIMAPPA TONDA DA SVILUPPARE------------->
-/*
-void draw_line(int x0, int y0, int x1, int y1, t_game *game, int color)
+void draw_meme_gun(t_game *game)
 {
-    int dx = abs(x1 - x0);
-    int dy = abs(y1 - y0);
-    int sx = x0 < x1 ? 1 : -1;
-    int sy = y0 < y1 ? 1 : -1;
-    int err = (dx > dy ? dx : -dy) / 2;
-
-    while (1)
-    {
-        my_pixel_put(x0, y0, game, color);
-        if (x0 == x1 && y0 == y1) break;
-        int e2 = err;
-        if (e2 > -dx) { err -= dy; x0 += sx; }
-        if (e2 < dy)  { err += dx; y0 += sy; }
-    }
-}
-
-
-void draw_circle(int center_x, int center_y, int radius, t_game *game, int color)
-{
-    int x, y;
-    for (y = -radius; y <= radius; y++)
-    {
-        for (x = -radius; x <= radius; x++)
-        {
-            if (x * x + y * y <= radius * radius)
-            {
-                my_pixel_put(center_x + x, center_y + y, game, color);
-            }
-        }
-    }
-}
-
-void draw_map(t_game *game, t_map_data *map)
-{
-    int color;
-    int i, j;
-    int minimap_radius = 60;  // Raggio della minimappa rotonda
-    int center_x = game->screen_w - minimap_radius - 120;  // Posizione X del centro
-    int center_y = game->screen_h - minimap_radius - 120;  // Posizione Y del centro
-
-    // Disegna il bordo della minimappa rotonda
-    draw_circle(center_x, center_y, minimap_radius, game, 0xFFFFFF);  // Bianco
-
-    // Calcola la posizione del giocatore nella minimappa
-    //float player_minimap_x = center_x;
-    //float player_minimap_y = center_y;
-
-    // Disegna la mappa ruotata attorno al giocatore
-    for (i = 0; map->world[i] != NULL; i++)
-    {
-        for (j = 0; map->world[i][j] != '\0'; j++)
-        {
-            if (map->world[i][j] == '1')
-                color = RED;
-            else if (map->world[i][j] == '0')
-                color = BLUE;
-            else
-                continue;
-
-            // Calcola le coordinate relative al giocatore
-            float rel_x = (j * TILE_SIZE + map->offset_x - game->player->x) * MINIMAP_SIZE / TILE_SIZE;
-            float rel_y = (i * TILE_SIZE + map->offset_y - game->player->y) * MINIMAP_SIZE / TILE_SIZE;
-
-            // Ruota le coordinate in base alla direzione del giocatore
-            float rotated_x = rel_x * cosf(-game->player->dir) - rel_y * sinf(-game->player->dir);
-            float rotated_y = rel_x * sinf(-game->player->dir) + rel_y * cosf(-game->player->dir);
-
-            // Posizione nella minimappa
-            int minimap_x = center_x + (int)rotated_x;
-            int minimap_y = center_y + (int)rotated_y;
-
-            // Disegna solo se è dentro il cerchio
-            if ((minimap_x - center_x) * (minimap_x - center_x) + 
-                (minimap_y - center_y) * (minimap_y - center_y) <= minimap_radius * minimap_radius)
-            {
-                my_pixel_put(minimap_x, minimap_y, game, color);
-            }
-        }
-    }
-
-    // Disegna il giocatore al centro della minimappa
-    draw_player_minimap(game, center_x, center_y, 5, GREEN);  // 5 è la dimensione del giocatore
-}
-
-
-void draw_player_minimap(t_game *game, int center_x, int center_y, int size, int color)
-{
-    int i, j;
-    float half_size = size / 2.0f;
-
-    for (i = -half_size; i <= half_size; i++)
-    {
-        for (j = -half_size; j <= half_size; j++)
-        {
-            if (i * i + j * j <= half_size * half_size)
-            {
-                my_pixel_put(center_x + j, center_y + i, game, color);
-            }
-        }
-    }
-
-    // Disegna la linea di direzione
-    //float end_x = center_x + cosf(game->player->dir) * size * 2;
-    //float end_y = center_y + sinf(game->player->dir) * size * 2;
-    //draw_line(center_x, center_y, (int)end_x, (int)end_y, game, color);
-}
-*/
-void draw_meme_gun(t_game *game) {
     int gun_width = 200;
     int gun_height = 150;
     int start_x = (game->screen_w - gun_width) / 2;
@@ -615,7 +310,7 @@ void draw_meme_gun(t_game *game) {
     }
 
     // Testo meme (solo se hai mlx_string_put)
-if (game->mlx && game->win) {
+	if (game->mlx && game->win) {
     mlx_string_put(game->mlx, game->win, 
                    start_x + gun_width / 2 - 30, 
                    start_y + 40, // Sposta la scritta più in basso
@@ -626,10 +321,7 @@ if (game->mlx && game->win) {
 
 int	draw_loop(t_game *game)
 {
-	//debug
-	//printf("Player position at start of draw_loop: (%f, %f)\n", game->player->x, game->player->y);
-	
-    move_player(game->player, game);
+	move_player(game->player, game);
 	if (game->img)
 		mlx_destroy_image(game->mlx, game->img);
     game->img = mlx_new_image(game->mlx, game->screen_w, game->screen_h);
@@ -637,7 +329,6 @@ int	draw_loop(t_game *game)
 			&game->endian);
 	if (!game->map)
 		print_error("Errore caricamento mappa");
-	//raycasting(game);
 	draw_floor_ceiling(game, game->map);
 	raycasting(game);
 	draw_map(game, game->map);

@@ -6,12 +6,11 @@
 /*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 23:45:26 by mariel            #+#    #+#             */
-/*   Updated: 2025/04/06 19:18:14 by damoncad         ###   ########.fr       */
+/*   Updated: 2025/04/09 21:25:52 by damoncad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
-
 
 void load_texture(t_game *game, t_textures *texture, char *path)
 {
@@ -20,20 +19,17 @@ void load_texture(t_game *game, t_textures *texture, char *path)
 	clean_path = ft_strtrim(path, "\t\n\r");//da trovare soluzione migliore
     texture->img = mlx_xpm_file_to_image(game->mlx, clean_path, &texture->width, &texture->height);
 	
-	printf("path: %s\n", path);
-	printf("north: %p\n", game->map->north_txtr);
-	printf("south: %p\n", game->map->south_txtr);
-	printf("east: %p\n", game->map->east_txtr);
-	printf("west: %p\n", game->map->west_txtr);
     if (!texture->img)
     {
-        printf("Error: Could not load texture %s\n", path);
+		printf("Error: Could not load texture.\n");
 		perror("Reason");
+		free_map(game->map);
         exit(1);
     }
     texture->addr = mlx_get_data_addr(texture->img, &texture->bpp, 
-                                     &texture->line_length, &texture->endian);
-	printf("Texture loaded: %s (Size: %dx%d)\n", path, texture->width, texture->height);
+		&texture->line_length, &texture->endian);
+	free(path);
+	free(clean_path);
 }
 
 void init_textures(t_game *game, t_map_data *map)
@@ -76,13 +72,12 @@ void	init_player(t_player *player, t_map_data *map, int offset_x, int offset_y)
 		while (map->world[i][j] != '\0')
 		{
 			if (map->world[i][j] == 'N' || map->world[i][j] == 'S'
-				|| map->world[i][j] == 'E' || map->world[i][j] == 'W') //giocatore posizionato nella mappa
+				|| map->world[i][j] == 'E' || map->world[i][j] == 'W')
 			{
 				player->tile_x = j;
 				player->tile_y = i;
 				player->x = (float)(j * TILE_SIZE + TILE_SIZE / 2) + offset_x;
 				player->y = (float)(i * TILE_SIZE + TILE_SIZE / 2) + offset_y;
-				//player->dir = PI / 2; //guarda in alto
 
 				//verifica posizione spawn valida
 				if (!is_valid_position(map, player->x, player->y))
@@ -91,22 +86,10 @@ void	init_player(t_player *player, t_map_data *map, int offset_x, int offset_y)
 					exit(1);
 				}
 				
-				//direzione iniziale
+
 				get_direction(player, map->world[i][j]);
 
-				//debug
-				//printf("player direction: %f\n", player->dir);
-				
-				//piano della camera(modifica il FOV)
-				//player->plane_x = 0.66f;	//0.66 valore standard per il fov
-				//player->plane_y = 0.0f;
-
 				map->world[i][j] = '0';
-				//debug
-				// printf("Tile coordinates: (%d, %d)\n", j, i);
-				// printf("TILE_SIZE: %d\n", TILE_SIZE);
-				// printf("Offset X: %d, Offset Y: %d\n", offset_x, offset_y);
-				// printf("Player spawn position: (%f, %f)\n", player->x, player->y);
 				return ;
 			}
 			j++;
@@ -143,10 +126,6 @@ void	init_game(char *name_win, t_game *game, t_map_data *map)
 		map->win_height = game->screen_h;
 	else
 		map->win_height = game->screen_h;
-
-	printf("win_width: %d, win_height: %d\n", map->win_width, map->win_height);
-	printf("screen_w: %d, screen_h: %d\n", game->screen_w, game->screen_h);
-	printf("map_width: %d, map_height: %d\n", map->map_width, map->map_height);
 		
 	// Calcola offset per centrare la mappa nella finestra
 	map->offset_x = (map->win_width - (map->map_width * TILE_SIZE)) / 2;

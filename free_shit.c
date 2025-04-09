@@ -6,7 +6,7 @@
 /*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 13:03:51 by damoncad          #+#    #+#             */
-/*   Updated: 2025/04/06 19:20:33 by damoncad         ###   ########.fr       */
+/*   Updated: 2025/04/09 21:25:33 by damoncad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,17 +111,12 @@ void free_game_resources(t_game *game)
         free(game->player);
         game->player = NULL;
     }
-    
-    // 5. Libera mlx (ultimo passo)
-    if (game->mlx)
-    {
-        // Nota: mlx_destroy_display solo su Linux
-        #ifdef LINUX
-            mlx_destroy_display(game->mlx);
-        #endif
-        free(game->mlx);
-        game->mlx = NULL;
-    }
-    
-    printf("Resources freed successfully.\n");
+    // if (game->mlx)
+    // {
+    //     mlx_destroy_display(game->mlx);
+    //     free(game->mlx);
+    //     game->mlx = NULL;
+    // }
+    printf("Risorse liberate correttamente.\n");
 }
+
