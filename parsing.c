@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 22:52:55 by mariel            #+#    #+#             */
-/*   Updated: 2025/04/09 19:00:54 by damoncad         ###   ########.fr       */
+/*   Updated: 2025/04/09 19:17:09 by mabrigo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,7 +146,7 @@ void parse_floor_ceiling(int i, char *str, t_map_data *map)
     {
         free(fc);  // Libera la stringa allocata
         print_error("Error: invalid color line\n");
-        return;
+        exit(1);
     }
 
     if (*target)
@@ -155,7 +155,7 @@ void parse_floor_ceiling(int i, char *str, t_map_data *map)
         *target = NULL;
         free(fc);  // Libera la stringa allocata
         print_error("Error: double configuration\n");
-        return;
+        exit(1);
     }
 
     *target = parse_rgb_values(fc);
