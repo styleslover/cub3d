@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
+/*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 23:30:39 by mariel            #+#    #+#             */
-/*   Updated: 2025/04/07 19:51:04 by mabrigo          ###   ########.fr       */
+/*   Updated: 2025/04/09 18:55:39 by damoncad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -246,8 +246,7 @@ void	draw_floor_ceiling(t_game *game, t_map_data *map)
 	}
 	else
 	{
-		printf("Warning: Invalid floor color, using default color (black).\n");
-        floor_color = 0x000000;
+		printf("Warning: Invalid floor color\n");
 	}
 	if (map->ceiling_color)
 	{
@@ -256,8 +255,7 @@ void	draw_floor_ceiling(t_game *game, t_map_data *map)
 	}
 	else
 	{
-		printf("Warning: Invalid ceiling color, using default color (white).\n");
-        ceiling_color = 0xFFFFFF;
+		printf("Warning: Invalid ceiling color.\n");
 		return ;
 	}
 	paint_floor_ceiling(game, floor_color, ceiling_color);
