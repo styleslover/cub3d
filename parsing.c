@@ -6,7 +6,7 @@
 /*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 22:52:55 by mariel            #+#    #+#             */
-/*   Updated: 2025/04/07 20:47:02 by mabrigo          ###   ########.fr       */
+/*   Updated: 2025/04/09 18:27:10 by mabrigo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,13 @@ int	*parse_rgb_values(char *str)
 	while (i < 3 && splitted[i])
 	{
 		trimmed = ft_strtrim(splitted[i], " \t\n\r");
-		if (!check_single_value(splitted[i]))
+		if (!trimmed)
+		{
+			free_matrix(splitted);
+			free(rgb_values);
+			return (0);
+		}
+		if (!check_single_value(trimmed))
 		{
 			free(trimmed);
 			free_matrix(splitted);
@@ -295,7 +301,11 @@ char	**load_map(char *av, int *map_start_line)
 			i++;
 		}
 		else
+		{
 			free(line);
+			free_matrix(map);
+			return (NULL);
+		}
 	}
 	map[i] = NULL;  // Terminatore NULL per l'array di stringhe
 	close(fd);
@@ -367,13 +377,9 @@ void	parse_file(char **av, int fd, t_map_data *map)
 		return ;
 	}
 	map->world = load_map(av[1], &map_start_line);
-	int x = 0;
-	while (map->world[x])
-	{
-		x++;
-	}
 	if (!check_map(map->world))
 	{
+		free_map(map);
 		printf("Error: Failed to load map\n");
 		exit(1);
 	}
