@@ -6,7 +6,7 @@
 /*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 22:52:55 by mariel            #+#    #+#             */
-/*   Updated: 2025/04/09 21:14:00 by damoncad         ###   ########.fr       */
+/*   Updated: 2025/04/09 21:15:42 by damoncad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -381,7 +381,9 @@ void	parse_file(char **av, int fd, t_map_data *map)
 	map->map_width = ft_strlen(map->world[0]);  // Larghezza della mappa
     map->map_height = 0;
     while (map->world[map->map_height] != NULL)
+	{
         map->map_height++;
+	}
 
 	int	f = 0;
 	while (map->floor_color[f])
