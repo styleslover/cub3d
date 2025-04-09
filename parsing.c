@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
+/*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 22:52:55 by mariel            #+#    #+#             */
-/*   Updated: 2025/04/09 20:58:40 by mabrigo          ###   ########.fr       */
+/*   Updated: 2025/04/09 21:14:00 by damoncad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -203,7 +203,7 @@ void	parse_config_line(char *str, t_map_data *map)
 		i++;
 	if (!is_valid_config_line(str))
 	{
-		printf("Error: invalid configuration line: '%s'\n", str);
+		printf("Error: invalid configuration line\n");
 		exit(1);
 	}
 	if (!ft_strncmp(str + i, "NO ", 3))
@@ -286,8 +286,6 @@ char	**load_map(char *av, int *map_start_line)
 	i = 0;
 	while ((line = get_next_line(fd)))
 	{
-		//debug
-		printf("line: %s\n", line);
 		if (is_map_line(line) || is_empty_line(line))
 		{
 			map[i] = line;
@@ -318,17 +316,13 @@ void	parse_file(char **av, int fd, t_map_data *map)
 	current_line = 0;
 	while ((line = get_next_line(fd)))
 	{
-		//debug
-		//printf("processing line: %s\n", line);
 		current_line++;
 		if (is_empty_line(line))
 		{
-			printf("empty valid line: %s\n", line);
+			printf("empty valid line\n");
 			free(line);
 			continue;
 		}
-		//debug
-		//printf("config done: %d\n", config_done);
 		if (config_done)
 		{
 			
@@ -343,8 +337,6 @@ void	parse_file(char **av, int fd, t_map_data *map)
 			}
 			else
 			{
-				//debug
-				printf("Error: invalid line in map: %s\n", line);	//da mettere funz error per tutte
 				free(line);
 				exit(1);
 			}	
@@ -353,7 +345,6 @@ void	parse_file(char **av, int fd, t_map_data *map)
 		{
 			if (is_map_line(line))
 			{
-				printf("Error: map line before configurations: %s\n", line);
 				free(line);
 				exit(1);
 			}
@@ -380,7 +371,6 @@ void	parse_file(char **av, int fd, t_map_data *map)
 	int x = 0;
 	while (map->world[x])
 	{
-		printf("world[%d]: %s\n", x, map->world[x]);
 		x++;
 	}
 	if (!check_map(map->world))
@@ -388,47 +378,24 @@ void	parse_file(char **av, int fd, t_map_data *map)
 		printf("Error: Failed to load map\n");
 		exit(1);
 	}
-	/*
-	map->win_width *= TILE_SIZE;
-	map->win_height *= TILE_SIZE;
-	if (map->win_width >= WIDTH || map->win_height >= HEIGHT)
-	{
-		map->win_width = map->win_width;
-		map->win_height = map->win_height;
-	}
-	*/
 	map->map_width = ft_strlen(map->world[0]);  // Larghezza della mappa
     map->map_height = 0;
     while (map->world[map->map_height] != NULL)
         map->map_height++;
-    printf("Map dimensions after loading: %d x %d\n", map->map_width, map->map_height);
-	
-	//debug
-	// printf("North Texture: %s\n", map->north_txtr);
-	// printf("South Texture: %s\n", map->south_txtr);
-	// printf("West Texture: %s\n", map->west_txtr);
-	// printf("East Texture: %s\n", map->east_txtr);
+
 	int	f = 0;
 	while (map->floor_color[f])
 	{
-		printf("Floor Color: %d\n", map->floor_color[f]);
 		f++;
 	}
 	f = 0;
 	while (map->ceiling_color[f])
 	{
-		printf("Ceiling Color: %d\n", map->ceiling_color[f]);
 		f++;
 	}
-	// printf("Win Size (pxl): %d x %d\n", map->win_width, map->win_height);
 	i = 0;
 	while (map->world[i])
 	{
-		//debug
-		//printf("map line [%d]: %s\n", i, map->world[i]);
 		i++;
-	}
-	
-	
-	//map_check(map); //todo: check delle texture (no spazi o altro), check valori f e c, mappa chiusa
+	}	
 }
