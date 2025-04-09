@@ -47,9 +47,6 @@ float	get_direction(t_player *player, char c)
 		player->plane_x = -0.66f; // Piano della camera
 		player->plane_y = 0.0f;
 	}
-
-	// Debug: stampa la direzione del giocatore
-    printf("Player direction set to: (%f, %f)\n", player->dir_x, player->dir_y);
 	
 	return (0); // Default, anche se non dovrebbe mai accadere
 }
@@ -61,32 +58,17 @@ bool is_valid_position(t_map_data *map, float x, float y)
     int		tile_y;
 	char	tile;
 	
-	// Debug: stampa le coordinate
-	//printf("Checking position: (%f, %f)\n", x, y);
-	
 	float map_x = x - map->offset_x;
 	float map_y = y - map->offset_y;
 	
 	tile_x = (int)(map_x / TILE_SIZE);
 	tile_y = (int)(map_y / TILE_SIZE);
 	
-	//debug
-	//printf("tile: (%d, %d)\n", tile_x, tile_y);
-
-
-	//debug
-	//printf("checking position: (%f, %f) -> Tile: (%d, %d)\n", x, y, tile_x, tile_y);
-	//printf("tile content: %c\n", map->world[tile_y][tile_x]);
-	
-    // Controlla se la tile è valida (non è un muro e non è fuori dalla mappa)
     if (tile_x < 0 || tile_x >= map->map_width || tile_y < 0 || tile_y >= map->map_height)
 	{
 		printf("Error: Invalid position: out of map\n");
 		return false;
 	}
-	
-	//debug
-	//printf("tile content: %c\n", map->world[tile_y][tile_x]);
 	
 	tile = map->world[tile_y][tile_x];
 	if (tile == '1')// Muro
@@ -94,7 +76,6 @@ bool is_valid_position(t_map_data *map, float x, float y)
 		printf("Error: position is a wall\n");
 		return false;
 	}
-	//printf("position is valid.\n");
 	return true;
 }
 
@@ -105,11 +86,6 @@ void move_player(t_player *player, t_game *game)
 	float	move_speed = 2.0f; // Velocità movimento
 	float	new_x;
 	float	new_y;
-	//float	old_dir_x;
-	//float	old_plane_x;
-
-	//debug
-	//printf("Player position: (%f, %f)\n", player->x, player->y);
 	
 	// avanti
 	if (player->key_up)
@@ -125,8 +101,6 @@ void move_player(t_player *player, t_game *game)
 		//controllo collisioni lungo l'asse y	
 		if (is_valid_position(map, player->x, new_y))
 			player->y = new_y;
-		//debug
-		//printf("new player position after moving forward: (%f, %f)\n", player->x, player->y);
 	}
 
 	// indietro
@@ -140,8 +114,6 @@ void move_player(t_player *player, t_game *game)
 		//controllo collisioni lungo l'asse y
 		if (is_valid_position(map, player->x, new_y))
 			player->y = new_y;
-		//debug
-		//printf("new player position after moving forward: (%f, %f)\n", player->x, player->y);
 	}
 
 	// Ruota a sinistra
@@ -174,8 +146,4 @@ void move_player(t_player *player, t_game *game)
 		if (is_valid_position(map, player->x, new_y))
 			player->y = new_y;
 	}
-	/*
-	if (!is_valid_position(map, new_x, new_y))
-	printf("Collision detected at (%f, %f)\n", new_x, new_y);
-	*/
 }
