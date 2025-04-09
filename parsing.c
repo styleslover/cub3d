@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
+/*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 22:52:55 by mariel            #+#    #+#             */
-/*   Updated: 2025/04/09 18:27:10 by mabrigo          ###   ########.fr       */
+/*   Updated: 2025/04/09 19:00:54 by damoncad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -225,7 +225,7 @@ void parse_config_line(char *str, t_map_data *map)
     else
     {
         free(value);  // Libera la stringa se non è stata usata
-        printf("Error: unknown configuration line: '%s'\n", str + i);
+        printf("Error: unknown configuration line.\n");
         exit(1);
     }
 }
