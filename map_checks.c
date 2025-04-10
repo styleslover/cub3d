@@ -6,7 +6,7 @@
 /*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 18:39:22 by mabrigo           #+#    #+#             */
-/*   Updated: 2025/04/07 19:19:31 by mabrigo          ###   ########.fr       */
+/*   Updated: 2025/04/10 21:02:39 by mabrigo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,6 +131,7 @@ int	check_map(char **world)
 		|| !map_empty_lines(world))
 	{
 		printf("Error: Invalid map\n");
+		free_matrix(world);
 		return (0);
 	}
 	return (1);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 22:52:55 by mariel            #+#    #+#             */
-/*   Updated: 2025/04/09 21:15:42 by damoncad         ###   ########.fr       */
+/*   Updated: 2025/04/10 21:08:03 by mabrigo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,8 @@ int	*parse_rgb_values(char *str)
 		trimmed = ft_strtrim(splitted[i], " \t\n\r");
 		if (!trimmed || !check_single_value(trimmed))
 		{
-			free(trimmed);
+			if (trimmed)
+				free(trimmed);
 			free_matrix(splitted);
 			free(rgb_values);
 			printf("Error: something's wrong in color values\n");
@@ -115,12 +116,10 @@ int	*parse_rgb_values(char *str)
 		{
 			//debug
 			printf("errore in ceiling o floor\n");
-			free(trimmed);
 			free_matrix(splitted);
 			free(rgb_values);
 			return (0);
 		}
-		free(trimmed);
 		i++;
 	}
 	free_matrix(splitted);
@@ -136,6 +135,8 @@ void	assign_texture(char **txtr, char *value, char *err_msg)
 {
 	if (*txtr)
 	{
+		free(value);
+		value = NULL;
 		free(*txtr);
 		print_error(err_msg);
 	}
@@ -204,6 +205,7 @@ void	parse_config_line(char *str, t_map_data *map)
 	if (!is_valid_config_line(str))
 	{
 		printf("Error: invalid configuration line\n");
+		free_map(map);
 		exit(1);
 	}
 	if (!ft_strncmp(str + i, "NO ", 3))
@@ -225,7 +227,7 @@ void	parse_config_line(char *str, t_map_data *map)
 int	is_map_line(char *str)
 {
 	int	i;
-	
+
 	i = 0;
 	if (!str[i])
 		return (0);
@@ -307,7 +309,6 @@ void	parse_file(char **av, int fd, t_map_data *map)
 	int		config_done;
 	int		map_start_line;
 	int		current_line;
-	int		i;
 
 	init_map(map);
 	line_len = 0;
@@ -339,7 +340,7 @@ void	parse_file(char **av, int fd, t_map_data *map)
 			{
 				free(line);
 				exit(1);
-			}	
+			}
 		}
 		else
 		{
@@ -365,6 +366,7 @@ void	parse_file(char **av, int fd, t_map_data *map)
 	{
 		//debug
 		printf("Error: empty file\n");
+		free_map(map);
 		return ;
 	}
 	map->world = load_map(av[1], &map_start_line);
@@ -376,6 +378,7 @@ void	parse_file(char **av, int fd, t_map_data *map)
 	if (!check_map(map->world))
 	{
 		printf("Error: Failed to load map\n");
+		free_map(map);
 		exit(1);
 	}
 	map->map_width = ft_strlen(map->world[0]);  // Larghezza della mappa
@@ -384,20 +387,4 @@ void	parse_file(char **av, int fd, t_map_data *map)
 	{
         map->map_height++;
 	}
-
-	int	f = 0;
-	while (map->floor_color[f])
-	{
-		f++;
-	}
-	f = 0;
-	while (map->ceiling_color[f])
-	{
-		f++;
-	}
-	i = 0;
-	while (map->world[i])
-	{
-		i++;
-	}	
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 19:31:10 by mabrigo           #+#    #+#             */
-/*   Updated: 2025/04/09 19:17:32 by damoncad         ###   ########.fr       */
+/*   Updated: 2025/04/10 20:58:59 by mabrigo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,14 +40,7 @@ char *strcmp_from_i(int i, char *src)
 {
     if (!src || !src[i])
         return NULL;
-
-    char *trimmed = ft_strtrim(src + i, " \t\r\n");
-    if (!trimmed)
-        return NULL;
-
-    char *result = strdup(trimmed);
-    free(trimmed);
-    return result;
+    return ft_strtrim(src + i, " \t\r\n");
 }
 
 int	count_lines(char *av, int fd)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_shit.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 13:03:51 by damoncad          #+#    #+#             */
-/*   Updated: 2025/04/09 20:46:22 by damoncad         ###   ########.fr       */
+/*   Updated: 2025/04/10 20:54:56 by mabrigo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,14 @@ void	free_game_resources(t_game *game)
 		mlx_destroy_window(game->mlx, game->win);
         game->win = NULL;
     }
+    if (game->textures[0].img && game->mlx)
+        mlx_destroy_image(game->mlx, game->textures[0].img);
+    if (game->textures[1].img && game->mlx)
+        mlx_destroy_image(game->mlx, game->textures[1].img);
+    if (game->textures[2].img && game->mlx)
+        mlx_destroy_image(game->mlx, game->textures[2].img);
+    if (game->textures[3].img && game->mlx)
+        mlx_destroy_image(game->mlx, game->textures[3].img);
     // if (game->mlx)
     // {
     //     mlx_destroy_display(game->mlx);
