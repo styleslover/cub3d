@@ -3,102 +3,120 @@
 /*                                                        :::      ::::::::   */
 /*   free_shit.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
+/*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 13:03:51 by damoncad          #+#    #+#             */
-/*   Updated: 2025/04/10 20:54:56 by mabrigo          ###   ########.fr       */
+/*   Updated: 2025/04/11 10:14:27 by damoncad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-void	free_matrix(char **map)
+void free_matrix(char **map)
 {
-	int	i;
+    int i;
 
-    if (map)
+    if (!map)
+        return;
+    
+    i = 0;
+    while (map[i])
     {
-        i = 0;
-        while (map[i])
-            free(map[i++]);
-        free(map);
+        free(map[i]);
+        map[i] = NULL;
+        i++;
     }
+    free(map);
 }
 
-void	free_map(t_map_data *map)
+void free_map(t_map_data *map)
 {
-	int i;
+    if (!map)
+        return;
 
     if (map->world)
     {
-        i = 0;
-        while (map->world[i])
-            free(map->world[i++]);
-        free(map->world);
+        free_matrix(map->world); // Riutilizza free_matrix
+        map->world = NULL;
     }
+    
+    // Aggiungi la liberazione delle texture paths se necessario
+    // if (map->north_txtr)
+    //     free(map->north_txtr);
+    // if (map->south_txtr)
+    //     free(map->south_txtr);
+    // if (map->west_txtr)
+    //     free(map->west_txtr);
+    // if (map->east_txtr)
+    //     free(map->east_txtr);
+    
+    // Aggiungi la liberazione dei colori se necessario
     if (map->floor_color)
         free(map->floor_color);
     if (map->ceiling_color)
         free(map->ceiling_color);
-    
 }
 
-void	free_mlx(t_game *game)
+void free_textures(t_game *game)
 {
-	if (game->mlx)
-	{
-		mlx_destroy_display(game->mlx);
-		free(game->mlx);	
-	}
-}
+    int i;
 
-void	free_game_resources(t_game *game)
-{
-    printf("Liberando risorse...\n");
-    if (!game)
+    if (!game || !game->mlx)
         return;
-    if (game->mlx)
+
+    for (i = 0; i < 4; i++)
     {
-        for (int i = 0; i < 4; i++)
+        if (game->textures[i].img)
         {
-            if (game->textures[i].img)
-                mlx_destroy_image(game->mlx, game->textures[i].img);
+            mlx_destroy_image(game->mlx, game->textures[i].img);
+            game->textures[i].img = NULL;
         }
     }
+}
+
+void free_game_resources(t_game *game)
+{
+    if (!game)
+        return;
+
+    printf("Freeing resources...\n");
+    
+    // 1. Libera textures per prime (dipende da mlx)
+    free_textures(game);
+    
+    // 2. Libera l'immagine principale
+    if (game->img && game->mlx)
+    {
+        mlx_destroy_image(game->mlx, game->img);
+        game->img = NULL;
+    }
+    
+    // 3. Libera la finestra (prima di mlx_display)
+    if (game->win && game->mlx)
+    {
+        mlx_destroy_window(game->mlx, game->win);
+        game->win = NULL;
+    }
+    
+    // 4. Libera la mappa e il player
+    if (game->map)
+    {
+        free_map(game->map);
+        free(game->map);
+        game->map = NULL;
+    }
+    
     if (game->player)
     {
         free(game->player);
         game->player = NULL;
     }
-    if (game->map)
+    if (game->mlx)
     {
-        free_map(game->map);
-        game->map = NULL;
+        mlx_destroy_display(game->mlx);
+        free(game->mlx);
+        game->mlx = NULL;
     }
-    if (game->img)
-    {
-		mlx_destroy_image(game->mlx, game->img);
-        game->img = NULL;
-    }
-    if (game->win)
-    {
-		mlx_destroy_window(game->mlx, game->win);
-        game->win = NULL;
-    }
-    if (game->textures[0].img && game->mlx)
-        mlx_destroy_image(game->mlx, game->textures[0].img);
-    if (game->textures[1].img && game->mlx)
-        mlx_destroy_image(game->mlx, game->textures[1].img);
-    if (game->textures[2].img && game->mlx)
-        mlx_destroy_image(game->mlx, game->textures[2].img);
-    if (game->textures[3].img && game->mlx)
-        mlx_destroy_image(game->mlx, game->textures[3].img);
-    // if (game->mlx)
-    // {
-    //     mlx_destroy_display(game->mlx);
-    //     free(game->mlx);
-    //     game->mlx = NULL;
-    // }
     printf("Risorse liberate correttamente.\n");
 }
 
