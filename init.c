@@ -6,7 +6,7 @@
 /*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 23:45:26 by mariel            #+#    #+#             */
-/*   Updated: 2025/04/09 21:25:52 by damoncad         ###   ########.fr       */
+/*   Updated: 2025/04/09 21:38:16 by damoncad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ void load_texture(t_game *game, t_textures *texture, char *path)
     {
 		printf("Error: Could not load texture.\n");
 		perror("Reason");
+		//free_game_resources(game);
 		free_map(game->map);
         exit(1);
     }

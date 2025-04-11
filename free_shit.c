@@ -6,7 +6,7 @@
 /*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 13:03:51 by damoncad          #+#    #+#             */
-/*   Updated: 2025/04/09 21:25:33 by damoncad         ###   ########.fr       */
+/*   Updated: 2025/04/11 10:10:39 by damoncad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,14 +41,14 @@ void free_map(t_map_data *map)
     }
     
     // Aggiungi la liberazione delle texture paths se necessario
-    if (map->north_txtr)
-        free(map->north_txtr);
-    if (map->south_txtr)
-        free(map->south_txtr);
-    if (map->west_txtr)
-        free(map->west_txtr);
-    if (map->east_txtr)
-        free(map->east_txtr);
+    // if (map->north_txtr)
+    //     free(map->north_txtr);
+    // if (map->south_txtr)
+    //     free(map->south_txtr);
+    // if (map->west_txtr)
+    //     free(map->west_txtr);
+    // if (map->east_txtr)
+    //     free(map->east_txtr);
     
     // Aggiungi la liberazione dei colori se necessario
     if (map->floor_color)
@@ -111,12 +111,12 @@ void free_game_resources(t_game *game)
         free(game->player);
         game->player = NULL;
     }
-    // if (game->mlx)
-    // {
-    //     mlx_destroy_display(game->mlx);
-    //     free(game->mlx);
-    //     game->mlx = NULL;
-    // }
+    if (game->mlx)
+    {
+        mlx_destroy_display(game->mlx);
+        free(game->mlx);
+        game->mlx = NULL;
+    }
     printf("Risorse liberate correttamente.\n");
 }
 
