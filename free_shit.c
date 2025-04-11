@@ -6,7 +6,7 @@
 /*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 13:03:51 by damoncad          #+#    #+#             */
-/*   Updated: 2025/04/11 10:14:27 by damoncad         ###   ########.fr       */
+/*   Updated: 2025/04/11 10:27:39 by damoncad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,7 @@ void free_game_resources(t_game *game)
     if (game->map)
     {
         free_map(game->map);
-        free(game->map);
+        //free(game->map);
         game->map = NULL;
     }
     
