@@ -6,7 +6,7 @@
 /*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 22:52:55 by mariel            #+#    #+#             */
-/*   Updated: 2025/04/11 10:31:00 by mabrigo          ###   ########.fr       */
+/*   Updated: 2025/04/11 10:45:10 by mabrigo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,25 +157,40 @@ void	parse_floor_ceiling(int i, char *str, t_map_data *map)
 	else if (ft_strncmp(str + i, "C ", 2) == 0)
 		target = &map->ceiling_color;
 	if (!target || !str[i + 2])
-        print_error("Error: invalid color line\n");
+	{	
+		free_map(map);
+		print_error("Error: invalid color line\n");
+	}
 	if (*target)
 	{
 		free(*target);
 		*target = NULL;
+		free_map(map);
 		print_error("Error: double configuration\n");
 	}
 	fc = strcmp_from_i(i + 2, str);
 	if (!fc)
 	{
+		free_map(map);
 		print_error("Error: invalid color format\n");
-		exit(1);
 	}
 	*target = parse_rgb_values(fc);
 	free(fc);
 	if (!*target)
 	{
+		// Free all texture strings that might have been allocated already
+		if (map->north_txtr)
+			free(map->north_txtr);
+		if (map->south_txtr)
+			free(map->south_txtr);
+		if (map->west_txtr)
+			free(map->west_txtr);
+		if (map->east_txtr)
+			free(map->east_txtr);
+		
+		// Now free the map structure
+		free_map(map);
 		print_error("Error: invalid color values\n");
-		exit (1);
 	}
 }
 
@@ -340,6 +355,7 @@ void	parse_file(char **av, int fd, t_map_data *map)
 			else
 			{
 				free(line);
+				free_map(map);
 				exit(1);
 			}
 		}
@@ -348,6 +364,7 @@ void	parse_file(char **av, int fd, t_map_data *map)
 			if (is_map_line(line))
 			{
 				free(line);
+				free_map(map);
 				exit(1);
 			}
 			else
@@ -371,11 +388,6 @@ void	parse_file(char **av, int fd, t_map_data *map)
 		return ;
 	}
 	map->world = load_map(av[1], &map_start_line);
-	int x = 0;
-	while (map->world[x])
-	{
-		x++;
-	}
 	if (!check_map(map->world))
 	{
 		printf("Error: Failed to load map\n");
