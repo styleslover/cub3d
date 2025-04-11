@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 22:52:55 by mariel            #+#    #+#             */
-/*   Updated: 2025/04/11 10:19:12 by damoncad         ###   ########.fr       */
+/*   Updated: 2025/04/11 10:31:00 by mabrigo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,6 +112,7 @@ int	*parse_rgb_values(char *str)
 			return (0);
 		}
 		rgb_values[i] = ft_atoi(trimmed);
+		free(trimmed);
 		if (rgb_values[i] < 0 || rgb_values[i] > 255)
 		{
 			//debug
@@ -128,7 +129,6 @@ int	*parse_rgb_values(char *str)
 		free(rgb_values);
 		return (NULL);
 	}
-	free(trimmed);
 	return (rgb_values);
 }
 
