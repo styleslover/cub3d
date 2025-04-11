@@ -3,142 +3,142 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mariel <mariel@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/04 17:42:01 by damoncad          #+#    #+#             */
-/*   Updated: 2025/02/24 22:34:14 by mariel           ###   ########.fr       */
+/*   Created: 2023/11/30 18:57:42 by mabrigo           #+#    #+#             */
+/*   Updated: 2025/02/19 20:15:15 by mabrigo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+// #include "get_next_line_utils.c"
+/*
+1) fd = open("nomefile.txt", O_<quello che vuoi fare>)
+		O_RDONLY to read
+		O_WRONLY to write
+		O_RDWR to open and read
+		------------------------
+	https://pubs.opengroup.org/onlinepubs/007904875/functions/open.html
+2) read a line in a file and return it as a string (til '\n') -> strdup
+		if there's nothing to read -> NULL
+3) read(fd, buf, bytes)
+		buffer = where chars read are being stocked
+		bytes = static variable, numbers of chard to be read
+4) read function
+		return Number of bytes read on success
+		return 0 on reaching the end of file
+		return -1 on error/signal interrupt
+5) [bonus] massimo valore di fd = 1024
+		0 input
+		1 output
+		3 error
+		...
+*/
 #include "get_next_line.h"
 
-char	*resize_and_copy_buffer(char *buffer, char *line_part)
+char	*free_null(char **str)
 {
-	char	*new_buffer;
-	size_t	part_length;
-	size_t	remaining_length;
-
-	remaining_length = 0;
-	part_length = ft_strlen(line_part);
-	new_buffer = ft_calloc(ft_strlen(buffer) - part_length, sizeof(char));
-	if (!new_buffer)
-	{
-		free(buffer);
-		return (NULL);
-	}
-	while (buffer[part_length])
-	{
-		new_buffer[remaining_length] = buffer[part_length];
-		part_length++;
-		remaining_length++;
-	}
-	free(buffer);
-	return (new_buffer);
+	free(*str);
+	*str = NULL;
+	return (NULL);
 }
 
-char	*extract_line_part( char *buffer)
+char	*nl_strcat(char *str1, char *str2)
 {
-	char	*line_part;
-	size_t	i;
+	char	*out;
+	int		i;
+	int		j;
 
 	i = 0;
-	line_part = ft_calloc(ft_str_newline(buffer), sizeof(char));
-	if (!line_part)
-		return (NULL);
-	while (buffer[i] != '\n' && buffer[i])
+	out = nl_calloc(sizeof(char), nl_strlen(str1) + nl_strlen(str2) + 1);
+	if (str1)
 	{
-		line_part[i] = buffer[i];
-		i++;
+		while (str1[i])
+		{
+			out[i] = str1[i];
+			i++;
+		}
 	}
-	if (buffer[i] == '\n')
-		line_part[i] = buffer[i];
-	return (line_part);
+	j = 0;
+	while (str2[j])
+	{
+		out[i] = str2[j];
+		i++;
+		j++;
+	}
+	out[i] = '\0';
+	return (out);
 }
 
-char	*resize_buffer(char *buffer)
+char	*get_string(char **str, int fd)
 {
-	char	*new_buffer;
-	size_t	i;
+	char	*buf;
+	char	*temp;
+	int		char_read;
 
-	i = 0;
-	new_buffer = ft_calloc(ft_strlen(buffer) + BUFFER_SIZE, sizeof(char));
-	if (!new_buffer)
+	buf = nl_calloc(sizeof(char), BUFFER_SIZE + 1);
+	if (!buf)
 		return (NULL);
-	while (buffer[i])
+	while (buf[check_nl(buf)] == '\0')
 	{
-		new_buffer[i] = buffer[i];
-		i++;
+		char_read = read(fd, buf, BUFFER_SIZE);
+		if (char_read <= 0)
+			break ;
+		buf[char_read] = '\0';
+		temp = nl_strcat(*str, buf);
+		if (!temp)
+			return (NULL);
+		free(*str);
+		*str = temp;
 	}
-	free(buffer);
-	return (new_buffer);
-}
-
-char	*initialize_buffer(int fd)
-{
-	char	*buffer;
-	int		bytes_read;
-
-	buffer = ft_calloc(BUFFER_SIZE, sizeof(char));
-	bytes_read = read(fd, buffer, BUFFER_SIZE);
-	if (!buffer || bytes_read <= 0)
-	{
-		if (bytes_read <= 0)
-			free(buffer);
-		return (NULL);
-	}
-	return (buffer);
+	free(buf);
+	if (char_read <= 0 && *str != NULL && nl_strlen(*str) == 0)
+		return (free_null(str));
+	return (*str);
 }
 
 char	*get_next_line(int fd)
 {
-	static char	*buffer;
-	char		*line_part;
-	size_t		current_position;
-	int			buffer_length;
+	static char	*str = NULL;
+	char		*new_line;
+	int			idx_newline;
+	int			i;
 
-	current_position = 0;
-	if (BUFFER_SIZE <= 0 || fd < 0)
+	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
-	if (!buffer)
-	{
-		buffer = initialize_buffer(fd);
-		if (!buffer)
-			return (NULL);
-	}
-	buffer_length = ft_strlen(buffer);
-	while (ft_nl(buffer) == 0 && buffer_length > 0)
-	{
-		buffer = resize_buffer(buffer);
-		current_position += buffer_length;
-		buffer_length = read(fd, &buffer[current_position], BUFFER_SIZE);
-	}
-	line_part = extract_line_part(buffer);
-	buffer = resize_and_copy_buffer(buffer, line_part);
-	return (line_part);
+	str = get_string(&str, fd);
+	if (str == NULL)
+		return (free_null(&str));
+	idx_newline = check_nl(str);
+	new_line = nl_calloc(sizeof(char), idx_newline + 2);
+	if (!new_line)
+		return (NULL);
+	i = -1;
+	while (++i <= idx_newline)
+		new_line[i] = str[i];
+	nl_bzero(&str, idx_newline);
+	if (!*new_line)
+		free_null(&str);
+	return (new_line);
 }
 
-//#include <stdio.h>
-//#include <fcntl.h>
-//#include "get_next_line.h"
-//
-//int main()
-//{
-//	char	*line;
-//	int		fd;
-//
-//	fd = open("example.txt", O_RDONLY);
-//	if (fd == -1)
-//	{
-//		printf("Failed to open the file.\n");
-//		return (1);
-//	}
-//
-//	while ((line = get_next_line(fd)) != NULL)
-//	{
-//		printf("%s\n", line);
-//		free(line);
-//	}
-//	//printf("%s", get_next_line(fd));
-//	close(fd);
-//	return (0);
-//}
+/*int	main()
+{
+	char	*stringa;
+	int		fd;
+
+	fd = open("fd7.txt", O_RDONLY);
+	if (fd < 0)
+	{
+		perror("Errore nell'apertura del file");
+		return (1);
+	}
+	stringa = get_next_line(fd);
+	int i = 0;
+	printf("[%d]%s\n",i++, stringa);
+	while (stringa)
+	{
+		free(stringa);
+		stringa = get_next_line(fd);
+		printf("[%d]%s\n",i++, stringa);
+	}
+}*/

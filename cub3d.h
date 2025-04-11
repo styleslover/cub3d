@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 12:40:01 by mabrigo           #+#    #+#             */
-/*   Updated: 2025/04/09 20:38:07 by damoncad         ###   ########.fr       */
+/*   Updated: 2025/04/11 11:11:01 by mabrigo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,6 +135,7 @@ typedef struct s_line_data
 
 //cub3d.c
 int	print_error(char *str);
+void exit_with_error(char *str, t_map_data *map, int fd);
 int	check_filename(char *av);
 
 //draw.c
@@ -172,9 +173,9 @@ int		is_empty_line(char *str);
 int	check_single_value(char *str);
 int		*parse_rgb_values(char *str);
 void	assign_texture(char **txtr, char *value, char *err_msg);
-void	parse_floor_ceiling(int i, char *str, t_map_data *map);
+void	parse_floor_ceiling(int i, char *str, t_map_data *map, int fd);
 int is_valid_config_line(char *str);
-void	parse_config_line(char *str, t_map_data *map);
+void	parse_config_line(char *str, t_map_data *map, int fd);
 int		is_map_line(char *str);
 char	**load_map(char *av, int *map_start_line);
 void	parse_file(char **av, int fd, t_map_data *map);

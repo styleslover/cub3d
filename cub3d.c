@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 12:52:13 by mabrigo           #+#    #+#             */
-/*   Updated: 2025/04/09 20:41:02 by damoncad         ###   ########.fr       */
+/*   Updated: 2025/04/11 10:56:03 by mabrigo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,16 @@
 
 int	print_error(char *str)
 {
+	printf("%s\n", str);
+	return (1);
+}
+
+void exit_with_error(char *str, t_map_data *map, int fd)
+{
+	if (fd >= 0)
+		close(fd);
+	if (map)
+		free_map(map);
 	printf("%s\n", str);
 	exit(1);
 }

@@ -6,7 +6,7 @@
 /*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 22:52:55 by mariel            #+#    #+#             */
-/*   Updated: 2025/04/11 10:45:10 by mabrigo          ###   ########.fr       */
+/*   Updated: 2025/04/11 11:09:36 by mabrigo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,7 +145,7 @@ void	assign_texture(char **txtr, char *value, char *err_msg)
 		*txtr = value;
 }
 
-void	parse_floor_ceiling(int i, char *str, t_map_data *map)
+void	parse_floor_ceiling(int i, char *str, t_map_data *map, int fd)
 {
 	char	*fc;
 	int		**target;
@@ -157,40 +157,35 @@ void	parse_floor_ceiling(int i, char *str, t_map_data *map)
 	else if (ft_strncmp(str + i, "C ", 2) == 0)
 		target = &map->ceiling_color;
 	if (!target || !str[i + 2])
-	{	
+	{
+		close(fd);
 		free_map(map);
 		print_error("Error: invalid color line\n");
+		exit (1);
 	}
 	if (*target)
 	{
-		free(*target);
-		*target = NULL;
+		close(fd);
 		free_map(map);
 		print_error("Error: double configuration\n");
+		exit(1);
 	}
 	fc = strcmp_from_i(i + 2, str);
 	if (!fc)
 	{
+		close(fd);
 		free_map(map);
 		print_error("Error: invalid color format\n");
+		exit(1);
 	}
 	*target = parse_rgb_values(fc);
 	free(fc);
 	if (!*target)
 	{
-		// Free all texture strings that might have been allocated already
-		if (map->north_txtr)
-			free(map->north_txtr);
-		if (map->south_txtr)
-			free(map->south_txtr);
-		if (map->west_txtr)
-			free(map->west_txtr);
-		if (map->east_txtr)
-			free(map->east_txtr);
-		
-		// Now free the map structure
+		close(fd);
 		free_map(map);
 		print_error("Error: invalid color values\n");
+		exit(1);
 	}
 }
 
@@ -211,7 +206,7 @@ int is_valid_config_line(char *str)
            ft_strncmp(str + i, "C ", 2) == 0);
 }
 
-void	parse_config_line(char *str, t_map_data *map)
+void	parse_config_line(char *str, t_map_data *map, int fd)
 {
 	int		i;
 
@@ -220,6 +215,7 @@ void	parse_config_line(char *str, t_map_data *map)
 		i++;
 	if (!is_valid_config_line(str))
 	{
+		close(fd);
 		printf("Error: invalid configuration line\n");
 		free_map(map);
 		exit(1);
@@ -237,7 +233,7 @@ void	parse_config_line(char *str, t_map_data *map)
 		assign_texture(&map->east_txtr, strcmp_from_i(i + 3, str),
 			"Error: EA texture\n");
 	else if (!ft_strncmp(str + i, "F ", 2) || !ft_strncmp(str + i, "C ", 2))
-		parse_floor_ceiling(i, str, map);
+		parse_floor_ceiling(i, str, map, fd);
 }
 
 int	is_map_line(char *str)
@@ -342,7 +338,6 @@ void	parse_file(char **av, int fd, t_map_data *map)
 		}
 		if (config_done)
 		{
-			
 			if (is_map_line(line) != 0)
 			{
 				line_len = ft_strlen(line);
@@ -355,6 +350,7 @@ void	parse_file(char **av, int fd, t_map_data *map)
 			else
 			{
 				free(line);
+				close (fd);
 				free_map(map);
 				exit(1);
 			}
@@ -364,12 +360,13 @@ void	parse_file(char **av, int fd, t_map_data *map)
 			if (is_map_line(line))
 			{
 				free(line);
+				close(fd);
 				free_map(map);
 				exit(1);
 			}
 			else
 			{
-				parse_config_line(line, map);
+				parse_config_line(line, map, fd);
 				if (map->north_txtr && map->south_txtr && map->west_txtr
 					&& map->east_txtr && map->floor_color && map->ceiling_color)
 				{

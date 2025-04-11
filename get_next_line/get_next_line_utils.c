@@ -3,68 +3,69 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/05 14:54:07 by damoncad          #+#    #+#             */
-/*   Updated: 2024/03/13 11:58:13 by damoncad         ###   ########.fr       */
+/*   Created: 2023/11/30 18:57:46 by mabrigo           #+#    #+#             */
+/*   Updated: 2025/02/18 21:07:58 by mabrigo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-size_t	ft_nl(char *buffer)
+int	check_nl(char *str)
 {
-	size_t	a;
+	int	i;
 
-	a = 0;
-	while (buffer[a])
-	{
-		if (buffer[a] == '\n')
-			return (1);
-		a++;
-	}
-	return (0);
+	i = -1;
+	while (str[++i])
+		if (str[i] == '\n')
+			return (i);
+	return (i);
 }
 
-size_t	ft_str_newline( char *buffer)
+int	nl_strlen(char *str)
 {
-	size_t	a;
+	int	i;
 
-	a = 0;
-	while (buffer[a] != '\n' && buffer[a])
-		a++;
-	if (buffer[a] == '\n')
-		a++;
-	return (a);
+	i = 0;
+	while (str && str[i])
+		i++;
+	return (i);
 }
 
-void	*ft_calloc(size_t nmemb, size_t size)
+char	*nl_bzero(char **s, int n)
 {
-	char	*buffer;
-	size_t	a;
-	size_t	i;
+	int		i;
+	int		j;
+	char	*p;
+	int		len;
 
-	a = 0;
-	i = nmemb * size;
-	if (nmemb == 0 || size == 0)
+	len = nl_strlen(*s) - n;
+	p = nl_calloc(sizeof(char), len + 1);
+	if (!p)
 		return (NULL);
-	buffer = malloc(i + 1);
-	if (!buffer)
-		return (NULL);
-	while (a <= i)
-	{
-		buffer[a] = '\0';
-		a++;
-	}
-	return (buffer);
+	i = n + 1;
+	j = 0;
+	while (j < len)
+		p[j++] = (*s)[i++];
+	free(*s);
+	*s = p;
+	return (p);
 }
 
-int	ft_strlen(char *buffer)
+void	*nl_calloc(int nmemb, int size)
 {
-	size_t	a;
+	char	*ptr;
+	int		i;
 
-	a = 0;
-	while (buffer[a])
-		a++;
-	return (a);
+	ptr = malloc(nmemb * size);
+	i = -1;
+	if (ptr == NULL)
+		return (ptr);
+	else
+	{
+		while (++i < nmemb * size)
+			ptr[i] = 0;
+		return (ptr);
+	}
 }
