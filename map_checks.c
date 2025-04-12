@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map_checks.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
+/*   By: santiago <santiago@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 18:39:22 by mabrigo           #+#    #+#             */
-/*   Updated: 2025/04/10 21:02:39 by mabrigo          ###   ########.fr       */
+/*   Updated: 2025/04/12 17:00:14 by santiago         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,7 +131,7 @@ int	check_map(char **world)
 		|| !map_empty_lines(world))
 	{
 		printf("Error: Invalid map\n");
-		free_matrix(world);
+		//free_matrix(world);
 		return (0);
 	}
 	return (1);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
+/*   By: santiago <santiago@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 22:52:55 by mariel            #+#    #+#             */
-/*   Updated: 2025/04/11 10:31:00 by mabrigo          ###   ########.fr       */
+/*   Updated: 2025/04/12 16:55:16 by santiago         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,17 +132,23 @@ int	*parse_rgb_values(char *str)
 	return (rgb_values);
 }
 
-void	assign_texture(char **txtr, char *value, char *err_msg)
+void assign_texture(char **txtr, char *value, char *err_msg)
 {
-	if (*txtr)
-	{
-		free(value);
-		value = NULL;
-		free(*txtr);
-		print_error(err_msg);
-	}
-	else
-		*txtr = value;
+    if (*txtr)
+    {
+        free(value);
+        value = NULL;
+        free(*txtr);
+        print_error(err_msg);
+    }
+    else
+    {
+        // Fare una copia della stringa per evitare problemi di doppio free
+        *txtr = ft_strdup(value);
+        free(value);  // Libera l'originale
+        if (!*txtr)   // Controlla se la duplicazione è riuscita
+            print_error("Memory allocation error\n");
+    }
 }
 
 void	parse_floor_ceiling(int i, char *str, t_map_data *map)
@@ -368,20 +374,22 @@ void	parse_file(char **av, int fd, t_map_data *map)
 		//debug
 		printf("Error: empty file\n");
 		free_map(map);
-		return ;
+		exit(1);
 	}
 	map->world = load_map(av[1], &map_start_line);
-	int x = 0;
-	while (map->world[x])
-	{
-		x++;
-	}
 	if (!check_map(map->world))
 	{
 		printf("Error: Failed to load map\n");
 		free_map(map);
 		exit(1);
 	}
+	if (!map->north_txtr || !map->south_txtr || !map->west_txtr || !map->east_txtr 
+        || !map->floor_color || !map->ceiling_color)
+    {
+        printf("Error: Missing required configuration\n");
+        free_map(map);
+        exit(1);
+    }
 	map->map_width = ft_strlen(map->world[0]);  // Larghezza della mappa
     map->map_height = 0;
     while (map->world[map->map_height] != NULL)

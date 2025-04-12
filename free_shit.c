@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_shit.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: santiago <santiago@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 13:03:51 by damoncad          #+#    #+#             */
-/*   Updated: 2025/04/11 10:27:39 by damoncad         ###   ########.fr       */
+/*   Updated: 2025/04/12 15:46:50 by santiago         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,25 +36,43 @@ void free_map(t_map_data *map)
 
     if (map->world)
     {
-        free_matrix(map->world); // Riutilizza free_matrix
+        free_matrix(map->world);
         map->world = NULL;
     }
     
-    // Aggiungi la liberazione delle texture paths se necessario
-    // if (map->north_txtr)
-    //     free(map->north_txtr);
-    // if (map->south_txtr)
-    //     free(map->south_txtr);
-    // if (map->west_txtr)
-    //     free(map->west_txtr);
-    // if (map->east_txtr)
-    //     free(map->east_txtr);
+    // Libera i path delle texture solo se non sono NULL
+    if (map->north_txtr)
+    {
+        free(map->north_txtr);
+        map->north_txtr = NULL;
+    }
+    if (map->south_txtr)
+    {
+        free(map->south_txtr);
+        map->south_txtr = NULL;
+    }
+    if (map->west_txtr)
+    {
+        free(map->west_txtr);
+        map->west_txtr = NULL;
+    }
+    if (map->east_txtr)
+    {
+        free(map->east_txtr);
+        map->east_txtr = NULL;
+    }
     
-    // Aggiungi la liberazione dei colori se necessario
+    // Libera i colori
     if (map->floor_color)
+    {
         free(map->floor_color);
+        map->floor_color = NULL;
+    }
     if (map->ceiling_color)
+    {
         free(map->ceiling_color);
+        map->ceiling_color = NULL;
+    }
 }
 
 void free_textures(t_game *game)
@@ -74,6 +92,7 @@ void free_textures(t_game *game)
     }
 }
 
+// In free_shit.c - Migliorare free_game_resources per liberare tutto correttamente
 void free_game_resources(t_game *game)
 {
     if (!game)
@@ -89,6 +108,7 @@ void free_game_resources(t_game *game)
     {
         mlx_destroy_image(game->mlx, game->img);
         game->img = NULL;
+        game->data = NULL;  // Importante: resetta anche il puntatore ai dati
     }
     
     // 3. Libera la finestra (prima di mlx_display)
@@ -102,7 +122,6 @@ void free_game_resources(t_game *game)
     if (game->map)
     {
         free_map(game->map);
-        //free(game->map);
         game->map = NULL;
     }
     
@@ -111,12 +130,15 @@ void free_game_resources(t_game *game)
         free(game->player);
         game->player = NULL;
     }
+    
+    // 5. Libera MLX
     if (game->mlx)
     {
         mlx_destroy_display(game->mlx);
         free(game->mlx);
         game->mlx = NULL;
     }
+    
     printf("Risorse liberate correttamente.\n");
 }
 

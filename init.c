@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: santiago <santiago@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 23:45:26 by mariel            #+#    #+#             */
-/*   Updated: 2025/04/09 21:11:07 by damoncad         ###   ########.fr       */
+/*   Updated: 2025/04/12 16:48:05 by santiago         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,30 +14,55 @@
 
 void load_texture(t_game *game, t_textures *texture, char *path)
 {
-	char *clean_path;
+    char *clean_path;
 
-	clean_path = ft_strtrim(path, "\t\n\r");//da trovare soluzione migliore
-    texture->img = mlx_xpm_file_to_image(game->mlx, clean_path, &texture->width, &texture->height);
-	
-    if (!texture->img)
+    if (!path)
     {
-		printf("Error: Could not load texture.\n");
-		perror("Reason");
-		free_map(game->map);
+        printf("Error: Texture path is NULL\n");
+        free_game_resources(game);  // Libera tutte le risorse prima di uscire
         exit(1);
     }
+
+    clean_path = ft_strtrim(path, "\t\n\r");
+    if (!clean_path)
+    {
+        printf("Error: Memory allocation failed\n");
+        free_game_resources(game);  // Libera tutte le risorse prima di uscire
+        exit(1);
+    }
+    
+    texture->img = mlx_xpm_file_to_image(game->mlx, clean_path, &texture->width, &texture->height);
+    if (!texture->img)
+    {
+        printf("Error: Could not load texture '%s'\n", clean_path);
+        free(clean_path);
+        free_game_resources(game);  // Libera tutte le risorse prima di uscire
+        exit(1);
+    }
+    
     texture->addr = mlx_get_data_addr(texture->img, &texture->bpp, 
-		&texture->line_length, &texture->endian);
-	free(path);
-	free(clean_path);
+                                     &texture->line_length, &texture->endian);
+    free(clean_path);
 }
 
 void init_textures(t_game *game, t_map_data *map)
 {
+    // Carica le texture e libera i percorsi originali
     load_texture(game, &game->textures[0], map->north_txtr); // Nord
+    free(map->north_txtr);
+    map->north_txtr = NULL;
+
     load_texture(game, &game->textures[1], map->south_txtr); // Sud
+    free(map->south_txtr);
+    map->south_txtr = NULL;
+
     load_texture(game, &game->textures[2], map->east_txtr);  // Est
+    free(map->east_txtr);
+    map->east_txtr = NULL;
+
     load_texture(game, &game->textures[3], map->west_txtr);  // Ovest
+    free(map->west_txtr);
+    map->west_txtr = NULL;
 }
 
 void	init_map(t_map_data *map)
@@ -82,7 +107,7 @@ void	init_player(t_player *player, t_map_data *map, int offset_x, int offset_y)
 				//verifica posizione spawn valida
 				if (!is_valid_position(map, player->x, player->y))
 				{
-					printf("Error: invalid spawn position at (%d, %d)\n", j, i);
+					printf("Error: invalid spawn position\n");
 					exit(1);
 				}
 				
@@ -100,20 +125,28 @@ void	init_player(t_player *player, t_map_data *map, int offset_x, int offset_y)
 
 void	init_game(char *name_win, t_game *game, t_map_data *map)
 {
-	game->map = map;
-	game->player = malloc(sizeof(t_player));
-	if (!game->player)
-	{
-		perror("Errore in malloc player\n");
-		exit (1);
-	}
-	if (map->win_width == 0 || map->win_height == 0)
-	{
-		perror("Errore: Dimensioni della mappa non valide\n");
-		exit(1);
-	}
+	ft_memset(game, 0, sizeof(t_game));
+    
+    game->map = map;
+    game->player = malloc(sizeof(t_player));
+    if (!game->player)
+    {
+        perror("Errore in malloc player\n");
+        free_map(map);
+        exit(1);
+    }
+    // Inizializza il player a 0
+    ft_memset(game->player, 0, sizeof(t_player));
+    
 	// Ottieni la dimensione massima dello schermo
 	game->mlx = mlx_init();
+	if (!game->mlx)
+	{
+		perror("Errore in mlx_init\n");
+		exit(1);
+	}
+	game->screen_w = 0;
+	game->screen_h = 0;
 	mlx_get_screen_size(game->mlx, &game->screen_w, &game->screen_h);
 
 	// Limita la finestra alla dimensione massima dello schermo
