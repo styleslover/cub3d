@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map_checks.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
+/*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 18:39:22 by mabrigo           #+#    #+#             */
-/*   Updated: 2025/04/10 21:02:39 by mabrigo          ###   ########.fr       */
+/*   Updated: 2025/04/13 18:01:24 by damoncad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int	map_valid_char(char **world, int i, int player)
 		{
 			if (world[i][j] == '\t')
 			{
-				printf("Error: tab is an invalin character!\n");
+				printf("Error: tab is an invalid character!\n");
 				return (0);
 			}
 			if (!my_strchr("01NSEW ", world[i][j]))
@@ -55,7 +55,10 @@ int	map_valid_char(char **world, int i, int player)
 		i++;
 	}
 	if (player != 1)
+	{
+		printf("Error: there must be only one player!\n");
 		return (0);
+	}
 	return (1);
 }
 
@@ -131,7 +134,7 @@ int	check_map(char **world)
 		|| !map_empty_lines(world))
 	{
 		printf("Error: Invalid map\n");
-		free_matrix(world);
+		//free_matrix(world);
 		return (0);
 	}
 	return (1);

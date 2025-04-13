@@ -6,7 +6,7 @@
 /*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 22:52:55 by mariel            #+#    #+#             */
-/*   Updated: 2025/04/13 17:23:48 by damoncad         ###   ########.fr       */
+/*   Updated: 2025/04/13 18:01:49 by damoncad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -351,6 +351,7 @@ void	parse_file(char **av, int fd, t_map_data *map)
 				free(line);
 				close (fd);
 				free_map(map);
+				printf("Error: invalid map line\n");
 				exit(1);
 			}
 		}
@@ -361,6 +362,7 @@ void	parse_file(char **av, int fd, t_map_data *map)
 				free(line);
 				close(fd);
 				free_map(map);
+				printf("Error: invalid configuration line\n");
 				exit(1);
 			}
 			else
@@ -387,7 +389,7 @@ void	parse_file(char **av, int fd, t_map_data *map)
 	if (!check_map(map->world))
 	{
 		printf("Error: Failed to load map\n");
-		//free_map(map);
+		free_map(map);
 		exit(1);
 	}
 	map->map_width = ft_strlen(map->world[0]);  // Larghezza della mappa
