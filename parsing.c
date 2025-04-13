@@ -6,7 +6,7 @@
 /*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 22:52:55 by mariel            #+#    #+#             */
-/*   Updated: 2025/04/13 18:31:27 by damoncad         ###   ########.fr       */
+/*   Updated: 2025/04/13 19:08:43 by damoncad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -360,11 +360,11 @@ void	parse_file(char **av, int fd, t_map_data *map)
 		{
 			if (is_map_line(line))
 			{
-				free(line);
+				//free(line);
 				close(fd);
 				free_map(map);
 				printf("Error: Invalid configuration line\n");
-				exit(1);
+				//exit(1);
 			}
 			else
 			{

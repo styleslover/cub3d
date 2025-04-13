@@ -1,15 +1,3 @@
-
-
-NO textures/a.xpm
-SO textures/t.xpm
-EA textures/t.xpm
-WE textures/t.xpm
-NO textures/a.xpm
-
-
-F 20,20,20
-C 200,200,200
-
 11111
 10001
 10N01
@@ -25,6 +13,13 @@ C 200,200,200
 11111
 
 
+NO textures/a.xpm
+SO textures/t.xpm
+EA textures/t.xpm
+WE textures/t.xpm
+
+F 20,20,20
+C 200,200,200
 
 
 
