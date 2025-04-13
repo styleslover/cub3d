@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
+/*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 22:52:55 by mariel            #+#    #+#             */
-/*   Updated: 2025/04/11 11:09:36 by mabrigo          ###   ########.fr       */
+/*   Updated: 2025/04/13 17:23:48 by damoncad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,9 +136,8 @@ void	assign_texture(char **txtr, char *value, char *err_msg)
 {
 	if (*txtr)
 	{
-		free(value);
-		value = NULL;
 		free(*txtr);
+		*txtr = NULL;
 		print_error(err_msg);
 	}
 	else
@@ -185,7 +184,7 @@ void	parse_floor_ceiling(int i, char *str, t_map_data *map, int fd)
 		close(fd);
 		free_map(map);
 		print_error("Error: invalid color values\n");
-		exit(1);
+		//exit(1); //QUESTO QUA DA 2 ERRORI SE COMMENTATO MA TOGLIE I STILL REACHABLE
 	}
 }
 
@@ -332,7 +331,7 @@ void	parse_file(char **av, int fd, t_map_data *map)
 		current_line++;
 		if (is_empty_line(line))
 		{
-			printf("empty valid line\n");
+			//printf("empty valid line\n");
 			free(line);
 			continue;
 		}
@@ -388,7 +387,7 @@ void	parse_file(char **av, int fd, t_map_data *map)
 	if (!check_map(map->world))
 	{
 		printf("Error: Failed to load map\n");
-		free_map(map);
+		//free_map(map);
 		exit(1);
 	}
 	map->map_width = ft_strlen(map->world[0]);  // Larghezza della mappa
