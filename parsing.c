@@ -6,7 +6,7 @@
 /*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 22:52:55 by mariel            #+#    #+#             */
-/*   Updated: 2025/04/13 19:08:43 by damoncad         ###   ########.fr       */
+/*   Updated: 2025/04/13 20:32:12 by damoncad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,12 +42,15 @@ int	check_single_value(char *str)
     
     // Gestisci segno opzionale
     if (str[i] == '+')
+	{
+		if (!ft_isdigit(str[i + 1]))
+			return (0);
         i++;
+	}
     if (str[i] == '-')
 	{
 		return (0);
 	}
-	
     while (str[i])
     {
         if (ft_isdigit(str[i]))
@@ -362,7 +365,7 @@ void	parse_file(char **av, int fd, t_map_data *map)
 			{
 				//free(line);
 				close(fd);
-				free_map(map);
+				//free_map(map);
 				printf("Error: Invalid configuration line\n");
 				//exit(1);
 			}

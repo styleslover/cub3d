@@ -6,7 +6,7 @@
 /*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 23:45:26 by mariel            #+#    #+#             */
-/*   Updated: 2025/04/13 19:14:54 by damoncad         ###   ########.fr       */
+/*   Updated: 2025/04/13 20:16:41 by damoncad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,6 +111,8 @@ void	init_game(char *name_win, t_game *game, t_map_data *map)
 	{
 		perror("Errore: Dimensioni della mappa non valide\n");
 		//free_map(map); //messo riduce a 40 i still reachable
+		free_matrix(map->world);
+		free(game->player);
 		exit(1);
 	}
 	// Ottieni la dimensione massima dello schermo
