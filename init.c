@@ -6,7 +6,7 @@
 /*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 23:45:26 by mariel            #+#    #+#             */
-/*   Updated: 2025/04/14 15:24:30 by damoncad         ###   ########.fr       */
+/*   Updated: 2025/04/14 19:06:00 by damoncad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,8 +136,8 @@ void	init_game(char *name_win, t_game *game, t_map_data *map)
 	if (map->offset_x < 0) map->offset_x = 0;
 	if (map->offset_y < 0) map->offset_y = 0;
 
-	game->cos_rot_speed = cos(ROTASPEED);
-	game->sin_rot_speed = sin(ROTASPEED);
+	game->cos_rot_speed = cos(RS);
+	game->sin_rot_speed = sin(RS);
 	
 	//load_textures(game);//PER CARICARE LE TEXTURES, DA CAPIRE DOVE VA PER BENE
 	init_textures(game, map);
