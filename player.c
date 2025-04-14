@@ -64,6 +64,17 @@ bool is_valid_position(t_map_data *map, float x, float y)
 	tile_x = (int)(map_x / TILE_SIZE);
 	tile_y = (int)(map_y / TILE_SIZE);
 	
+	//debug
+	int i = 0;
+
+	while (map->world[i])
+	{
+		printf("Map[%d]: %s\n", i, map->world[i]);
+		i++;
+	}
+	printf("map_width: %d\n", map->map_width);
+	printf("map_height: %d\n", map->map_height);
+
     if (tile_x < 0 || tile_x >= map->map_width || tile_y < 0 || tile_y >= map->map_height)
 	{
 		printf("Error: Invalid position: out of map\n");

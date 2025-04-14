@@ -6,7 +6,7 @@
 /*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 22:52:55 by mariel            #+#    #+#             */
-/*   Updated: 2025/04/13 21:18:54 by mabrigo          ###   ########.fr       */
+/*   Updated: 2025/04/14 11:45:31 by mabrigo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -415,10 +415,10 @@ void	parse_file(char **av, int fd, t_map_data *map)
 		free_map(map);
 		exit(1);
 	}
-	map->map_width = ft_strlen(map->world[0]);  // Larghezza della mappa
-    map->map_height = 0;
-    while (map->world[map->map_height] != NULL)
+    while (map->world[map->map_height])
 	{
+		if (ft_strlen(map->world[map->map_height]) > map->map_width)
+			map->map_width = ft_strlen(map->world[map->map_height]);
         map->map_height++;
 	}
 }

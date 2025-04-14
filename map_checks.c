@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map_checks.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 18:39:22 by mabrigo           #+#    #+#             */
-/*   Updated: 2025/04/13 18:38:55 by damoncad         ###   ########.fr       */
+/*   Updated: 2025/04/14 11:39:26 by mabrigo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,9 +85,9 @@ int	check_cardinals(char **world, int i, int j)
 {
 	if (i == 0 || j == 0 || !world[i + 1] || !world[i - 1])
 		return (0);
-	if ((int)ft_strlen(world[i]) <= j + 1 ||
-		j >= (int)ft_strlen(world[i - 1]) ||
-		j >= (int)ft_strlen(world[i + 1]) || j - 1 < 0)
+	if (ft_strlen(world[i]) <= j + 1 ||
+		j >= ft_strlen(world[i - 1]) ||
+		j >= ft_strlen(world[i + 1]) || j - 1 < 0)
 		return (0);
 	if (my_strchr("0NSEW", world[i][j]))
 	{
