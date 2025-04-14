@@ -1,5 +1,4 @@
-
-NO a.xpm
+NO textures/a.xpm
 SO textures/wall_texture.xpm
 EA textures/t.xpm 
 WE textures/t.xpm
@@ -7,23 +6,10 @@ WE textures/t.xpm
 
 
 
-C 255,255,255
-F 0,0,0
+C 20,20,20
+F 255,0,0
 
-
-
- 11111
- 10001
- 1N001
- 10001
- 10001
- 10001
- 10001
- 11001
- 10001
- 10001
- 10001
- 10001
- 11111
-
- 
+1111
+1001
+1N01
+1111

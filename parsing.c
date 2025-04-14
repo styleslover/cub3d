@@ -6,7 +6,7 @@
 /*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 22:52:55 by mariel            #+#    #+#             */
-/*   Updated: 2025/04/14 13:11:11 by damoncad         ###   ########.fr       */
+/*   Updated: 2025/04/14 17:05:48 by damoncad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -218,7 +218,9 @@ int is_valid_config_line(char *str)
     
     // Salta spazi iniziali
     while (str[i] == 32 || (str[i] >= 9 && str[i] <= 13))
+	{
         i++;
+	}
 		
     // Verifica se è una configurazione valida
     return (ft_strncmp(str + i, "NO ", 3) == 0 ||
@@ -229,35 +231,145 @@ int is_valid_config_line(char *str)
            ft_strncmp(str + i, "C ", 2) == 0);
 }
 
-void	parse_config_line(char *str, t_map_data *map, int fd)
+int	is_valid_texture_path(char *path)
 {
-	int		i;
+	int	fd;
 
-	i = 0;
-	while (str[i] == 32 || (str[i] >= 9 && str[i] <= 13))
-		i++;
-	if (!is_valid_config_line(str))
+	fd = open(path, O_RDONLY);
+	if (fd == -1)
 	{
-		close(fd);
-		printf("Error: invalid configuration line\n");
-		free_map(map);
-		//exit(1);
+		printf("Error: invalid texture path\n");
+		return (0);
 	}
-	if (!ft_strncmp(str + i, "NO ", 3))
-		assign_texture(&map->north_txtr, strcmp_from_i(i + 3, str),
-			"Error: NO texture\n");
-	else if (!ft_strncmp(str + i, "SO ", 3))
-		assign_texture(&map->south_txtr, strcmp_from_i(i + 3, str),
-			"Error: SO texture\n");
-	else if (!ft_strncmp(str + i, "WE ", 3))
-		assign_texture(&map->west_txtr, strcmp_from_i(i + 3, str),
-			"Error: WE texture\n");
-	else if (!ft_strncmp(str + i, "EA ", 3))
-		assign_texture(&map->east_txtr, strcmp_from_i(i + 3, str),
-			"Error: EA texture\n");
-	else if (!ft_strncmp(str + i, "F ", 2) || !ft_strncmp(str + i, "C ", 2))
-		parse_floor_ceiling(i, str, map, fd);
+	close(fd);
+	return (1);
 }
+
+void parse_config_line(char *str, t_map_data *map, int fd)
+{
+    int i = 0;
+
+    // Salta gli spazi iniziali
+    while (str[i] == 32 || (str[i] >= 9 && str[i] <= 13))
+        i++;
+
+    // Controlla la validità della linea di configurazione
+    if (!is_valid_config_line(str))
+    {
+        close(fd);
+        printf("Error: invalid configuration line\n");
+        free_map(map); // Libera la memoria della mappa
+        return;
+    }
+
+    // Verifica il tipo di configurazione e controlla la validità della texture
+    if (!ft_strncmp(str + i, "NO ", 3))
+    {
+        char *path = strcmp_from_i(i + 3, str);
+        if (!is_valid_texture_path(path)) // Verifica se la path è valida
+        {
+            close(fd);
+            printf("Error: Invalid path for NO texture\n");
+			free(path);
+            free_map(map); // Libera la memoria
+            return;
+        }
+        assign_texture(&map->north_txtr, path, "Error: NO texture\n");
+    }
+    else if (!ft_strncmp(str + i, "SO ", 3))
+    {
+        char *path = strcmp_from_i(i + 3, str);
+        if (!is_valid_texture_path(path)) // Verifica se la path è valida
+        {
+            close(fd);
+            printf("Error: Invalid path for SO texture\n");
+			free(path);
+            free_map(map); // Libera la memoria
+            return;
+        }
+        assign_texture(&map->south_txtr, path, "Error: SO texture\n");
+    }
+    else if (!ft_strncmp(str + i, "WE ", 3))
+    {
+        char *path = strcmp_from_i(i + 3, str);
+        if (!is_valid_texture_path(path)) // Verifica se la path è valida
+        {
+            close(fd);
+            printf("Error: Invalid path for WE texture\n");
+			free(path);
+            free_map(map); // Libera la memoria
+            return;
+        }
+        assign_texture(&map->west_txtr, path, "Error: WE texture\n");
+    }
+    else if (!ft_strncmp(str + i, "EA ", 3))
+    {
+        char *path = strcmp_from_i(i + 3, str);
+        if (!is_valid_texture_path(path)) // Verifica se la path è valida
+        {
+            close(fd);
+            printf("Error: Invalid path for EA texture\n");
+			free(path);
+            free_map(map); // Libera la memoria
+            return;
+        }
+        assign_texture(&map->east_txtr, path, "Error: EA texture\n");
+    }
+    else if (!ft_strncmp(str + i, "F ", 2) || !ft_strncmp(str + i, "C ", 2))
+    {
+        parse_floor_ceiling(i, str, map, fd);
+    }
+}
+
+
+
+
+// void	parse_config_line(char *str, t_map_data *map, int fd)
+// {
+// 	int		i;
+
+// 	i = 0;
+// 	while (str[i] == 32 || (str[i] >= 9 && str[i] <= 13))
+// 		i++;
+// 	if (!is_valid_config_line(str))
+// 	{
+// 		close(fd);
+// 		printf("Error: invalid configuration line\n");
+// 		free_map(map);
+// 		return ;
+// 		//exit(1);
+// 	}
+// 	if (!ft_strncmp(str + i, "NO ", 3))
+// 		assign_texture(&map->north_txtr, strcmp_from_i(i + 3, str),
+// 			"Error: NO texture\n");
+// 	else if (!ft_strncmp(str + i, "SO ", 3))
+// 		assign_texture(&map->south_txtr, strcmp_from_i(i + 3, str),
+// 			"Error: SO texture\n");
+// 	else if (!ft_strncmp(str + i, "WE ", 3))
+// 		assign_texture(&map->west_txtr, strcmp_from_i(i + 3, str),
+// 			"Error: WE texture\n");
+// 	else if (!ft_strncmp(str + i, "EA ", 3))
+// 		assign_texture(&map->east_txtr, strcmp_from_i(i + 3, str),
+// 			"Error: EA texture\n");
+// 	else if (!ft_strncmp(str + i, "F ", 2) || !ft_strncmp(str + i, "C ", 2))
+// 		parse_floor_ceiling(i, str, map, fd);
+// }
+
+
+// int test(char *str)
+// {
+//     char **splitted;
+//     splitted = ft_split(str, ' ');
+//     if (!splitted)
+//         return (0);
+//     if (splitted[1] && open(splitted[1], O_RDONLY) == -1)
+//     {
+//         free_matrix(splitted);
+//         return (1);
+//     }
+//     free_matrix(splitted);
+//     return (0);
+// }
 
 int	is_map_line(char *str)
 {
@@ -276,7 +388,11 @@ int	is_map_line(char *str)
 		if (!ft_strncmp(&str[i], "NO ", 3) || !ft_strncmp(&str[i], "SO ", 3)
 			|| !ft_strncmp(&str[i], "WE ", 3) || !ft_strncmp(&str[i], "EA ", 3)
 			|| !ft_strncmp(&str[i], "F ", 2) || !ft_strncmp(&str[i], "C ", 2))
-			return (0);
+			//return (0);
+			{
+				//return(test(str));
+				return (0);
+			}
 		return (1);
 	}
 	return (0);

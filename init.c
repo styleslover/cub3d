@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
+/*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 23:45:26 by mariel            #+#    #+#             */
-/*   Updated: 2025/04/14 11:51:07 by mabrigo          ###   ########.fr       */
+/*   Updated: 2025/04/14 15:24:30 by damoncad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void load_texture(t_game *game, t_textures *texture, char *path)
 		printf("Error: Could not load texture.\n");
 		perror("Reason");
 		free_map(game->map);
-        exit(1);
+		exit(1);
     }
     texture->addr = mlx_get_data_addr(texture->img, &texture->bpp, 
 		&texture->line_length, &texture->endian);
@@ -34,10 +34,10 @@ void load_texture(t_game *game, t_textures *texture, char *path)
 
 void init_textures(t_game *game, t_map_data *map)
 {
-    load_texture(game, &game->textures[0], map->north_txtr); // Nord
-    load_texture(game, &game->textures[1], map->south_txtr); // Sud
-    load_texture(game, &game->textures[2], map->east_txtr);  // Est
-    load_texture(game, &game->textures[3], map->west_txtr);  // Ovest
+	load_texture(game, &game->textures[0], map->north_txtr); // Nord
+	load_texture(game, &game->textures[1], map->south_txtr); // Sud
+	load_texture(game, &game->textures[2], map->east_txtr);  // Est
+	load_texture(game, &game->textures[3], map->west_txtr);  // Ovest
 }
 
 void	init_map(t_map_data *map)
