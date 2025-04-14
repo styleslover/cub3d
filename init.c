@@ -6,7 +6,7 @@
 /*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 23:45:26 by mariel            #+#    #+#             */
-/*   Updated: 2025/04/14 19:06:00 by damoncad         ###   ########.fr       */
+/*   Updated: 2025/04/14 19:31:17 by damoncad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,6 @@ void	init_map(t_map_data *map)
 {
 	map->map_height = 0;
 	map->map_width = 0;
-	map->win_height = 0;
-	map->win_width = 0;
 	map->east_txtr = NULL;
 	map->north_txtr = NULL;
 	map->south_txtr = NULL;
@@ -107,32 +105,12 @@ void	init_game(char *name_win, t_game *game, t_map_data *map)
 		perror("Errore in malloc player\n");
 		exit (1);
 	}
-	if (map->win_width == 0 || map->win_height == 0)
-	{
-		perror("Errore: Dimensioni della mappa non valide\n");
-		free_map(map); //messo riduce a 40 i still reachable
-		free_matrix(map->world);
-		free(game->player);
-		exit(1);
-	}
 	// Ottieni la dimensione massima dello schermo
 	game->mlx = mlx_init();
 	mlx_get_screen_size(game->mlx, &game->screen_w, &game->screen_h);
 
-	// Limita la finestra alla dimensione massima dello schermo
-	if (map->win_width > game->screen_w)
-		map->win_width = game->screen_w;
-	else
-		map->win_width = game->screen_w;
-		
-	if (map->win_height > game->screen_h)
-		map->win_height = game->screen_h;
-	else
-		map->win_height = game->screen_h;
-		
-	// Calcola offset per centrare la mappa nella finestra
-	map->offset_x = (map->win_width - (map->map_width * TILE_SIZE)) / 2;
-	map->offset_y = (map->win_height - (map->map_height * TILE_SIZE)) / 2;
+	map->offset_x = ((map->map_width * TILE_SIZE)) / 2;
+	map->offset_y = ((map->map_height * TILE_SIZE)) / 2;
 	if (map->offset_x < 0) map->offset_x = 0;
 	if (map->offset_y < 0) map->offset_y = 0;
 

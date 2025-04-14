@@ -6,7 +6,7 @@
 /*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 12:40:01 by mabrigo           #+#    #+#             */
-/*   Updated: 2025/04/14 18:46:15 by damoncad         ###   ########.fr       */
+/*   Updated: 2025/04/14 19:44:45 by damoncad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,8 +84,6 @@ typedef struct s_map_data
 {
 	char		**world;
 	int			fd;
-	int			win_width;
-	int			win_height;
 
 	int			map_width;
 	int			map_height;
@@ -172,6 +170,7 @@ int		*parse_rgb_values(char *str);
 void	assign_texture(char **txtr, char *value, char *err_msg);
 void	parse_floor_ceiling(int i, char *str, t_map_data *map, int fd);
 int		is_valid_config_line(char *str);
+void	parse_if_config_done(char *line, int *map_start_line, int current_line, t_map_data *map, int fd);
 void	parse_config_line(char *str, t_map_data *map, int fd);
 int		is_map_line(char *str);
 char	**load_map(char *av, int *map_start_line);

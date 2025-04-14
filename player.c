@@ -6,7 +6,7 @@
 /*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 23:34:14 by mariel            #+#    #+#             */
-/*   Updated: 2025/04/14 19:12:55 by damoncad         ###   ########.fr       */
+/*   Updated: 2025/04/14 19:28:24 by damoncad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,8 +68,6 @@ bool	is_valid_position(t_map_data *map, float x, float y)
 		printf("Map[%d]: %s\n", i, map->world[i]);
 		i++;
 	}
-	printf("map_width: %d\n", map->map_width);
-	printf("map_height: %d\n", map->map_height);
 	if (tile_x < 0 || tile_x >= map->map_width
 		|| tile_y < 0 || tile_y >= map->map_height)
 	{
