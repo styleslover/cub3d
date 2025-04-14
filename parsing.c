@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
+/*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 22:52:55 by mariel            #+#    #+#             */
-/*   Updated: 2025/04/14 11:45:31 by mabrigo          ###   ########.fr       */
+/*   Updated: 2025/04/14 12:31:02 by damoncad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -183,7 +183,8 @@ void	parse_floor_ceiling(int i, char *str, t_map_data *map, int fd)
 		free_map(map);
 		free(target);
 		print_error("Error: invalid color line\n");
-		exit (1);
+		//exit (1);
+		return ;
 	}
 	if (*target)
 	{
