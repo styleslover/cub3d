@@ -6,7 +6,7 @@
 /*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 23:30:39 by mariel            #+#    #+#             */
-/*   Updated: 2025/04/13 16:36:08 by damoncad         ###   ########.fr       */
+/*   Updated: 2025/04/14 17:44:11 by damoncad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,8 @@ void	my_pixel_put(int x, int y, t_game *game, int color)
 	game->data[index + 2] = (color >> 16) & 0xFF;
 }
 
-void	draw_direction_line(t_game *game, t_player *player, int length, int color)
+void	draw_direction_line(t_game *game, t_player *player,
+		int length, int color)
 {
 	float	end_x;
 	float	end_y;
@@ -86,7 +87,6 @@ void	draw_square(int x, int y, int size, t_game *game, int color)
 
 void	draw_player(t_game *game, t_player *player, int size, int color)
 {
-	//t_map_data	*map = game->map;
 	int		i;
 	int		j;
 	float	half_size;
@@ -99,7 +99,6 @@ void	draw_player(t_game *game, t_player *player, int size, int color)
 	center_x = (player->x - game->map->offset_x) * MINIMAP_SIZE / TILE_SIZE + game->map->offset_minimap_x;
 	center_y = (player->y - game->map->offset_y) * MINIMAP_SIZE / TILE_SIZE + game->map->offset_minimap_y;
 	half_size = size / 2.0f;
-	
 
 	// Disegna il quadrato ruotato (personaggio)
 	i = -half_size;
@@ -118,47 +117,6 @@ void	draw_player(t_game *game, t_player *player, int size, int color)
 		}
 		i++;
 	}
-	
-	//disegna la linea di direzione
-	//draw_direction_line(game, player, size * 4, GREEN);	//linea verde
-
-}
-
-
-
-//in realta, a che cazzo serve la grid nella mini mappa??, direi quasi bone
-void	draw_grid(t_game *game, t_map_data *map, int tile_size)
-{
-	int	x;
-	int	y;
-
-	if (!map)
-		print_error("Errore draw_grid");
-	// Linee orizzontali
-	y = map->offset_minimap_x;
-	while (y <= map->offset_minimap_y + map->map_height * tile_size)
-	{
-		x = map->offset_minimap_x;
-		while (x <= map->offset_minimap_x + map->map_width * tile_size)
-		{
-			my_pixel_put(x, y, game, 0xFFFFFF);  // Linea orizzontale bianca
-			x++;
-		}
-		y += tile_size;
-	}
-
-	// Linee verticali
-	x = map->offset_minimap_x;
-	while (x <= map->offset_minimap_x + map->map_width * tile_size)
-	{
-		y = map->offset_minimap_y;
-		while (y <= map->offset_minimap_y + map->map_height * tile_size)
-		{
-			my_pixel_put(x, y, game, 0xFFFFFF);  // Linea verticale bianca
-			y++;
-		}
-		x += tile_size;
-	}
 }
 
 void	draw_map(t_game *game, t_map_data *map)
@@ -173,7 +131,6 @@ void	draw_map(t_game *game, t_map_data *map)
 		printf("Error: Map not loaded or empty\n");
 		return;
 	}
-
 
 	// Calcola gli offset della minimappa SENZA toccare gli offset principali della mappa
 	map->offset_minimap_x = game->screen_w - (map->map_width * MINIMAP_SIZE) - 120;
@@ -190,7 +147,7 @@ void	draw_map(t_game *game, t_map_data *map)
 			else if (map->world[i][j] == '0')
 				color = BLUE;
 			else if (map->world[i][j] == 'W' || map->world[i][j] == 'S' ||
-			         map->world[i][j] == 'E' || map->world[i][j] == 'N')
+					 map->world[i][j] == 'E' || map->world[i][j] == 'N')
 				color = WHITE; // Debugging, eventualmente da cambiare
 
 			else
@@ -201,16 +158,12 @@ void	draw_map(t_game *game, t_map_data *map)
 
 			// Disegna il tile scalato nella posizione corretta
 			draw_square(j * MINIMAP_SIZE + map->offset_minimap_x,
-			            i * MINIMAP_SIZE + map->offset_minimap_y,
-			            MINIMAP_SIZE, game, color);
+						i * MINIMAP_SIZE + map->offset_minimap_y,
+						MINIMAP_SIZE, game, color);
 			j++;
 		}
 		i++;
 	}
-
-	//draw_minimap_border(game, map);  // Disegna il bordo della minimappa
-	// Aggiunge la griglia alla minimappa (opzionale)
-	//draw_grid(game, map, 15 * TILE_SIZE);
 }
 
 void	paint_floor_ceiling(t_game *game, int floor, int ceiling)
@@ -263,60 +216,59 @@ void	draw_floor_ceiling(t_game *game, t_map_data *map)
 
 void draw_meme_gun(t_game *game)
 {
-    int gun_width = 200;
-    int gun_height = 150;
-    int start_x = (game->screen_w - gun_width) / 2;
-    int start_y = game->screen_h - gun_height - 40; // Alza un po' l'arma
+	int gun_width = 200;
+	int gun_height = 150;
+	int start_x = (game->screen_w - gun_width) / 2;
+	int start_y = game->screen_h - gun_height - 40; // Alza un po' l'arma
 
-    // Colori base
-    int metal_color = 0x7A7A7A;    // Grigio metallico
-    int grip_color = 0x2D2D2D;     // Grigio scuro
-    int barrel_color = 0x5A5A5A;   // Grigio medio
-    //int accent_color = 0xFFD700;   // Oro per dettagli
+	// Colori base
+	int metal_color = 0x7A7A7A;    // Grigio metallico
+	int grip_color = 0x2D2D2D;     // Grigio scuro
+	int barrel_color = 0x5A5A5A;   // Grigio medio
+	//int accent_color = 0xFFD700;   // Oro per dettagli
 
-    // Parte principale (corpo)
-    for (int y = 0; y < gun_height * 0.7; y++) {
-        for (int x = gun_width * 0.2; x < gun_width * 0.8; x++) {
-            my_pixel_put(start_x + x, start_y + y, game, metal_color);
-        }
-    }
+	// Parte principale (corpo)
+	for (int y = 0; y < gun_height * 0.7; y++) {
+		for (int x = gun_width * 0.2; x < gun_width * 0.8; x++) {
+			my_pixel_put(start_x + x, start_y + y, game, metal_color);
+		}
+	}
 
-    // Impugnatura (angolo stile mitra)
-    for (int y = gun_height * 0.4; y < gun_height; y++) {
-        for (int x = 0; x < gun_width * 0.3; x++) {
-            my_pixel_put(start_x + x, start_y + y, game, grip_color);
-        }
-    }
+	// Impugnatura (angolo stile mitra)
+	for (int y = gun_height * 0.4; y < gun_height; y++) {
+		for (int x = 0; x < gun_width * 0.3; x++) {
+			my_pixel_put(start_x + x, start_y + y, game, grip_color);
+		}
+	}
 
-    // Canna (allungata)
-    for (int y = gun_height * 0.1; y < gun_height * 0.6; y++) {
-        for (int x = gun_width * 0.8; x < gun_width; x++) {
-            my_pixel_put(start_x + x, start_y + y, game, barrel_color);
-        }
-    }
+	// Canna (allungata)
+	for (int y = gun_height * 0.1; y < gun_height * 0.6; y++) {
+		for (int x = gun_width * 0.8; x < gun_width; x++) {
+			my_pixel_put(start_x + x, start_y + y, game, barrel_color);
+		}
+	}
 
-    // Dettagli (crosshair stile ologramma)
-    int sight_size = 15;
-    int sight_x = start_x + gun_width * 0.9;
-    int sight_y = start_y + gun_height * 0.3;
-    
-    // Cerchio centrale
-    for (int i = -sight_size; i <= sight_size; i++) {
-        for (int j = -sight_size; j <= sight_size; j++) {
-            if (i*i + j*j <= sight_size*sight_size) {
-                my_pixel_put(sight_x + i, sight_y + j, game, 0x00FF00); // Verde
-            }
-        }
-    }
+	// Dettagli (crosshair stile ologramma)
+	int sight_size = 15;
+	int sight_x = start_x + gun_width * 0.9;
+	int sight_y = start_y + gun_height * 0.3;
+	
+	// Cerchio centrale
+	for (int i = -sight_size; i <= sight_size; i++) {
+		for (int j = -sight_size; j <= sight_size; j++) {
+			if (i*i + j*j <= sight_size*sight_size) {
+				my_pixel_put(sight_x + i, sight_y + j, game, 0x00FF00); // Verde
+			}
+		}
+	}
 
-    // Testo meme (solo se hai mlx_string_put)
+	// Testo meme (solo se hai mlx_string_put)
 	if (game->mlx && game->win) {
-    mlx_string_put(game->mlx, game->win, 
-                   start_x + gun_width / 2 - 30, 
-                   start_y + 40, // Sposta la scritta più in basso
-                   BLACK, "BRRRRT!"); // Usa bianco per maggiore visibilità
-}
-
+	mlx_string_put(game->mlx, game->win, 
+				   start_x + gun_width / 2 - 30, 
+				   start_y + 40, // Sposta la scritta più in basso
+				   BLACK, "BRRRRT!"); // Usa bianco per maggiore visibilità
+	}
 }
 
 int	draw_loop(t_game *game)
@@ -324,7 +276,7 @@ int	draw_loop(t_game *game)
 	move_player(game->player, game);
 	if (game->img)
 		mlx_destroy_image(game->mlx, game->img);
-    game->img = mlx_new_image(game->mlx, game->screen_w, game->screen_h);
+	game->img = mlx_new_image(game->mlx, game->screen_w, game->screen_h);
 	game->data = mlx_get_data_addr(game->img, &game->bpp, &game->size_line,
 			&game->endian);
 	if (!game->map)

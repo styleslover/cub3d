@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
+/*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 12:52:13 by mabrigo           #+#    #+#             */
-/*   Updated: 2025/04/14 11:16:14 by mabrigo          ###   ########.fr       */
+/*   Updated: 2025/04/14 17:31:14 by damoncad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,6 @@ int	main(int ac, char **av)
 	map.fd = open(av[1], O_RDONLY);
 	if (map.fd == -1)
 		return (printf("Error: invalid fd"));
-	//init_map(&map);
 	parse_file(av, map.fd, &map);
 	close(map.fd);
 	init_game(av[1], &game, &map);
@@ -52,6 +51,6 @@ int	main(int ac, char **av)
 	mlx_loop_hook(game.mlx, draw_loop, &game);
 	mlx_hook(game.win, 17, 0, close_window, &game);
 	mlx_loop(game.mlx);
-	free_game_resources(&game); //testing
+	free_game_resources(&game);
 	return (0);
 }
