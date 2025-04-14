@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map_checks.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
+/*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 18:39:22 by mabrigo           #+#    #+#             */
-/*   Updated: 2025/04/14 11:39:26 by mabrigo          ###   ########.fr       */
+/*   Updated: 2025/04/14 18:52:29 by damoncad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,6 @@ void	get_line_data(t_line *line, char *str)
 	i = 0;
 	line->end = 0;
 	line->start = 0;
-
 	while (str[i] == 32 || (str[i] >= 9 && str[i] <= 13))
 		i++;
 	line->start = i;
@@ -85,9 +84,8 @@ int	check_cardinals(char **world, int i, int j)
 {
 	if (i == 0 || j == 0 || !world[i + 1] || !world[i - 1])
 		return (0);
-	if (ft_strlen(world[i]) <= j + 1 ||
-		j >= ft_strlen(world[i - 1]) ||
-		j >= ft_strlen(world[i + 1]) || j - 1 < 0)
+	if (ft_strlen(world[i]) <= j + 1 || j >= ft_strlen(world[i - 1])
+		|| j >= ft_strlen(world[i + 1]) || j - 1 < 0)
 		return (0);
 	if (my_strchr("0NSEW", world[i][j]))
 	{
@@ -99,7 +97,6 @@ int	check_cardinals(char **world, int i, int j)
 	}
 	return (0);
 }
-
 
 int	is_map_closed(char **world, t_line *line)
 {
@@ -135,11 +132,10 @@ int	check_map(char **world)
 
 	i = 0;
 	player = 0;
-    if (!map_valid_char(world, i, player) || !is_map_closed(world, &line)
+	if (!map_valid_char(world, i, player) || !is_map_closed(world, &line)
 		|| !map_empty_lines(world))
 	{
 		printf("Error: Invalid map\n");
-		//free_matrix(world);
 		return (0);
 	}
 	return (1);

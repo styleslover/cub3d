@@ -6,18 +6,43 @@
 /*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 23:27:56 by mariel            #+#    #+#             */
-/*   Updated: 2025/04/14 18:15:18 by damoncad         ###   ########.fr       */
+/*   Updated: 2025/04/14 18:48:21 by damoncad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-int key_press(int keycode, t_game *game)
+void	key_press_help(int keycode, t_player *player)
 {
-	t_player *player;
-	
-	player = game->player;
+	float	old_dir_x;
+	float	old_plane_x;
 
+	if (keycode == LEFT)
+	{
+		old_dir_x = player->dir_x;
+		player->dir_x = player->dir_x * cos(RS) + player->dir_y * sin(RS);
+		player->dir_y = -old_dir_x * sin(RS) + player->dir_y * cos(RS);
+		old_plane_x = player->plane_x;
+		player->plane_x = player->plane_x * cos(RS) + player->plane_y * sin(RS);
+		player->plane_y = -old_plane_x * sin(RS) + player->plane_y * cos(RS);
+	}
+	if (keycode == RIGHT)
+	{
+		old_dir_x = player->dir_x;
+		player->dir_x = player->dir_x * cos(-RS) + player->dir_y * sin(-RS);
+		player->dir_y = -old_dir_x * sin(-RS) + player->dir_y * cos(-RS);
+		old_plane_x = player->plane_x;
+		player->plane_x = player->plane_x * cos(-RS)
+			+ player->plane_y * sin(-RS);
+		player->plane_y = -old_plane_x * sin(-RS) + player->plane_y * cos(-RS);
+	}
+}
+
+int	key_press(int keycode, t_game *game)
+{
+	t_player	*player;
+
+	player = game->player;
 	if (keycode == W)
 		player->key_up = true;
 	if (keycode == S)
@@ -26,34 +51,7 @@ int key_press(int keycode, t_game *game)
 		player->key_left = true;
 	if (keycode == D)
 		player->key_right = true;
-	if (keycode == LEFT)
-	{
-		float old_dir_x = player->dir_x;
-		player->dir_x = player->dir_x * cos(ROTASPEED) + player->dir_y * sin(ROTASPEED);
-		player->dir_y = -old_dir_x * sin(ROTASPEED) + player->dir_y * cos(ROTASPEED);
-		float old_plane_x = player->plane_x;
-		player->plane_x = player->plane_x * cos(ROTASPEED) + player->plane_y * sin(ROTASPEED);
-		player->plane_y = -old_plane_x * sin(ROTASPEED) + player->plane_y * cos(ROTASPEED);
-	}
-	if (keycode == RIGHT)
-	{
-		float old_dir_x = player->dir_x;
-		player->dir_x = player->dir_x * cos(-ROTASPEED) + player->dir_y * sin(-ROTASPEED);
-		player->dir_y = -old_dir_x * sin(-ROTASPEED) + player->dir_y * cos(-ROTASPEED);
-		float old_plane_x = player->plane_x;
-		player->plane_x = player->plane_x * cos(-ROTASPEED) + player->plane_y * sin(-ROTASPEED);
-		player->plane_y = -old_plane_x * sin(-ROTASPEED) + player->plane_y * cos(-ROTASPEED);
-	}
-	
-	if (keycode == SPACE) {
-		static int color = 0xFF0000;
-		color = (color == 0xFF0000) ? 0x00FF00 : 0xFF0000;
-		for (int x = 0; x < 100; x++) {
-			for (int y = 0; y < 20; y++) {
-				my_pixel_put(game->screen_w/2 - 20 + x, game->screen_h - 100 + y, game, color);
-			}
-		}
-	}
+	key_press_help(keycode, player);
 	if (keycode == ESC)
 	{
 		free_game_resources(game);
@@ -63,8 +61,7 @@ int key_press(int keycode, t_game *game)
 	return (0);
 }
 
-
-int key_release(int keycode, t_game *game)
+int	key_release(int keycode, t_game *game)
 {
 	t_player	*player;
 
@@ -80,7 +77,7 @@ int key_release(int keycode, t_game *game)
 	return (0);
 }
 
-int close_window(void *param)
+int	close_window(void *param)
 {
 	t_game	*game;
 

@@ -21,7 +21,7 @@ float	get_direction(t_player *player, char c)
 		player->dir_x = -1.0f;
 		player->dir_y = 0.0f;
 		player->plane_x = 0.0f;
-		player->plane_y = -0.66f; // Piano della camera
+		player->plane_y = -0.66f;
 	}
 	else if (c == 'E')
 	{

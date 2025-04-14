@@ -6,7 +6,7 @@
 /*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 12:40:01 by mabrigo           #+#    #+#             */
-/*   Updated: 2025/04/14 18:09:47 by damoncad         ###   ########.fr       */
+/*   Updated: 2025/04/14 18:46:15 by damoncad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@
 # define D 100
 # define LEFT 65361
 # define RIGHT 65363
-# define SPACE 32
 
 # define ESC 65307
 
@@ -49,7 +48,7 @@
 # define PI 3.14159265
 # define FOV (PI / 3)
 # define NUM_RAYS 100
-# define ROTASPEED 0.04f
+# define RS 0.04f
 
 typedef struct s_textures
 {
@@ -162,6 +161,7 @@ void	init_map(t_map_data *map);
 void	init_player(t_player *player, t_map_data *map, int offset_x, int offset_y);
 void	init_game(char *name_win, t_game *game, t_map_data *map);
 //key_events.c
+void	key_press_help(int keycode, t_player *player);
 int		key_press(int keycode, t_game *game);
 int		key_release(int keycode, t_game *game);
 int		close_window(void *param);
