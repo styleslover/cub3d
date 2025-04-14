@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 22:52:55 by mariel            #+#    #+#             */
-/*   Updated: 2025/04/14 17:05:48 by damoncad         ###   ########.fr       */
+/*   Updated: 2025/04/14 18:54:58 by mabrigo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,9 +152,13 @@ void	parse_floor_ceiling(int i, char *str, t_map_data *map, int fd)
 {
 	char	*fc;
 	int		**target;
+	int		j;
+	int		commas;
 
 	fc = 0;
 	target = 0;
+	j = 0;
+	commas = 0;
 	if (ft_strncmp(str + i, "F ", 2) == 0)
 	{
 		if (map->floor_color)
@@ -200,6 +204,21 @@ void	parse_floor_ceiling(int i, char *str, t_map_data *map, int fd)
 		free_map(map);
 		print_error("Error: invalid color format\n");
 		exit(1);
+	}
+	while (fc[j])
+	{
+		if (fc[j] == ',')
+			commas++;
+		j++;
+	}
+	if (commas != 2)
+	{
+		close(fd);
+		free(fc);
+		free_map(map);
+		print_error("Invalid rgb\n");
+		//exit(1);
+		return ;
 	}
 	*target = parse_rgb_values(fc);
 	free(fc);
