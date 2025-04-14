@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 23:45:26 by mariel            #+#    #+#             */
-/*   Updated: 2025/04/13 20:16:41 by damoncad         ###   ########.fr       */
+/*   Updated: 2025/04/14 11:51:07 by mabrigo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,7 @@ void	init_game(char *name_win, t_game *game, t_map_data *map)
 	if (map->win_width == 0 || map->win_height == 0)
 	{
 		perror("Errore: Dimensioni della mappa non valide\n");
-		//free_map(map); //messo riduce a 40 i still reachable
+		free_map(map); //messo riduce a 40 i still reachable
 		free_matrix(map->world);
 		free(game->player);
 		exit(1);
