@@ -6,7 +6,7 @@
 /*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 12:52:13 by mabrigo           #+#    #+#             */
-/*   Updated: 2025/04/14 17:31:14 by damoncad         ###   ########.fr       */
+/*   Updated: 2025/04/14 21:08:53 by damoncad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,18 @@ int	check_filename(char *av)
 	return (1);
 }
 
+void	check_fd_not_directory(char *str)
+{
+	int		fd;
+
+	fd = open(str, __O_DIRECTORY);
+	if (fd != -1)
+	{
+		printf("Error: path is a directory\n");
+		exit(1);
+	}
+}
+
 int	main(int ac, char **av)
 {
 	t_game			game;
@@ -42,6 +54,7 @@ int	main(int ac, char **av)
 	map.fd = open(av[1], O_RDONLY);
 	if (map.fd == -1)
 		return (printf("Error: invalid fd"));
+	check_fd_not_directory(av[1]);
 	parse_file(av, map.fd, &map);
 	close(map.fd);
 	init_game(av[1], &game, &map);
