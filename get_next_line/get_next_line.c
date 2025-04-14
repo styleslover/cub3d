@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
+/*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/30 18:57:42 by mabrigo           #+#    #+#             */
-/*   Updated: 2025/02/19 20:15:15 by mabrigo          ###   ########.fr       */
+/*   Updated: 2025/04/14 12:59:24 by damoncad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,27 +98,40 @@ char	*get_string(char **str, int fd)
 
 char	*get_next_line(int fd)
 {
-	static char	*str = NULL;
+	char		**str_ptr;
 	char		*new_line;
 	int			idx_newline;
 	int			i;
 
+	str_ptr = get_gnl_static();
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
-	str = get_string(&str, fd);
-	if (str == NULL)
-		return (free_null(&str));
-	idx_newline = check_nl(str);
+	*str_ptr = get_string(str_ptr, fd);
+	if (*str_ptr == NULL)
+		return (free_null(str_ptr));
+	idx_newline = check_nl(*str_ptr);
 	new_line = nl_calloc(sizeof(char), idx_newline + 2);
 	if (!new_line)
 		return (NULL);
 	i = -1;
 	while (++i <= idx_newline)
-		new_line[i] = str[i];
-	nl_bzero(&str, idx_newline);
+		new_line[i] = (*str_ptr)[i];
+	nl_bzero(str_ptr, idx_newline);
 	if (!*new_line)
-		free_null(&str);
+		free_null(str_ptr);
 	return (new_line);
+}
+
+void	clear_gnl(void)
+{
+	char	**str_ptr;
+
+	str_ptr = get_gnl_static();
+	if (*str_ptr)
+	{
+		free(*str_ptr);
+		*str_ptr = NULL;
+	}
 }
 
 /*int	main()

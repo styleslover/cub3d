@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
+/*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/30 18:57:46 by mabrigo           #+#    #+#             */
-/*   Updated: 2025/02/18 21:07:58 by mabrigo          ###   ########.fr       */
+/*   Updated: 2025/04/14 12:58:36 by damoncad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,4 +68,11 @@ void	*nl_calloc(int nmemb, int size)
 			ptr[i] = 0;
 		return (ptr);
 	}
+}
+
+char	**get_gnl_static(void)
+{
+	static char	*str = NULL;
+
+	return (&str);
 }

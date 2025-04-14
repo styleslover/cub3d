@@ -6,7 +6,7 @@
 /*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 22:52:55 by mariel            #+#    #+#             */
-/*   Updated: 2025/04/14 12:31:02 by damoncad         ###   ########.fr       */
+/*   Updated: 2025/04/14 13:11:11 by damoncad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -241,7 +241,7 @@ void	parse_config_line(char *str, t_map_data *map, int fd)
 		close(fd);
 		printf("Error: invalid configuration line\n");
 		free_map(map);
-		exit(1);
+		//exit(1);
 	}
 	if (!ft_strncmp(str + i, "NO ", 3))
 		assign_texture(&map->north_txtr, strcmp_from_i(i + 3, str),
@@ -376,6 +376,7 @@ void	parse_file(char **av, int fd, t_map_data *map)
 				close (fd);
 				free_map(map);
 				printf("Error: invalid map line\n");
+				clear_gnl();
 				exit(1);
 			}
 		}

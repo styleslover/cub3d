@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
+/*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/30 18:57:37 by mabrigo           #+#    #+#             */
-/*   Updated: 2025/02/18 21:04:42 by mabrigo          ###   ########.fr       */
+/*   Updated: 2025/04/14 12:52:29 by damoncad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,9 @@
 # include <fcntl.h>
 # include <stdio.h>
 
+void	clear_gnl(void);
+char	*get_next_line(int fd);
+char	**get_gnl_static(void);
 char	*nl_strcat(char *str1, char *str2);
 char	*get_string(char **str, int fd);
 char	*get_next_line(int fd);
