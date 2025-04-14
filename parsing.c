@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 22:52:55 by mariel            #+#    #+#             */
-/*   Updated: 2025/04/13 20:32:12 by damoncad         ###   ########.fr       */
+/*   Updated: 2025/04/13 21:18:54 by mabrigo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,13 +156,32 @@ void	parse_floor_ceiling(int i, char *str, t_map_data *map, int fd)
 	fc = 0;
 	target = 0;
 	if (ft_strncmp(str + i, "F ", 2) == 0)
-		target = &map->floor_color;
+	{
+		if (map->floor_color)
+		{
+			free(map->floor_color);
+			map->floor_color = NULL;
+			print_error("Error\n");
+		}
+		else
+			target = &map->floor_color;
+	}
 	else if (ft_strncmp(str + i, "C ", 2) == 0)
-		target = &map->ceiling_color;
+	{
+		if (map->ceiling_color)
+			{
+				free(map->ceiling_color);
+				map->ceiling_color = NULL;
+				print_error("Error\n");
+			}
+			else
+				target = &map->ceiling_color;
+	}
 	if (!target || !str[i + 2])
 	{
 		close(fd);
 		free_map(map);
+		free(target);
 		print_error("Error: invalid color line\n");
 		exit (1);
 	}
