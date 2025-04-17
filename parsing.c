@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mariel <mariel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 22:52:55 by mariel            #+#    #+#             */
-/*   Updated: 2025/04/14 20:47:04 by damoncad         ###   ########.fr       */
+/*   Updated: 2025/04/17 17:19:58 by mariel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,10 @@ int	check_single_value(char *str)
         i++;
 	}
     if (str[i] == '-')
+	{
+		printf("Negative value\n");
 		return (0);
+	}
     while (str[i])
     {
         if (ft_isdigit(str[i]))
@@ -71,60 +74,57 @@ int	check_single_value(char *str)
     return (digit_found);
 }
 
-int	*parse_rgb_values(char *str)
+// Restituisce 0 in caso di successo, 1 in caso di errore
+int rgb_char_to_int(int *rgb_values, char **input)
 {
-	char	**splitted;
-	int		*rgb_values;
-	char	*trimmed;
-	int		i;
+    int i;
+    char *trimmed;
 
-	splitted = ft_split(str, ',');
-	if (!splitted)
-		return (0);
-	i = 0;
-	while (splitted[i])
-		i++;
-	if (i != 3)
-	{
-		free_matrix(splitted);
-		return (NULL);
-	}
-	rgb_values = (int *)malloc(sizeof(int) * 3);
-	if (!rgb_values)
-	{
-		free_matrix(splitted);
-		return (0);
-	}
-	i = 0;
-	while (i < 3 && splitted[i])
-	{
-		trimmed = ft_strtrim(splitted[i], " \t\n\r");
-		if (!trimmed || !check_single_value(trimmed))
-		{
-			if (trimmed)
-				free(trimmed);
-			free_matrix(splitted);
-			free(rgb_values);
-			return (0);
-		}
-		rgb_values[i] = ft_atoi(trimmed);
-		free(trimmed);
-		if (rgb_values[i] < 0 || rgb_values[i] > 255)
-		{
-			print_error("Error: RGB values must be between 0 and 255\n");
-			free_matrix(splitted);
-			free(rgb_values);
-			return (0);
-		}
-		i++;
-	}
-	free_matrix(splitted);
-	if (i != 3)
-	{
-		free(rgb_values);
-		return (NULL);
-	}
-	return (rgb_values);
+    i = 0;
+    while (i < 3 && input[i])
+    {
+        trimmed = ft_strtrim(input[i], " \t\n\r");
+        if (!trimmed || !check_single_value(trimmed))
+        {
+            printf("Error here\n");
+            if (trimmed)
+                free(trimmed);
+            return (0);
+        }
+        rgb_values[i] = ft_atoi(trimmed);
+        free(trimmed);
+        if (rgb_values[i] < 0 || rgb_values[i] > 255)
+        {
+            print_error("Error: RGB values must be between 0 and 255\n");
+            return (0);
+        }
+        i++;
+    }
+    return (1);
+}
+
+int *parse_rgb_values(char *str)
+{
+    char **splitted;
+    int *rgb_values;
+
+    splitted = ft_split(str, ',');
+    if (!splitted)
+        return (0);
+    rgb_values = (int *)malloc(sizeof(int) * 3);
+    if (!rgb_values)
+    {
+        free_matrix(splitted);
+        return (0);
+    }
+    if (rgb_char_to_int(rgb_values, splitted))
+    {
+        free_matrix(splitted);
+        free(rgb_values);
+        return (0);
+    }
+    free_matrix(splitted);
+    return (rgb_values);
 }
 
 void	assign_texture(char **txtr, char *value, char *err_msg)

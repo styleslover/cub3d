@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mariel <mariel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 12:40:01 by mabrigo           #+#    #+#             */
-/*   Updated: 2025/04/14 19:44:45 by damoncad         ###   ########.fr       */
+/*   Updated: 2025/04/17 17:20:38 by mariel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -166,6 +166,7 @@ int		close_window(void *param);
 //parsing.c
 int		is_empty_line(char *str);
 int		check_single_value(char *str);
+int rgb_char_to_int(int *rgb_values, char **input);
 int		*parse_rgb_values(char *str);
 void	assign_texture(char **txtr, char *value, char *err_msg);
 void	parse_floor_ceiling(int i, char *str, t_map_data *map, int fd);
