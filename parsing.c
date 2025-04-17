@@ -6,7 +6,7 @@
 /*   By: mariel <mariel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 22:52:55 by mariel            #+#    #+#             */
-/*   Updated: 2025/04/17 17:19:58 by mariel           ###   ########.fr       */
+/*   Updated: 2025/04/17 17:39:53 by mariel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,56 +25,118 @@ int	is_empty_line(char *str)
 	return (1);
 }
 
-int	check_single_value(char *str)
+int	skip_spaces_check_sign(char *str, int *i)
 {
-    int i;
-    int digit_found;
-    int in_number;
-
-    i = 0;
-    digit_found = 0;
-    in_number = 0;
-    while (str[i] == 32 || (str[i] >= 9 && str[i] <= 13))
-        i++;
-    if (str[i] == '+')
+	while (str[*i] == 32 || (str[*i] >= 9 && str[*i] <= 13))
+		(*i)++;
+	if (str[*i] == '+')
 	{
-		if (!ft_isdigit(str[i + 1]))
+		if (!ft_isdigit(str[*i + 1]))
 			return (0);
-        i++;
+		(*i)++;
 	}
-    if (str[i] == '-')
+	if (str[*i] == '-')
 	{
 		printf("Negative value\n");
 		return (0);
 	}
-    while (str[i])
-    {
-        if (ft_isdigit(str[i]))
-        {
-            if (in_number == 2)
-                return (0);
-            digit_found = 1;
-            in_number = 1;
-            i++;
-        }
-        else if (str[i] == ' ' || str[i] == '\t')
-        {
-            if (in_number == 1)
-                in_number = 2;
-            i++;
-            while (str[i] == ' ' || str[i] == '\t')
-                i++;
-        }
-        else
-		{
-			printf("Error: invalid character in RGB value\n");
-            return (0);
-		}
-    }
-    return (digit_found);
+	return (1);
 }
 
-// Restituisce 0 in caso di successo, 1 in caso di errore
+int	process_digit_and_spaces(char *str, int *i, int *digit_found, int *in_number)
+{
+	if (ft_isdigit(str[*i]))
+	{
+		if (*in_number == 2)
+			return (0);
+		*digit_found = 1;
+		*in_number = 1;
+		(*i)++;
+	}
+	else if ((str[*i] == ' ' || str[*i] == '\t') && *in_number == 1)
+	{
+		*in_number = 2;
+		while (str[*i] == ' ' || str[*i] == '\t')
+			(*i)++;
+	}
+	else if (str[*i] == ' ' || str[*i] == '\t')
+		(*i)++;
+	else
+	{
+		printf("Error: invalid character in RGB value\n");
+		return (0);
+	}
+	return (1);
+}
+
+int	check_single_value(char *str)
+{
+	int i;
+	int digit_found;
+	int in_number;
+
+	i = 0;
+	digit_found = 0;
+	in_number = 0;
+	if (!skip_spaces_check_sign(str, &i))
+		return (0);
+	while (str[i])
+	{
+		if (!process_digit_and_spaces(str, &i, &digit_found, &in_number))
+			return (0);
+	}
+	return (digit_found);
+}
+
+// int	check_single_value(char *str)
+// {
+//     int i;
+//     int digit_found;
+//     int in_number;
+
+//     i = 0;
+//     digit_found = 0;
+//     in_number = 0;
+//     while (str[i] == 32 || (str[i] >= 9 && str[i] <= 13))
+//         i++;
+//     if (str[i] == '+')
+// 	{
+// 		if (!ft_isdigit(str[i + 1]))
+// 			return (0);
+//         i++;
+// 	}
+//     if (str[i] == '-')
+// 	{
+// 		printf("Negative value\n");
+// 		return (0);
+// 	}
+//     while (str[i])
+//     {
+//         if (ft_isdigit(str[i]))
+//         {
+//             if (in_number == 2)
+//                 return (0);
+//             digit_found = 1;
+//             in_number = 1;
+//             i++;
+//         }
+//         else if (str[i] == ' ' || str[i] == '\t')
+//         {
+//             if (in_number == 1)
+//                 in_number = 2;
+//             i++;
+//             while (str[i] == ' ' || str[i] == '\t')
+//                 i++;
+//         }
+//         else
+// 		{
+// 			printf("Error: invalid character in RGB value\n");
+//             return (0);
+// 		}
+//     }
+//     return (digit_found);
+// }
+
 int rgb_char_to_int(int *rgb_values, char **input)
 {
     int i;
@@ -102,6 +164,20 @@ int rgb_char_to_int(int *rgb_values, char **input)
     }
     return (1);
 }
+int	count_check_rgb_values(char **splitted)
+{
+	int	i;
+
+	i = 0;
+	while (splitted[i])
+		i++;
+	if (i != 3)
+	{
+		free_matrix(splitted);
+		return (1);
+	}
+	return (0);
+}
 
 int *parse_rgb_values(char *str)
 {
@@ -110,14 +186,18 @@ int *parse_rgb_values(char *str)
 
     splitted = ft_split(str, ',');
     if (!splitted)
-        return (0);
+	{
+		return (0);
+	}
+	if (count_check_rgb_values(splitted))
+		return (0);
     rgb_values = (int *)malloc(sizeof(int) * 3);
     if (!rgb_values)
     {
         free_matrix(splitted);
         return (0);
     }
-    if (rgb_char_to_int(rgb_values, splitted))
+    if (!rgb_char_to_int(rgb_values, splitted))
     {
         free_matrix(splitted);
         free(rgb_values);
