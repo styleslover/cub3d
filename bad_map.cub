@@ -4,9 +4,7 @@ EA textures/t.xpm
 WE textures/t.xpm
 
 
-
-
-C 2 20,20,20
+C 20,20,20
 F 255,0,0
 
 1111
