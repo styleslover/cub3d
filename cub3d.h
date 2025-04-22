@@ -6,7 +6,7 @@
 /*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 12:40:01 by mabrigo           #+#    #+#             */
-/*   Updated: 2025/04/14 19:44:45 by damoncad         ###   ########.fr       */
+/*   Updated: 2025/04/22 19:55:37 by damoncad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,9 +165,17 @@ int		key_release(int keycode, t_game *game);
 int		close_window(void *param);
 //parsing.c
 int		is_empty_line(char *str);
+int		skip_spaces_check_sign(char *str, int *i);
+int		process_digit_and_spaces(char *str, int *i, int *digit_found, int *in_number);
 int		check_single_value(char *str);
+int 	rgb_char_to_int(int *rgb_values, char **input);
+int		count_check_rgb_values(char **splitted);
 int		*parse_rgb_values(char *str);
 void	assign_texture(char **txtr, char *value, char *err_msg);
+void 	handle_target_error(int fd, t_map_data *map, char *message);
+int 	check_fc_format(char *fc, int fd, t_map_data *map);
+int 	**get_target_color(int i, char *str, t_map_data *map);
+void 	handle_parse_error(int fd, t_map_data *map, char *msg);
 void	parse_floor_ceiling(int i, char *str, t_map_data *map, int fd);
 int		is_valid_config_line(char *str);
 void	parse_if_config_done(char *line, int *map_start_line, int current_line, t_map_data *map, int fd);
