@@ -3,14 +3,44 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
+/*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 23:45:26 by mariel            #+#    #+#             */
-/*   Updated: 2025/04/23 18:30:35 by mabrigo          ###   ########.fr       */
+/*   Updated: 2025/04/23 19:14:05 by damoncad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+
+void	is_texture_empty(t_game *game, int fd, char *clean_path)
+{
+	char buffer[5];
+	int bytes_read;
+
+	bytes_read = read(fd, buffer, 4);
+	if (bytes_read > 0)
+	{
+		buffer[bytes_read] = '\0'; // Null-terminate the string
+	}
+	else
+    {
+        buffer[0] = '\0'; // Empty string if nothing was read
+    }
+    if (bytes_read <= 0)
+    {
+        printf("Error: Texture file '%s' is empty.\n", clean_path);
+        close(fd);
+        free(clean_path);
+		free_textures(game);
+        mlx_destroy_display(game->mlx);
+        free_map(game->map);
+        free(game->mlx);
+        free(game->ps);
+        free(game->player);
+        exit(1);
+    }
+}
+
 
 void load_texture(t_game *game, t_textures *texture, char *path)
 {
@@ -18,7 +48,14 @@ void load_texture(t_game *game, t_textures *texture, char *path)
     int fd;
 
     clean_path = ft_strtrim(path, "\t\n\r");
-    
+    if (!clean_path)
+    {
+        printf("Error: Memory allocation failed for texture path.\n");
+        free_game_resources(game);
+        exit(1);
+    }
+
+	
     // First try to open it as a directory
     fd = open(clean_path, __O_DIRECTORY);
     if (fd != -1)
@@ -49,16 +86,7 @@ void load_texture(t_game *game, t_textures *texture, char *path)
 		free(game->ps);
         exit(1);
     }
-	
-	// char *line = get_next_line(fd);
-	// if (line)
-	// {
-	// 	if (line == NULL)
-	// 		printf("CACCOLONE\n");
-	// 	else
-	// 		printf("vaffanculo\n");
-	// }
-    // close(fd); // Close the file descriptor!
+	is_texture_empty(game, fd, clean_path);
     
     texture->img = mlx_xpm_file_to_image(game->mlx, clean_path, &texture->width, &texture->height);
     if (!texture->img)
@@ -81,6 +109,15 @@ void load_texture(t_game *game, t_textures *texture, char *path)
 
 void init_textures(t_game *game, t_map_data *map)
 {
+	int i;
+
+	i = 0;
+	while (i < 4)
+	{
+		game->textures[i].img = NULL;
+		i++;
+	}
+	
 	load_texture(game, &game->textures[0], map->north_txtr); // Nord
 	load_texture(game, &game->textures[1], map->south_txtr); // Sud
 	load_texture(game, &game->textures[2], map->east_txtr);  // Est
