@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
+/*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 12:40:01 by mabrigo           #+#    #+#             */
-/*   Updated: 2025/04/23 17:15:04 by mabrigo          ###   ########.fr       */
+/*   Updated: 2025/04/23 20:03:14 by damoncad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -201,19 +201,16 @@ int 	rgb_char_to_int(int *rgb_values, char **input);
 int		count_check_rgb_values(char **splitted);
 int		*parse_rgb_values(char *str);
 void	assign_texture(char **txtr, char *value, char *err_msg);
-void 	handle_target_error(int fd, t_map_data *map, char *message);
 int 	check_fc_format(char *fc, int fd, t_map_data *map);
 int 	**get_target_color(int i, char *str, t_map_data *map);
-void 	handle_parse_error(int fd, t_map_data *map, char *msg);
 void	parse_floor_ceiling(int i, char *str, t_map_data *map, int fd);
 int		is_valid_config_line(char *str);
-void	parse_if_config_done(char *line, int *map_start_line, int current_line, t_map_data *map, int fd);
 void	parse_config_line(char *str, t_map_data *map, int fd);
 int		is_map_line(char *str);
 char	**load_map(char *av, int map_start_line);
 void	parse_file(char **av, int fd, t_map_data *map);
 //player
-float	get_direction(t_player *player, char c);
+void	get_direction(t_player *player, char c);
 bool	is_valid_position(t_map_data *map, float x, float y);
 void	move_player(t_player *player, t_game *game);
 //rotate_that_booty
