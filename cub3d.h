@@ -6,7 +6,7 @@
 /*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 12:40:01 by mabrigo           #+#    #+#             */
-/*   Updated: 2025/04/22 19:55:37 by damoncad         ###   ########.fr       */
+/*   Updated: 2025/04/23 12:48:11 by damoncad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,32 @@
 # define FOV (PI / 3)
 # define NUM_RAYS 100
 # define RS 0.04f
+
+typedef struct s_parsing_shit
+{
+	double	camera_x;
+	double	ray_dir_x;
+	double	ray_dir_y;
+	double	ray_x;
+	double	ray_y;
+	int		map_x;
+	int		map_y;
+	double	delta_dist_x;
+	double	delta_dist_y;
+	double	side_dist_x;
+	double	side_dist_y;
+	int		step_x;
+	int		step_y;
+	int		hit;
+	int		side;
+	double	perp_wall_dist;
+	int		line_height;
+	int		draw_start;
+	int		draw_end;
+	int		texture_index;
+	float	wall_x;
+	int		tex_x;
+}	t_parsing_shit;
 
 typedef struct s_textures
 {
@@ -120,6 +146,7 @@ typedef struct s_game
 	t_textures	textures[4];
 	t_player	*player;
 	t_map_data	*map;
+	t_parsing_shit	*ps;
 }			t_game;
 
 typedef struct s_line_data
@@ -199,6 +226,7 @@ int		check_map(char **world);
 //raycasting.c
 int 	get_texture_pixel(t_textures *texture, int x, int y);
 void	raycasting(t_game *game);
+void	init_parsing_shit(t_parsing_shit *ps);
 //utils.c
 int		my_strchr(char *s, int c);
 char	*trim_end_spaces(char *s);

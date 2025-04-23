@@ -6,7 +6,7 @@
 /*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 23:45:26 by mariel            #+#    #+#             */
-/*   Updated: 2025/04/14 19:31:17 by damoncad         ###   ########.fr       */
+/*   Updated: 2025/04/23 12:57:22 by damoncad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,6 +117,14 @@ void	init_game(char *name_win, t_game *game, t_map_data *map)
 	game->cos_rot_speed = cos(RS);
 	game->sin_rot_speed = sin(RS);
 	
+	game->ps = malloc(sizeof(t_parsing_shit));
+	if (!game->ps)
+	{
+		perror("Errore in game->ps\n");
+		exit(1);
+	}
+	init_parsing_shit(game->ps);
+
 	//load_textures(game);//PER CARICARE LE TEXTURES, DA CAPIRE DOVE VA PER BENE
 	init_textures(game, map);
 	init_player(game->player, map, map->offset_x, map->offset_y);

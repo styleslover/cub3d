@@ -6,7 +6,7 @@
 /*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 13:03:51 by damoncad          #+#    #+#             */
-/*   Updated: 2025/04/14 18:13:22 by damoncad         ###   ########.fr       */
+/*   Updated: 2025/04/23 12:55:57 by damoncad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,6 +109,11 @@ void	free_game_resources_help(t_game *game)
 		mlx_destroy_display(game->mlx);
 		free(game->mlx);
 		game->mlx = NULL;
+	}
+	if (game->ps)
+	{
+		free(game->ps);
+		game->ps = NULL;
 	}
 }
 
