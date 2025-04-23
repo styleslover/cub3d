@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 12:40:01 by mabrigo           #+#    #+#             */
-/*   Updated: 2025/04/23 16:17:25 by damoncad         ###   ########.fr       */
+/*   Updated: 2025/04/23 17:15:04 by mabrigo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -210,7 +210,7 @@ int		is_valid_config_line(char *str);
 void	parse_if_config_done(char *line, int *map_start_line, int current_line, t_map_data *map, int fd);
 void	parse_config_line(char *str, t_map_data *map, int fd);
 int		is_map_line(char *str);
-char	**load_map(char *av, int *map_start_line);
+char	**load_map(char *av, int map_start_line);
 void	parse_file(char **av, int fd, t_map_data *map);
 //player
 float	get_direction(t_player *player, char c);

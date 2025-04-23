@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 23:45:26 by mariel            #+#    #+#             */
-/*   Updated: 2025/04/23 15:51:22 by damoncad         ###   ########.fr       */
+/*   Updated: 2025/04/23 18:30:35 by mabrigo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,22 +14,69 @@
 
 void load_texture(t_game *game, t_textures *texture, char *path)
 {
-	char *clean_path;
+    char *clean_path;
+    int fd;
 
-	clean_path = ft_strtrim(path, "\t\n\r");//da trovare soluzione migliore
-    texture->img = mlx_xpm_file_to_image(game->mlx, clean_path, &texture->width, &texture->height);
+    clean_path = ft_strtrim(path, "\t\n\r");
+    
+    // First try to open it as a directory
+    fd = open(clean_path, __O_DIRECTORY);
+    if (fd != -1)
+    {
+        // It's a directory, which is an error
+        printf("Error: Texture path '%s' is a directory.\n", clean_path);
+        close(fd); // Close the file descriptor!
+        free(clean_path);
+        free_map(game->map);
+        mlx_destroy_display(game->mlx); // Cleanup MLX
+        free(game->mlx);
+		free(game->ps);
+		free(game->player);
+        exit(1);
+    }
+    
+    // Now try to open as a regular file
+    fd = open(clean_path, O_RDONLY);
+    if (fd == -1)
+    {
+        printf("Error: Could not open texture file '%s'.\n", clean_path);
+        perror("Reason");
+        free(clean_path);
+        free_map(game->map);
+        mlx_destroy_display(game->mlx); // Cleanup MLX
+        free(game->mlx);
+		free(game->player);
+		free(game->ps);
+        exit(1);
+    }
 	
+	// char *line = get_next_line(fd);
+	// if (line)
+	// {
+	// 	if (line == NULL)
+	// 		printf("CACCOLONE\n");
+	// 	else
+	// 		printf("vaffanculo\n");
+	// }
+    // close(fd); // Close the file descriptor!
+    
+    texture->img = mlx_xpm_file_to_image(game->mlx, clean_path, &texture->width, &texture->height);
     if (!texture->img)
     {
-		printf("Error: Could not load texture.\n");
-		perror("Reason");
-		free_map(game->map);
-		exit(1);
+        printf("Error: Could not load texture '%s'.\n", clean_path);
+        perror("Reason");
+        free(clean_path);
+        free_map(game->map);
+        mlx_destroy_display(game->mlx); // Cleanup MLX
+		free(game->mlx);
+        free(game->ps);
+		free(game->player);
+        exit(1);
     }
+    
     texture->addr = mlx_get_data_addr(texture->img, &texture->bpp, 
-		&texture->line_length, &texture->endian);
-	//free(path);
-	free(clean_path);
+                                    &texture->line_length, &texture->endian);
+    free(clean_path);
 }
 
 void init_textures(t_game *game, t_map_data *map)

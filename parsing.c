@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 22:52:55 by mariel            #+#    #+#             */
-/*   Updated: 2025/04/22 19:53:16 by damoncad         ###   ########.fr       */
+/*   Updated: 2025/04/23 18:23:53 by mabrigo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -171,12 +171,14 @@ void	assign_texture(char **txtr, char *value, char *err_msg)
 		*txtr = value;
 }
 
-void handle_target_error(int fd, t_map_data *map, char *message)
+void handle_config_error(int fd, t_map_data *map, char *message)
 {
     close(fd);
     free_map(map);
     print_error(message);
-    exit(1);
+	//printf("cacchio\n");
+	return ;
+    //exit(1);
 }
 
 int check_fc_format(char *fc, int fd, t_map_data *map)
@@ -230,34 +232,33 @@ int **get_target_color(int i, char *str, t_map_data *map)
     return (NULL);
 }
 
-void handle_parse_error(int fd, t_map_data *map, char *msg)
+void handle_invalid_color(int fd, t_map_data *map)
 {
     close(fd);
     free_map(map);
-    print_error(msg);
+    print_error("Error: invalid color line\n");
 }
 
 void parse_floor_ceiling(int i, char *str, t_map_data *map, int fd)
 {
     char *fc;
     int **target;
-    
+
     fc = 0;
     target = get_target_color(i, str, map);
     if (!target || !str[i + 2])
-        handle_parse_error(fd, map, "Error: invalid color line\n");
+        return handle_invalid_color(fd, map);
     if (*target)
-        handle_parse_error(fd, map, "Error: double configuration\n");
+        handle_config_error(fd, map, "Error: double configuration\n");
     fc = strcmp_from_i(i + 2, str);
-    if (!fc || !check_fc_format(fc, fd, map))
-    {
-        free(fc);
+    if (!fc)
+        handle_config_error(fd, map, "Error: invalid color format\n");
+    if (!check_fc_format(fc, fd, map))
         return;
-    }
     *target = parse_rgb_values(fc);
     free(fc);
     if (!*target)
-        handle_parse_error(fd, map, "Error: invalid color values\n");
+        handle_invalid_color(fd, map);
 }
 
 int is_valid_config_line(char *str)
@@ -282,12 +283,36 @@ int	is_valid_texture_path(char *path)
 
 	fd = open(path, O_RDONLY);
 	if (fd == -1)
-	{
-		printf("Error: invalid texture path\n");
 		return (0);
-	}
 	close(fd);
 	return (1);
+}
+
+void handle_texture(t_map_data *map, int fd, char *str, int offset)
+{
+    char *path;
+	
+	path = strcmp_from_i(offset, str);
+    if (!path)
+	{
+		free(path);
+        handle_config_error(fd, map, "Error: Invalid texture path format\n");
+		return;
+    }
+    if (!is_valid_texture_path(path))
+    {
+		free(path);
+		handle_config_error(fd, map, "Error: Invalid texture path\n");
+		return ;
+    }
+    if (!ft_strncmp(str, "NO ", 3))
+        assign_texture(&map->north_txtr, path, "Error: NO texture\n");
+    else if (!ft_strncmp(str, "SO ", 3))
+        assign_texture(&map->south_txtr, path, "Error: SO texture\n");
+    else if (!ft_strncmp(str, "WE ", 3))
+        assign_texture(&map->west_txtr, path, "Error: WE texture\n");
+    else
+        assign_texture(&map->east_txtr, path, "Error: EA texture\n");
 }
 
 void parse_config_line(char *str, t_map_data *map, int fd)
@@ -298,67 +323,18 @@ void parse_config_line(char *str, t_map_data *map, int fd)
         i++;
     if (!is_valid_config_line(str))
     {
-        close(fd);
-        printf("Error: invalid configuration line\n");
-        free_map(map);
+        handle_config_error(fd, map, "Error: invalid configuration line\n");
         return;
     }
-    if (!ft_strncmp(str + i, "NO ", 3))
-    {
-        char *path = strcmp_from_i(i + 3, str);
-        if (!is_valid_texture_path(path))
-        {
-            close(fd);
-            printf("Error: Invalid path for NO texture\n");
-			free(path);
-            free_map(map);
-            return;
-        }
-        assign_texture(&map->north_txtr, path, "Error: NO texture\n");
-    }
-    else if (!ft_strncmp(str + i, "SO ", 3))
-    {
-        char *path = strcmp_from_i(i + 3, str);
-        if (!is_valid_texture_path(path))
-        {
-            close(fd);
-            printf("Error: Invalid path for SO texture\n");
-			free(path);
-            free_map(map);
-            return;
-        }
-        assign_texture(&map->south_txtr, path, "Error: SO texture\n");
-    }
-    else if (!ft_strncmp(str + i, "WE ", 3))
-    {
-        char *path = strcmp_from_i(i + 3, str);
-        if (!is_valid_texture_path(path))
-        {
-            close(fd);
-            printf("Error: Invalid path for WE texture\n");
-			free(path);
-            free_map(map);
-            return;
-        }
-        assign_texture(&map->west_txtr, path, "Error: WE texture\n");
-    }
-    else if (!ft_strncmp(str + i, "EA ", 3))
-    {
-        char *path = strcmp_from_i(i + 3, str);
-        if (!is_valid_texture_path(path))
-        {
-            close(fd);
-            printf("Error: Invalid path for EA texture\n");
-			free(path);
-            free_map(map);
-            return;
-        }
-        assign_texture(&map->east_txtr, path, "Error: EA texture\n");
-    }
+    
+    if (!ft_strncmp(str + i, "NO ", 3) || !ft_strncmp(str + i, "SO ", 3))
+        handle_texture(map, fd, str + i, i + 3);
+    else if (!ft_strncmp(str + i, "WE ", 3) || !ft_strncmp(str + i, "EA ", 3))
+        handle_texture(map, fd, str + i, i + 3);
     else if (!ft_strncmp(str + i, "F ", 2) || !ft_strncmp(str + i, "C ", 2))
-    {
         parse_floor_ceiling(i, str, map, fd);
-    }
+    else
+        handle_config_error(fd, map, "Error: Unknown configuration directive\n");
 }
 
 int	is_map_line(char *str)
@@ -383,78 +359,76 @@ int	is_map_line(char *str)
 	}
 	return (0);
 }
-
-char	**load_map(char *av, int *map_start_line)
+char **set_map(int map_start_line, char *av, int *fd)
 {
-	int		fd;
-	int		i;
-	int		lines;
-	char	**map;
-	char	*line;
+    int     lines;
+    char    **map;
 
-	fd = open(av, O_RDONLY);
-    if (fd < 0)
-		return (0);
-	lines = count_lines(av, fd);
-	if (lines <= 0)
-	{
-		close(fd);
-		return (NULL);
-	}
-	map = malloc((lines - *map_start_line + 1) * sizeof(char *));  // +1 per NULL finale
-	if (!map)
-	{
-		close(fd);
-		return (NULL);
-	}
-	fd = open(av, O_RDONLY);
-	if (fd < 0)
-	{
-		free(map);
-		return (NULL);
-	}
-	i = 0;
-	while (i < *map_start_line)
-	{
-		line = get_next_line(fd);
-		if (!line)
-			break;
-		free(line);
-		i++;
-	}
-	i = 0;
-	while ((line = get_next_line(fd)))
-	{
-		if (is_map_line(line) || is_empty_line(line))
-		{
-			map[i] = line;
-			map[i] = trim_newline(map[i]);
-			i++;
-		}
-		else
-			free(line);
-	}
-	map[i] = NULL;
-	close(fd);
-	return (map);
+    *fd = open(av, O_RDONLY);
+    if (*fd < 0)
+        return NULL;
+
+    lines = count_lines(av, *fd);
+    if (lines <= 0)
+    {
+        close(*fd);
+        return NULL;
+    }
+    map = malloc((lines - map_start_line + 1) * sizeof(char *));
+    if (!map)
+    {
+        close(*fd);
+        return NULL;
+    }
+    return map;
 }
 
-void	parse_if_config_done(char *line, int *map_start_line, int current_line, t_map_data *map, int fd)
+int get_map(char **map, int fd, int map_start_line)
 {
-	if (is_map_line(line) != 0)
-	{
-		if (map_start_line == 0)
-			*map_start_line = current_line - 1;
-	}
-	else
-	{
-		free(line);
-		close (fd);
-		free_map(map);
-		printf("Error: invalid map line\n");
-		clear_gnl();
-		exit(1);
-	}
+    char    *line;
+    int     i;
+
+    i = 0;
+    while (i < map_start_line)
+    {
+        line = get_next_line(fd);
+        if (!line)
+            break;
+        free(line);
+        i++;
+    }
+    i = 0;
+    while ((line = get_next_line(fd)))
+    {
+        if (is_map_line(line) || is_empty_line(line))
+        {
+            map[i] = trim_newline(line);
+            i++;
+        }
+        else
+            free(line);
+    }
+    map[i] = NULL;
+    return i;
+}
+
+char **load_map(char *av, int map_start_line)
+{
+    int     fd;
+    char    **map;
+
+    map = set_map(map_start_line, av, &fd);
+    if (!map)
+        return NULL;
+
+    if (get_map(map, fd, map_start_line) == 0)
+    {
+        free(map);
+        close(fd);
+        return NULL;
+    }
+    close(fd);
+    return map;
 }
 
 void	parse_file(char **av, int fd, t_map_data *map)
@@ -517,7 +491,7 @@ void	parse_file(char **av, int fd, t_map_data *map)
 		free_map(map);
 		return ;
 	}
-	map->world = load_map(av[1], &map_start_line);
+	map->world = load_map(av[1], map_start_line);
 	if (!check_map(map->world))
 	{
 		printf("Error: Failed to load map\n");

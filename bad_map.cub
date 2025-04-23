@@ -1,3 +1,4 @@
+
 NO textures/a.xpm
 SO textures/wall_texture.xpm
 EA textures/t.xpm 
@@ -6,10 +7,14 @@ WE textures/t.xpm
 
 
 
+F 50,50,50
 C 20,20,20
-F 255,0,0
 
 1111
 1001
-1N01
+10N1
+1001
+1001
 1111
+
+
