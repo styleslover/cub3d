@@ -6,7 +6,7 @@
 /*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 22:52:55 by mariel            #+#    #+#             */
-/*   Updated: 2025/04/23 15:22:53 by mabrigo          ###   ########.fr       */
+/*   Updated: 2025/04/23 15:59:52 by mabrigo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -359,78 +359,76 @@ int	is_map_line(char *str)
 	}
 	return (0);
 }
-
-char	**load_map(char *av, int *map_start_line)
+char **set_map(int map_start_line, char *av, int *fd)
 {
-	int		fd;
-	int		i;
-	int		lines;
-	char	**map;
-	char	*line;
+    int     lines;
+    char    **map;
 
-	fd = open(av, O_RDONLY);
-    if (fd < 0)
-		return (0);
-	lines = count_lines(av, fd);
-	if (lines <= 0)
-	{
-		close(fd);
-		return (NULL);
-	}
-	map = malloc((lines - *map_start_line + 1) * sizeof(char *));  // +1 per NULL finale
-	if (!map)
-	{
-		close(fd);
-		return (NULL);
-	}
-	fd = open(av, O_RDONLY);
-	if (fd < 0)
-	{
-		free(map);
-		return (NULL);
-	}
-	i = 0;
-	while (i < *map_start_line)
-	{
-		line = get_next_line(fd);
-		if (!line)
-			break;
-		free(line);
-		i++;
-	}
-	i = 0;
-	while ((line = get_next_line(fd)))
-	{
-		if (is_map_line(line) || is_empty_line(line))
-		{
-			map[i] = line;
-			map[i] = trim_newline(map[i]);
-			i++;
-		}
-		else
-			free(line);
-	}
-	map[i] = NULL;
-	close(fd);
-	return (map);
+    *fd = open(av, O_RDONLY);
+    if (*fd < 0)
+        return NULL;
+
+    lines = count_lines(av, *fd);
+    if (lines <= 0)
+    {
+        close(*fd);
+        return NULL;
+    }
+    map = malloc((lines - map_start_line + 1) * sizeof(char *));
+    if (!map)
+    {
+        close(*fd);
+        return NULL;
+    }
+    return map;
 }
 
-void	parse_if_config_done(char *line, int *map_start_line, int current_line, t_map_data *map, int fd)
+int get_map(char **map, int fd, int map_start_line)
 {
-	if (is_map_line(line) != 0)
-	{
-		if (map_start_line == 0)
-			*map_start_line = current_line - 1;
-	}
-	else
-	{
-		free(line);
-		close (fd);
-		free_map(map);
-		printf("Error: invalid map line\n");
-		clear_gnl();
-		exit(1);
-	}
+    char    *line;
+    int     i;
+
+    i = 0;
+    while (i < map_start_line)
+    {
+        line = get_next_line(fd);
+        if (!line)
+            break;
+        free(line);
+        i++;
+    }
+    i = 0;
+    while ((line = get_next_line(fd)))
+    {
+        if (is_map_line(line) || is_empty_line(line))
+        {
+            map[i] = trim_newline(line);
+            i++;
+        }
+        else
+            free(line);
+    }
+    map[i] = NULL;
+    return i;
+}
+
+char **load_map(char *av, int map_start_line)
+{
+    int     fd;
+    char    **map;
+
+    map = set_map(map_start_line, av, &fd);
+    if (!map)
+        return NULL;
+
+    if (get_map(map, fd, map_start_line) == 0)
+    {
+        free(map);
+        close(fd);
+        return NULL;
+    }
+    close(fd);
+    return map;
 }
 
 void	parse_file(char **av, int fd, t_map_data *map)
@@ -493,7 +491,7 @@ void	parse_file(char **av, int fd, t_map_data *map)
 		free_map(map);
 		return ;
 	}
-	map->world = load_map(av[1], &map_start_line);
+	map->world = load_map(av[1], map_start_line);
 	if (!check_map(map->world))
 	{
 		printf("Error: Failed to load map\n");
