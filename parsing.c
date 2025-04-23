@@ -6,7 +6,7 @@
 /*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 22:52:55 by mariel            #+#    #+#             */
-/*   Updated: 2025/04/23 14:51:08 by mabrigo          ###   ########.fr       */
+/*   Updated: 2025/04/23 15:22:53 by mabrigo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -171,12 +171,14 @@ void	assign_texture(char **txtr, char *value, char *err_msg)
 		*txtr = value;
 }
 
-void handle_target_error(int fd, t_map_data *map, char *message)
+void handle_config_error(int fd, t_map_data *map, char *message)
 {
     close(fd);
     free_map(map);
     print_error(message);
-    exit(1);
+	//printf("cacchio\n");
+	return ;
+    //exit(1);
 }
 
 int check_fc_format(char *fc, int fd, t_map_data *map)
@@ -247,10 +249,10 @@ void parse_floor_ceiling(int i, char *str, t_map_data *map, int fd)
     if (!target || !str[i + 2])
         return handle_invalid_color(fd, map);
     if (*target)
-        handle_target_error(fd, map, "Error: double configuration\n");
+        handle_config_error(fd, map, "Error: double configuration\n");
     fc = strcmp_from_i(i + 2, str);
     if (!fc)
-        handle_target_error(fd, map, "Error: invalid color format\n");
+        handle_config_error(fd, map, "Error: invalid color format\n");
     if (!check_fc_format(fc, fd, map))
         return;
     *target = parse_rgb_values(fc);
@@ -258,86 +260,6 @@ void parse_floor_ceiling(int i, char *str, t_map_data *map, int fd)
     if (!*target)
         handle_invalid_color(fd, map);
 }
-
-// void	parse_floor_ceiling(int i, char *str, t_map_data *map, int fd)
-// {
-// 	char	*fc;
-// 	int		**target;
-// 	int		j;
-// 	int		commas;
-
-// 	fc = 0;
-// 	target = 0;
-// 	j = 0;
-// 	commas = 0;
-// 	if (ft_strncmp(str + i, "F ", 2) == 0)
-// 	{
-// 		if (map->floor_color)
-// 		{
-// 			free(map->floor_color);
-// 			map->floor_color = NULL;
-// 			print_error("Error\n");
-// 		}
-// 		else
-// 			target = &map->floor_color;
-// 	}
-// 	else if (ft_strncmp(str + i, "C ", 2) == 0)
-// 	{
-// 		if (map->ceiling_color)
-// 			{
-// 				free(map->ceiling_color);
-// 				map->ceiling_color = NULL;
-// 				print_error("Error\n");
-// 			}
-// 			else
-// 				target = &map->ceiling_color;
-// 	}
-// 	if (!target || !str[i + 2])
-// 	{
-// 		close(fd);
-// 		free_map(map);
-// 		free(target);
-// 		print_error("Error: invalid color line\n");
-// 		return ;
-// 	}
-// 	if (*target)
-// 	{
-// 		close(fd);
-// 		free_map(map);
-// 		print_error("Error: double configuration\n");
-// 		exit(1);
-// 	}
-// 	fc = strcmp_from_i(i + 2, str);
-// 	if (!fc)
-// 	{
-// 		close(fd);
-// 		free_map(map);
-// 		print_error("Error: invalid color format\n");
-// 		exit(1);
-// 	}
-// 	while (fc[j])
-// 	{
-// 		if (fc[j] == ',')
-// 			commas++;
-// 		j++;
-// 	}
-// 	if (commas != 2)
-// 	{
-// 		close(fd);
-// 		free(fc);
-// 		free_map(map);
-// 		print_error("Invalid rgb\n");
-// 		return ;
-// 	}
-// 	*target = parse_rgb_values(fc);
-// 	free(fc);
-// 	if (!*target)
-// 	{
-// 		close(fd);
-// 		free_map(map);
-// 		print_error("Error: invalid color values\n");
-// 	}
-// }
 
 int is_valid_config_line(char *str)
 {
@@ -361,12 +283,36 @@ int	is_valid_texture_path(char *path)
 
 	fd = open(path, O_RDONLY);
 	if (fd == -1)
-	{
-		printf("Error: invalid texture path\n");
 		return (0);
-	}
 	close(fd);
 	return (1);
+}
+
+void handle_texture(t_map_data *map, int fd, char *str, int offset)
+{
+    char *path;
+	
+	path = strcmp_from_i(offset, str);
+    if (!path)
+	{
+		free(path);
+        handle_config_error(fd, map, "Error: Invalid texture path format\n");
+		return;
+    }
+    if (!is_valid_texture_path(path))
+    {
+		free(path);
+		handle_config_error(fd, map, "Error: Invalid texture path\n");
+		return ;
+    }
+    if (!ft_strncmp(str, "NO ", 3))
+        assign_texture(&map->north_txtr, path, "Error: NO texture\n");
+    else if (!ft_strncmp(str, "SO ", 3))
+        assign_texture(&map->south_txtr, path, "Error: SO texture\n");
+    else if (!ft_strncmp(str, "WE ", 3))
+        assign_texture(&map->west_txtr, path, "Error: WE texture\n");
+    else
+        assign_texture(&map->east_txtr, path, "Error: EA texture\n");
 }
 
 void parse_config_line(char *str, t_map_data *map, int fd)
@@ -377,67 +323,18 @@ void parse_config_line(char *str, t_map_data *map, int fd)
         i++;
     if (!is_valid_config_line(str))
     {
-        close(fd);
-        printf("Error: invalid configuration line\n");
-        free_map(map);
+        handle_config_error(fd, map, "Error: invalid configuration line\n");
         return;
     }
-    if (!ft_strncmp(str + i, "NO ", 3))
-    {
-        char *path = strcmp_from_i(i + 3, str);
-        if (!is_valid_texture_path(path))
-        {
-            close(fd);
-            printf("Error: Invalid path for NO texture\n");
-			free(path);
-            free_map(map);
-            return;
-        }
-        assign_texture(&map->north_txtr, path, "Error: NO texture\n");
-    }
-    else if (!ft_strncmp(str + i, "SO ", 3))
-    {
-        char *path = strcmp_from_i(i + 3, str);
-        if (!is_valid_texture_path(path))
-        {
-            close(fd);
-            printf("Error: Invalid path for SO texture\n");
-			free(path);
-            free_map(map);
-            return;
-        }
-        assign_texture(&map->south_txtr, path, "Error: SO texture\n");
-    }
-    else if (!ft_strncmp(str + i, "WE ", 3))
-    {
-        char *path = strcmp_from_i(i + 3, str);
-        if (!is_valid_texture_path(path))
-        {
-            close(fd);
-            printf("Error: Invalid path for WE texture\n");
-			free(path);
-            free_map(map);
-            return;
-        }
-        assign_texture(&map->west_txtr, path, "Error: WE texture\n");
-    }
-    else if (!ft_strncmp(str + i, "EA ", 3))
-    {
-        char *path = strcmp_from_i(i + 3, str);
-        if (!is_valid_texture_path(path))
-        {
-            close(fd);
-            printf("Error: Invalid path for EA texture\n");
-			free(path);
-            free_map(map);
-            return;
-        }
-        assign_texture(&map->east_txtr, path, "Error: EA texture\n");
-    }
+    
+    if (!ft_strncmp(str + i, "NO ", 3) || !ft_strncmp(str + i, "SO ", 3))
+        handle_texture(map, fd, str + i, i + 3);
+    else if (!ft_strncmp(str + i, "WE ", 3) || !ft_strncmp(str + i, "EA ", 3))
+        handle_texture(map, fd, str + i, i + 3);
     else if (!ft_strncmp(str + i, "F ", 2) || !ft_strncmp(str + i, "C ", 2))
-    {
         parse_floor_ceiling(i, str, map, fd);
-    }
+    else
+        handle_config_error(fd, map, "Error: Unknown configuration directive\n");
 }
 
 int	is_map_line(char *str)
