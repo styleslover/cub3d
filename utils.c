@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
+/*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 19:31:10 by mabrigo           #+#    #+#             */
-/*   Updated: 2025/04/10 20:58:59 by mabrigo          ###   ########.fr       */
+/*   Updated: 2025/04/23 16:04:22 by damoncad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,11 +36,11 @@ char	*trim_end_spaces(char *s)
 	return (s);
 }
 
-char *strcmp_from_i(int i, char *src)
+char	*strcmp_from_i(int i, char *src)
 {
-    if (!src || !src[i])
-        return NULL;
-    return ft_strtrim(src + i, " \t\r\n");
+	if (!src || !src[i])
+		return (NULL);
+	return (ft_strtrim(src + i, " \t\r\n"));
 }
 
 int	count_lines(char *av, int fd)
@@ -52,8 +52,11 @@ int	count_lines(char *av, int fd)
 	fd = open(av, O_RDONLY);
 	if (fd < 0)
 		return (0);
-	while ((line = get_next_line(fd)))
+	while (1)
 	{
+		line = get_next_line(fd);
+		if (!line)
+			break ;
 		lines++;
 		free(line);
 	}
@@ -61,10 +64,12 @@ int	count_lines(char *av, int fd)
 	return (lines);
 }
 
-char *trim_newline(char *line)
+char	*trim_newline(char *line)
 {
-	int len = strlen(line);
+	int	len;
+
+	len = strlen(line);
 	if (len > 0 && line[len - 1] == '\n')
 		line[len - 1] = '\0';
-	return line;
+	return (line);
 }
