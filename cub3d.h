@@ -6,7 +6,7 @@
 /*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 12:40:01 by mabrigo           #+#    #+#             */
-/*   Updated: 2025/04/23 14:53:54 by damoncad         ###   ########.fr       */
+/*   Updated: 2025/04/23 15:50:00 by damoncad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,8 @@ typedef struct s_player
 {
 	float	x;
 	float	y;
+	float	rx;
+	float	ry;
 	int		tile_x;
 	int		tile_y;
 	float	dir;
@@ -215,7 +217,7 @@ float	get_direction(t_player *player, char c);
 bool	is_valid_position(t_map_data *map, float x, float y);
 void	move_player(t_player *player, t_game *game);
 //rotate_that_booty
-void    rotate_point(float *x, float *y, float center_x, float center_y, float angle);
+void    rotate_point(t_player *player, float center_x, float center_y, float angle);
 //map_checks.c
 int		map_empty_lines(char **world);
 int		map_valid_char(char **world, int i, int player);

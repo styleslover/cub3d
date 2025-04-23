@@ -6,7 +6,7 @@
 /*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 23:45:26 by mariel            #+#    #+#             */
-/*   Updated: 2025/04/23 14:53:54 by damoncad         ###   ########.fr       */
+/*   Updated: 2025/04/23 15:51:22 by damoncad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,8 @@ void	init_player(t_player *player, t_map_data *map, int offset_x, int offset_y)
 	player->key_down = false;
 	player->key_left = false;
 	player->key_right = false;
+	player->rx = 0;
+	player->ry = 0;
 
 	i = 0;
 	while(map->world[i] != NULL)

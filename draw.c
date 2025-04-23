@@ -6,7 +6,7 @@
 /*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 23:30:39 by mariel            #+#    #+#             */
-/*   Updated: 2025/04/14 17:44:11 by damoncad         ###   ########.fr       */
+/*   Updated: 2025/04/23 15:50:30 by damoncad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,8 +92,8 @@ void	draw_player(t_game *game, t_player *player, int size, int color)
 	float	half_size;
 	int		center_x;
 	int		center_y;
-	float	x;
-	float	y;
+	//float	x;
+	//float	y;
 
 	//Calcola il centro del quadrato (personaggio)
 	center_x = (player->x - game->map->offset_x) * MINIMAP_SIZE / TILE_SIZE + game->map->offset_minimap_x;
@@ -108,11 +108,11 @@ void	draw_player(t_game *game, t_player *player, int size, int color)
 		while (j <= half_size)
 		{
 			//calcola coordinate ruotate yeeeeeah
-			x = center_x + j;
-			y = center_y + i;
-			rotate_point(&x, &y, center_x, center_y, player->dir);
+			player->rx = center_x + j;
+			player->ry = center_y + i;
+			rotate_point(player, center_x, center_y, player->dir);
 			//disegna il pixel ruotato
-			my_pixel_put((int)x, (int)y, game, color);
+			my_pixel_put((int)player->rx, (int)player->ry, game, color);
 			j++;
 		}
 		i++;
