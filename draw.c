@@ -6,16 +6,12 @@
 /*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 23:30:39 by mariel            #+#    #+#             */
-/*   Updated: 2025/04/23 15:50:30 by damoncad         ###   ########.fr       */
+/*   Updated: 2025/04/23 20:25:48 by damoncad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-// Permette di colorare un singolo pixel nell'immagine.
-// Calcola indice del pixel nell'array data
-// Controllo per evitare di uscire dallo schermo
-// Impostazione del colore (blu, verde e rosso)
 void	my_pixel_put(int x, int y, t_game *game, int color)
 {
 	int	index;
@@ -42,31 +38,25 @@ void	draw_direction_line(t_game *game, t_player *player,
 	float	temp_x;
 	float	temp_y;
 
-	//calcola la fine della linea in base alla direzione del giocatore
-	end_x = player->x + player->dir_x * length;	//il cosf e' per i float
-	end_y = player->y + player->dir_y * length;	//il sinf e' per i float
-	//calcola la fine della linea in base alla direzione del giocatore
+	end_x = player->x + player->dir_x * length;
+	end_y = player->y + player->dir_y * length;
 	delta_x = end_x - player->x;
 	delta_y = end_y - player->y;
-	max_steps = (int)fmaxf(fabsf(delta_x), fabsf(delta_y));	//fabsf per float(sarebbe abs)
-	step_x = delta_x / max_steps;	//passo per x
-	step_y = delta_y / max_steps;	//passo per y
-	
+	max_steps = (int)fmaxf(fabsf(delta_x), fabsf(delta_y));
+	step_x = delta_x / max_steps;
+	step_y = delta_y / max_steps;
 	temp_x = player->x;
 	temp_y = player->y;
-	
-	//disegna la linea
 	i = 0;
 	while (i <= max_steps)
 	{
-		my_pixel_put((int)temp_x, (int)temp_y, game, color);	//si arrotonda a int
+		my_pixel_put((int)temp_x, (int)temp_y, game, color);
 		temp_x += step_x;
 		temp_y += step_y;
 		i++;
 	}
 }
 
-//draw_quare quello buono
 void	draw_square(int x, int y, int size, t_game *game, int color)
 {
 	int	i;
@@ -92,26 +82,21 @@ void	draw_player(t_game *game, t_player *player, int size, int color)
 	float	half_size;
 	int		center_x;
 	int		center_y;
-	//float	x;
-	//float	y;
 
-	//Calcola il centro del quadrato (personaggio)
-	center_x = (player->x - game->map->offset_x) * MINIMAP_SIZE / TILE_SIZE + game->map->offset_minimap_x;
-	center_y = (player->y - game->map->offset_y) * MINIMAP_SIZE / TILE_SIZE + game->map->offset_minimap_y;
+	center_x = (player->x - game->map->offset_x)
+		* MINIMAP_SIZE / TILE_SIZE + game->map->offset_minimap_x;
+	center_y = (player->y - game->map->offset_y)
+		* MINIMAP_SIZE / TILE_SIZE + game->map->offset_minimap_y;
 	half_size = size / 2.0f;
-
-	// Disegna il quadrato ruotato (personaggio)
 	i = -half_size;
 	while (i <= half_size)
 	{
 		j = -half_size;
 		while (j <= half_size)
 		{
-			//calcola coordinate ruotate yeeeeeah
 			player->rx = center_x + j;
 			player->ry = center_y + i;
 			rotate_point(player, center_x, center_y, player->dir);
-			//disegna il pixel ruotato
 			my_pixel_put((int)player->rx, (int)player->ry, game, color);
 			j++;
 		}
@@ -125,17 +110,15 @@ void	draw_map(t_game *game, t_map_data *map)
 	int			i;
 	int			j;
 
-	// Controllo che la mappa sia caricata
 	if (!map->world || !map->world[0])
 	{
 		printf("Error: Map not loaded or empty\n");
-		return;
+		return ;
 	}
-
-	// Calcola gli offset della minimappa SENZA toccare gli offset principali della mappa
-	map->offset_minimap_x = game->screen_w - (map->map_width * MINIMAP_SIZE) - 120;
-	map->offset_minimap_y = game->screen_h - (map->map_height * MINIMAP_SIZE) - 120;
-
+	map->offset_minimap_x = game->screen_w
+		- (map->map_width * MINIMAP_SIZE) - 120;
+	map->offset_minimap_y = game->screen_h
+		- (map->map_height * MINIMAP_SIZE) - 120;
 	i = 0;
 	while (map->world[i] != NULL)
 	{
@@ -147,19 +130,16 @@ void	draw_map(t_game *game, t_map_data *map)
 			else if (map->world[i][j] == '0')
 				color = BLUE;
 			else if (map->world[i][j] == 'W' || map->world[i][j] == 'S' ||
-					 map->world[i][j] == 'E' || map->world[i][j] == 'N')
-				color = WHITE; // Debugging, eventualmente da cambiare
-
+					map->world[i][j] == 'E' || map->world[i][j] == 'N')
+				color = WHITE;
 			else
 			{
 				j++;
-				continue;
+				continue ;
 			}
-
-			// Disegna il tile scalato nella posizione corretta
 			draw_square(j * MINIMAP_SIZE + map->offset_minimap_x,
-						i * MINIMAP_SIZE + map->offset_minimap_y,
-						MINIMAP_SIZE, game, color);
+				i * MINIMAP_SIZE + map->offset_minimap_y,
+				MINIMAP_SIZE, game, color);
 			j++;
 		}
 		i++;
@@ -214,63 +194,6 @@ void	draw_floor_ceiling(t_game *game, t_map_data *map)
 	paint_floor_ceiling(game, floor_color, ceiling_color);
 }
 
-void draw_meme_gun(t_game *game)
-{
-	int gun_width = 200;
-	int gun_height = 150;
-	int start_x = (game->screen_w - gun_width) / 2;
-	int start_y = game->screen_h - gun_height - 40; // Alza un po' l'arma
-
-	// Colori base
-	int metal_color = 0x7A7A7A;    // Grigio metallico
-	int grip_color = 0x2D2D2D;     // Grigio scuro
-	int barrel_color = 0x5A5A5A;   // Grigio medio
-	//int accent_color = 0xFFD700;   // Oro per dettagli
-
-	// Parte principale (corpo)
-	for (int y = 0; y < gun_height * 0.7; y++) {
-		for (int x = gun_width * 0.2; x < gun_width * 0.8; x++) {
-			my_pixel_put(start_x + x, start_y + y, game, metal_color);
-		}
-	}
-
-	// Impugnatura (angolo stile mitra)
-	for (int y = gun_height * 0.4; y < gun_height; y++) {
-		for (int x = 0; x < gun_width * 0.3; x++) {
-			my_pixel_put(start_x + x, start_y + y, game, grip_color);
-		}
-	}
-
-	// Canna (allungata)
-	for (int y = gun_height * 0.1; y < gun_height * 0.6; y++) {
-		for (int x = gun_width * 0.8; x < gun_width; x++) {
-			my_pixel_put(start_x + x, start_y + y, game, barrel_color);
-		}
-	}
-
-	// Dettagli (crosshair stile ologramma)
-	int sight_size = 15;
-	int sight_x = start_x + gun_width * 0.9;
-	int sight_y = start_y + gun_height * 0.3;
-	
-	// Cerchio centrale
-	for (int i = -sight_size; i <= sight_size; i++) {
-		for (int j = -sight_size; j <= sight_size; j++) {
-			if (i*i + j*j <= sight_size*sight_size) {
-				my_pixel_put(sight_x + i, sight_y + j, game, 0x00FF00); // Verde
-			}
-		}
-	}
-
-	// Testo meme (solo se hai mlx_string_put)
-	if (game->mlx && game->win) {
-	mlx_string_put(game->mlx, game->win, 
-				   start_x + gun_width / 2 - 30, 
-				   start_y + 40, // Sposta la scritta più in basso
-				   BLACK, "BRRRRT!"); // Usa bianco per maggiore visibilità
-	}
-}
-
 int	draw_loop(t_game *game)
 {
 	move_player(game->player, game);
@@ -285,7 +208,6 @@ int	draw_loop(t_game *game)
 	raycasting(game);
 	draw_map(game, game->map);
 	draw_player(game, game->player, 8, GREEN);
-	draw_meme_gun(game);
 	mlx_put_image_to_window(game->mlx, game->win, game->img, 0, 0);
 	return (0);
 }
