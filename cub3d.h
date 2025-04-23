@@ -6,7 +6,7 @@
 /*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 12:40:01 by mabrigo           #+#    #+#             */
-/*   Updated: 2025/04/23 12:48:11 by damoncad         ###   ########.fr       */
+/*   Updated: 2025/04/23 14:53:54 by damoncad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@
 # define NUM_RAYS 100
 # define RS 0.04f
 
-typedef struct s_parsing_shit
+typedef struct s_raycasting_shit
 {
 	double	camera_x;
 	double	ray_dir_x;
@@ -74,7 +74,7 @@ typedef struct s_parsing_shit
 	int		texture_index;
 	float	wall_x;
 	int		tex_x;
-}	t_parsing_shit;
+}	t_raycasting_shit;
 
 typedef struct s_textures
 {
@@ -146,7 +146,7 @@ typedef struct s_game
 	t_textures	textures[4];
 	t_player	*player;
 	t_map_data	*map;
-	t_parsing_shit	*ps;
+	t_raycasting_shit	*ps;
 }			t_game;
 
 typedef struct s_line_data
@@ -226,7 +226,7 @@ int		check_map(char **world);
 //raycasting.c
 int 	get_texture_pixel(t_textures *texture, int x, int y);
 void	raycasting(t_game *game);
-void	init_parsing_shit(t_parsing_shit *ps);
+void	init_raycasting_shit(t_raycasting_shit *ps);
 //utils.c
 int		my_strchr(char *s, int c);
 char	*trim_end_spaces(char *s);

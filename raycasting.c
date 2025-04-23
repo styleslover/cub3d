@@ -6,7 +6,7 @@
 /*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 19:12:27 by damoncad          #+#    #+#             */
-/*   Updated: 2025/04/23 14:51:33 by damoncad         ###   ########.fr       */
+/*   Updated: 2025/04/23 14:53:54 by damoncad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	get_texture_pixel(t_textures *texture, int x, int y)
 	return (*(int *)pixel);
 }
 
-void	init_parsing_shit(t_parsing_shit *ps)
+void	init_raycasting_shit(t_raycasting_shit *ps)
 {
 	ps->camera_x = 0;
 	ps->ray_dir_x = 0;
@@ -49,7 +49,7 @@ void	init_parsing_shit(t_parsing_shit *ps)
 	ps->tex_x = 0;
 }
 
-void	init_ray(t_parsing_shit *a, t_game *game, int x)
+void	init_ray(t_raycasting_shit *a, t_game *game, int x)
 {
 	t_player	*p;
 	t_map_data	*map;
@@ -68,7 +68,7 @@ void	init_ray(t_parsing_shit *a, t_game *game, int x)
 	a->hit = 0;
 }
 
-void	calc_step_and_side_dist(t_parsing_shit *a)
+void	calc_step_and_side_dist(t_raycasting_shit *a)
 {
 	if (a->ray_dir_x < 0)
 	{
@@ -92,7 +92,7 @@ void	calc_step_and_side_dist(t_parsing_shit *a)
 	}
 }
 
-void	perform_dda(t_parsing_shit *a, t_map_data *map)
+void	perform_dda(t_raycasting_shit *a, t_map_data *map)
 {
 	while (!a->hit)
 	{
@@ -116,7 +116,7 @@ void	perform_dda(t_parsing_shit *a, t_map_data *map)
 	}
 }
 
-void	calc_wall_data(t_parsing_shit *a, t_game *game)
+void	calc_wall_data(t_raycasting_shit *a, t_game *game)
 {
 	if (a->side == 0)
 		a->perp_wall_dist = (a->map_x - a->ray_x
@@ -133,7 +133,7 @@ void	calc_wall_data(t_parsing_shit *a, t_game *game)
 		a->draw_end = game->screen_h - 1;
 }
 
-void	set_texture_data(t_parsing_shit *a, t_game *game)
+void	set_texture_data(t_raycasting_shit *a, t_game *game)
 {
 	if (a->side == 0)
 	{
@@ -160,7 +160,7 @@ void	set_texture_data(t_parsing_shit *a, t_game *game)
 		a->tex_x = game->textures[a->texture_index].width - a->tex_x - 1;
 }
 
-void	draw_column(t_parsing_shit *a, t_game *game, int x)
+void	draw_column(t_raycasting_shit *a, t_game *game, int x)
 {
 	int	y;
 	int	tex_y;
@@ -181,7 +181,7 @@ void	draw_column(t_parsing_shit *a, t_game *game, int x)
 
 void	raycasting(t_game *game)
 {
-	t_parsing_shit	*a;
+	t_raycasting_shit	*a;
 	int				x;
 
 	x = 0;
