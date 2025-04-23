@@ -6,7 +6,7 @@
 /*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 22:52:55 by mariel            #+#    #+#             */
-/*   Updated: 2025/04/22 19:21:34 by mabrigo          ###   ########.fr       */
+/*   Updated: 2025/04/23 14:51:08 by mabrigo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -230,20 +230,22 @@ int **get_target_color(int i, char *str, t_map_data *map)
     return (NULL);
 }
 
+void handle_invalid_color(int fd, t_map_data *map)
+{
+    close(fd);
+    free_map(map);
+    print_error("Error: invalid color line\n");
+}
+
 void parse_floor_ceiling(int i, char *str, t_map_data *map, int fd)
 {
     char *fc;
     int **target;
-    
+
     fc = 0;
     target = get_target_color(i, str, map);
     if (!target || !str[i + 2])
-    {
-        close(fd);
-        free_map(map);
-        print_error("Error: invalid color line\n");
-        return;
-    }
+        return handle_invalid_color(fd, map);
     if (*target)
         handle_target_error(fd, map, "Error: double configuration\n");
     fc = strcmp_from_i(i + 2, str);
@@ -254,11 +256,7 @@ void parse_floor_ceiling(int i, char *str, t_map_data *map, int fd)
     *target = parse_rgb_values(fc);
     free(fc);
     if (!*target)
-    {
-        close(fd);
-        free_map(map);
-        print_error("Error: invalid color values\n");
-    }
+        handle_invalid_color(fd, map);
 }
 
 // void	parse_floor_ceiling(int i, char *str, t_map_data *map, int fd)
