@@ -6,13 +6,13 @@
 /*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/21 19:29:16 by damoncad          #+#    #+#             */
-/*   Updated: 2023/12/21 19:29:20 by damoncad         ###   ########.fr       */
+/*   Updated: 2025/04/23 16:24:19 by damoncad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_strnstr( char *big,  char *little, size_t len)
+char	*ft_strnstr( char *big, char *little, size_t len)
 {
 	size_t	i;
 	size_t	n;

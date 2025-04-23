@@ -6,13 +6,13 @@
 /*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/21 19:46:47 by damoncad          #+#    #+#             */
-/*   Updated: 2023/12/21 19:46:52 by damoncad         ###   ########.fr       */
+/*   Updated: 2025/04/23 16:26:44 by damoncad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_substr(char  *s, unsigned int start, size_t len)
+char	*ft_substr(char *s, unsigned int start, size_t len)
 {
 	char	*str;
 	size_t	i;

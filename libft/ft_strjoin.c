@@ -6,13 +6,13 @@
 /*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 20:02:38 by damoncad          #+#    #+#             */
-/*   Updated: 2023/12/14 20:35:19 by damoncad         ###   ########.fr       */
+/*   Updated: 2025/04/23 16:26:09 by damoncad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_strjoin(char  *s1, char  *s2)
+char	*ft_strjoin(char *s1, char *s2)
 {
 	int		a;
 	int		b;

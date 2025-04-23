@@ -6,7 +6,7 @@
 /*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 19:12:27 by damoncad          #+#    #+#             */
-/*   Updated: 2025/04/23 14:53:54 by damoncad         ###   ########.fr       */
+/*   Updated: 2025/04/23 16:30:33 by damoncad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -182,7 +182,7 @@ void	draw_column(t_raycasting_shit *a, t_game *game, int x)
 void	raycasting(t_game *game)
 {
 	t_raycasting_shit	*a;
-	int				x;
+	int					x;
 
 	x = 0;
 	while (x < game->screen_w)

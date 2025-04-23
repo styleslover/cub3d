@@ -6,7 +6,7 @@
 /*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/21 19:17:24 by damoncad          #+#    #+#             */
-/*   Updated: 2023/12/21 19:48:59 by damoncad         ###   ########.fr       */
+/*   Updated: 2025/04/23 16:22:43 by damoncad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ static void	free_split(char **split, int limit)
 	free(split);
 }
 
-char	**ft_split(char  *s, char c)
+char	**ft_split(char *s, char c)
 {
 	int		i;
 	int		j;

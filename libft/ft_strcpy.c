@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strcpy.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
+/*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/01 19:47:02 by damoncad          #+#    #+#             */
-/*   Updated: 2025/03/19 16:45:23 by mabrigo          ###   ########.fr       */
+/*   Updated: 2025/04/23 16:28:10 by damoncad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_strcpy(char *dest,  char *src)
+char	*ft_strcpy(char *dest, char *src)
 {
 	size_t	a;
 

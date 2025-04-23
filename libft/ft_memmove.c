@@ -6,20 +6,20 @@
 /*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/21 19:27:56 by damoncad          #+#    #+#             */
-/*   Updated: 2023/12/21 19:27:58 by damoncad         ###   ########.fr       */
+/*   Updated: 2025/04/23 16:27:54 by damoncad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	*ft_memmove(void *dest,  void *src, size_t n)
+void	*ft_memmove(void *dest, void *src, size_t n)
 {
-	char		*dest_ptr;
-	 char	*src_ptr;
-	size_t		i;
+	char	*dest_ptr;
+	char	*src_ptr;
+	size_t	i;
 
 	dest_ptr = (char *)dest;
-	src_ptr = ( char *)src;
+	src_ptr = (char *)src;
 	if (dest_ptr == src_ptr)
 		return (dest);
 	if (src_ptr < dest_ptr)

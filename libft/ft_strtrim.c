@@ -6,13 +6,13 @@
 /*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 20:17:50 by damoncad          #+#    #+#             */
-/*   Updated: 2025/04/13 18:18:23 by damoncad         ###   ########.fr       */
+/*   Updated: 2025/04/23 16:28:23 by damoncad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_strtrim(char  *s1, char  *set)
+char	*ft_strtrim(char *s1, char *set)
 {
 	size_t	a;
 	size_t	b;

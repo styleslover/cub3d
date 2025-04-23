@@ -6,13 +6,13 @@
 /*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 20:12:33 by damoncad          #+#    #+#             */
-/*   Updated: 2023/12/18 21:17:27 by damoncad         ###   ########.fr       */
+/*   Updated: 2025/04/23 16:26:18 by damoncad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	ft_strncmp( char *s1,  char *s2, size_t n)
+int	ft_strncmp(char *s1, char *s2, size_t n)
 {
 	while (*s1 != '\0' && *s2 != '\0' && *s1 == *s2 && n > 0)
 	{

@@ -6,7 +6,7 @@
 /*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 18:39:22 by mabrigo           #+#    #+#             */
-/*   Updated: 2025/04/14 19:18:45 by damoncad         ###   ########.fr       */
+/*   Updated: 2025/04/23 16:15:45 by damoncad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,10 +55,7 @@ int	map_valid_char(char **world, int i, int player)
 		i++;
 	}
 	if (player != 1)
-	{
-		printf("Error: there must be only one player!\n");
-		return (0);
-	}
+		return (printf("Error: there must be only one player!\n"), 0);
 	return (1);
 }
 

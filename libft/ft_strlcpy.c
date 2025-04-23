@@ -6,13 +6,13 @@
 /*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/01 19:47:02 by damoncad          #+#    #+#             */
-/*   Updated: 2023/12/13 20:58:00 by damoncad         ###   ########.fr       */
+/*   Updated: 2025/04/23 16:24:40 by damoncad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-size_t	ft_strlcpy(char *dest,  char *src, size_t size)
+size_t	ft_strlcpy(char *dest, char *src, size_t size)
 {
 	size_t	a;
 
