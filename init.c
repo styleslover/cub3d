@@ -3,113 +3,100 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 23:45:26 by mariel            #+#    #+#             */
-/*   Updated: 2025/04/23 19:14:05 by damoncad         ###   ########.fr       */
+/*   Updated: 2025/04/23 20:24:25 by mabrigo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
+void	handle_errors(t_game *game, char *path, int fd, const char *msg)
+{
+	if (fd != -1)
+		close(fd);
+	if (path)
+		free(path);
+	free_map(game->map);
+	mlx_destroy_display(game->mlx);
+	free(game->mlx);
+	free(game->ps);
+	free(game->player);
+	if (msg)
+		printf("%s", msg);
+	exit(1);
+}
+
 void	is_texture_empty(t_game *game, int fd, char *clean_path)
 {
-	char buffer[5];
-	int bytes_read;
+	char	buffer[5];
+	int		bytes_read;
 
 	bytes_read = read(fd, buffer, 4);
 	if (bytes_read > 0)
-	{
-		buffer[bytes_read] = '\0'; // Null-terminate the string
-	}
+		buffer[bytes_read] = '\0'; 
 	else
-    {
-        buffer[0] = '\0'; // Empty string if nothing was read
-    }
-    if (bytes_read <= 0)
-    {
-        printf("Error: Texture file '%s' is empty.\n", clean_path);
-        close(fd);
-        free(clean_path);
+		buffer[0] = '\0';
+	if (bytes_read <= 0)
+	{
+		printf("Error: Texture file '%s' is empty.\n", clean_path);
+		close(fd);
+		free(clean_path);
 		free_textures(game);
-        mlx_destroy_display(game->mlx);
-        free_map(game->map);
-        free(game->mlx);
-        free(game->ps);
-        free(game->player);
-        exit(1);
-    }
-}
-
-
-void load_texture(t_game *game, t_textures *texture, char *path)
-{
-    char *clean_path;
-    int fd;
-
-    clean_path = ft_strtrim(path, "\t\n\r");
-    if (!clean_path)
-    {
-        printf("Error: Memory allocation failed for texture path.\n");
-        free_game_resources(game);
-        exit(1);
-    }
-
-	
-    // First try to open it as a directory
-    fd = open(clean_path, __O_DIRECTORY);
-    if (fd != -1)
-    {
-        // It's a directory, which is an error
-        printf("Error: Texture path '%s' is a directory.\n", clean_path);
-        close(fd); // Close the file descriptor!
-        free(clean_path);
-        free_map(game->map);
-        mlx_destroy_display(game->mlx); // Cleanup MLX
-        free(game->mlx);
-		free(game->ps);
-		free(game->player);
-        exit(1);
-    }
-    
-    // Now try to open as a regular file
-    fd = open(clean_path, O_RDONLY);
-    if (fd == -1)
-    {
-        printf("Error: Could not open texture file '%s'.\n", clean_path);
-        perror("Reason");
-        free(clean_path);
-        free_map(game->map);
-        mlx_destroy_display(game->mlx); // Cleanup MLX
-        free(game->mlx);
-		free(game->player);
-		free(game->ps);
-        exit(1);
-    }
-	is_texture_empty(game, fd, clean_path);
-    
-    texture->img = mlx_xpm_file_to_image(game->mlx, clean_path, &texture->width, &texture->height);
-    if (!texture->img)
-    {
-        printf("Error: Could not load texture '%s'.\n", clean_path);
-        perror("Reason");
-        free(clean_path);
-        free_map(game->map);
-        mlx_destroy_display(game->mlx); // Cleanup MLX
+		mlx_destroy_display(game->mlx);
+		free_map(game->map);
 		free(game->mlx);
-        free(game->ps);
+		free(game->ps);
 		free(game->player);
-        exit(1);
-    }
-    
-    texture->addr = mlx_get_data_addr(texture->img, &texture->bpp, 
-                                    &texture->line_length, &texture->endian);
-    free(clean_path);
+		exit(1);
+	}
 }
 
-void init_textures(t_game *game, t_map_data *map)
+void validate_texture_file(t_game *game, char *clean_path)
 {
-	int i;
+	int	fd;
+
+	fd = open(clean_path, __O_DIRECTORY);
+	if (fd != -1)
+	{
+		printf("Error: Texture path '%s' is a directory.\n", clean_path);
+		handle_errors(game, clean_path, fd, NULL);
+	}
+	fd = open(clean_path, O_RDONLY);
+	if (fd == -1)
+	{
+		printf("Error: Could not open texture file '%s'.\n", clean_path);
+		handle_errors(game, clean_path, fd, NULL);
+	}
+	is_texture_empty(game, fd, clean_path);
+	close(fd);
+}
+
+void	load_texture(t_game *game, t_textures *texture, char *path)
+{
+	char *clean_path;
+
+	clean_path = ft_strtrim(path, "\t\n\r");
+	if (!clean_path)
+		handle_errors(game, NULL, -1,
+			"Error: Memory allocation failed for texture path.\n");
+	validate_texture_file(game, clean_path);
+	texture->img = mlx_xpm_file_to_image(game->mlx, clean_path,
+			&texture->width, &texture->height);
+	if (!texture->img)
+	{
+		printf("Error: Could not load texture '%s'.\n", clean_path);
+		handle_errors(game, clean_path, -1, NULL);
+	}
+	texture->addr = mlx_get_data_addr(texture->img, &texture->bpp,
+			&texture->line_length, &texture->endian);
+	free(clean_path);
+}
+
+void	init_textures(t_game *game, t_map_data *map)
+{
+	int	i;
 
 	i = 0;
 	while (i < 4)
@@ -117,11 +104,10 @@ void init_textures(t_game *game, t_map_data *map)
 		game->textures[i].img = NULL;
 		i++;
 	}
-	
-	load_texture(game, &game->textures[0], map->north_txtr); // Nord
-	load_texture(game, &game->textures[1], map->south_txtr); // Sud
-	load_texture(game, &game->textures[2], map->east_txtr);  // Est
-	load_texture(game, &game->textures[3], map->west_txtr);  // Ovest
+	load_texture(game, &game->textures[0], map->north_txtr);
+	load_texture(game, &game->textures[1], map->south_txtr);
+	load_texture(game, &game->textures[2], map->east_txtr);
+	load_texture(game, &game->textures[3], map->west_txtr);
 }
 
 void	init_map(t_map_data *map)
@@ -137,7 +123,8 @@ void	init_map(t_map_data *map)
 	map->world = NULL;
 }
 
-void	init_player(t_player *player, t_map_data *map, int offset_x, int offset_y)
+void	init_player(t_player *player, t_map_data *map,
+	int offset_x, int offset_y)
 {
 	int	i;
 	int	j;
@@ -150,7 +137,7 @@ void	init_player(t_player *player, t_map_data *map, int offset_x, int offset_y)
 	player->ry = 0;
 
 	i = 0;
-	while(map->world[i] != NULL)
+	while (map->world[i] != NULL)
 	{
 		j = 0;
 		while (map->world[i][j] != '\0')
@@ -162,17 +149,12 @@ void	init_player(t_player *player, t_map_data *map, int offset_x, int offset_y)
 				player->tile_y = i;
 				player->x = (float)(j * TILE_SIZE + TILE_SIZE / 2) + offset_x;
 				player->y = (float)(i * TILE_SIZE + TILE_SIZE / 2) + offset_y;
-
-				//verifica posizione spawn valida
 				if (!is_valid_position(map, player->x, player->y))
 				{
 					printf("Error: invalid spawn position at (%d, %d)\n", j, i);
 					exit(1);
 				}
-				
-
 				get_direction(player, map->world[i][j]);
-
 				map->world[i][j] = '0';
 				return ;
 			}
