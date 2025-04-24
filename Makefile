@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+         #
+#    By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/12 16:24:59 by mabrigo           #+#    #+#              #
-#    Updated: 2025/04/24 21:03:42 by damoncad         ###   ########.fr        #
+#    Updated: 2025/04/25 00:09:19 by mabrigo          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,7 @@ CC = gcc
 CFLAGS = -Wall -Werror -Wextra
 LIBS = -Lminilibx-linux -lmlx -lXext -lX11 -lm
 GNL = get_next_line/get_next_line.c get_next_line/get_next_line_utils.c
-SRC = $(GNL) cub3d.c draw_map.c draw_player.c draw.c free_shit.c init_player.c init_texture.c init.c key_events.c map_checks_utils.c map_checks.c parsing.c player_moves.c player.c raycasting.c raycasting_utils.c utils.c
+SRC = $(GNL) cub3d.c draw_map.c draw_player.c draw.c free_shit.c init_player.c init_texture.c init.c key_events.c map_checks_utils.c map_checks.c parsing.c player_moves.c player.c raycasting.c raycasting_utils.c utils.c parsing_fc_rgb.c parsing_fc.c parsing_map.c parsing_starter_map.c parsing_texture.c parsing_utils.c
 MINI_REPO = https://github.com/42Paris/minilibx-linux.git
 MINI_PATH = minilibx-linux
 MINI_ARCHIVE = $(MINI_PATH)/libmlx.a

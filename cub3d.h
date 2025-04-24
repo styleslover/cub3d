@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 12:40:01 by mabrigo           #+#    #+#             */
-/*   Updated: 2025/04/24 23:05:10 by damoncad         ###   ########.fr       */
+/*   Updated: 2025/04/25 00:07:58 by mabrigo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -225,23 +225,53 @@ int		key_release(int keycode, t_game *game);
 int		close_window(void *param);
 
 //parsing.c
-int		is_empty_line(char *str);
-int		skip_spaces_check_sign(char *str, int *i);
+int		is_valid_config_line(char *str);
+void	parse_config_line(char *str, t_map_data *map, int fd);
+void	process_line(char *line, t_map_data *map, int fd, t_parse_state *state);
+void	parse_file(char **av, int fd, t_map_data *map);
+void	handle_config_line(char *line, t_map_data *map,
+			int fd, int *config_done);
+
+//parsing_texture.c
+void	assign_texture(char **txtr, char *value, char *err_msg);
+int		is_valid_texture_path(char *path);
+void	handle_texture_error(t_map_data *map, char *str, int fd);
+void	handle_texture(t_map_data *map, int fd, char *str, int offset);
+
+//parsing_fc.c
+int		check_fc_format(char *fc, int fd, t_map_data *map);
+int		**get_target_color(int i, char *str, t_map_data *map);
+void	handle_invalid_color(int fd, t_map_data *map);
+void	parse_floor_ceiling(int i, char *str, t_map_data *map, int fd);
+
+//parsing_fc_rgb.c
 int		process_digit_and_spaces(char *str, int *i,
 			int *digit_found, int *in_number);
 int		check_single_value(char *str);
 int		rgb_char_to_int(int *rgb_values, char **input);
 int		count_check_rgb_values(char **splitted);
 int		*parse_rgb_values(char *str);
-void	assign_texture(char **txtr, char *value, char *err_msg);
-int		check_fc_format(char *fc, int fd, t_map_data *map);
-int		**get_target_color(int i, char *str, t_map_data *map);
-void	parse_floor_ceiling(int i, char *str, t_map_data *map, int fd);
-int		is_valid_config_line(char *str);
-void	parse_config_line(char *str, t_map_data *map, int fd);
+
+//parsing_map.c
+int		handle_map_line(char *line, int current_line, int *map_start_line);
+void	handle_map_error(char *line, int fd, t_map_data *map);
+void	calculate_map_dimensions(t_map_data *map);
+void	load_and_check_map(char **av, t_map_data *map, int map_start_line);
+
+//parsing_starter_map.c
 int		is_map_line(char *str);
+char	**set_map(int map_start_line, char *av, int *fd);
+void	skip_to_map_start(int fd, int map_start_line);
+int		get_map(char **map, int fd, int map_start_line);
 char	**load_map(char *av, int map_start_line);
-void	parse_file(char **av, int fd, t_map_data *map);
+
+
+//parsing_utils.c
+int		is_empty_line(char *str);
+int		is_valid_config_line(char *str);
+void	check_empty_file(int current_line, t_map_data *map);
+void	handle_config_error(int fd, t_map_data *map, char *message);
+int		skip_spaces_check_sign(char *str, int *i);
 
 //player.C //OK!
 void	set_east_west_direction(t_player *player, char c);
