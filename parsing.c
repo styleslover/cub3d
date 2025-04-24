@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 22:52:55 by mariel            #+#    #+#             */
-/*   Updated: 2025/04/24 20:48:17 by damoncad         ###   ########.fr       */
+/*   Updated: 2025/04/24 21:37:32 by mabrigo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -431,7 +431,102 @@ char **load_map(char *av, int map_start_line)
     return map;
 }
 
-void	parse_file(char **av, int fd, t_map_data *map)
+// Gestisce una riga della configurazione durante il parsing
+void handle_config_line(char *line, t_map_data *map, int fd, int *config_done)
+{
+	if (is_map_line(line))
+	{
+		close(fd);
+		printf("Error\nInvalid configuration line\n");
+	}
+	else
+	{
+		parse_config_line(line, map, fd);
+		if (map->north_txtr && map->south_txtr && map->west_txtr
+			&& map->east_txtr && map->floor_color && map->ceiling_color)
+			*config_done = 1;
+	}
+}
+
+// Gestisce una riga dopo che la configurazione è completata
+int handle_map_line(char *line, int current_line, int *map_start_line)
+{
+	if (is_map_line(line) != 0)
+	{
+		if (*map_start_line == 0)
+			*map_start_line = current_line - 1;
+		return (1);
+	}
+	return (0);
+}
+
+// Gestisce un errore nella mappa e pulisce le risorse
+void handle_map_error(char *line, int fd, t_map_data *map)
+{
+	free(line);
+	close(fd);
+	free_map(map);
+	printf("Error\ninvalid map line\n");
+	clear_gnl();
+	exit(1);
+}
+
+// Calcola le dimensioni della mappa
+void calculate_map_dimensions(t_map_data *map)
+{
+	while (map->world[map->map_height])
+	{
+		if (ft_strlen(map->world[map->map_height]) > map->map_width)
+			map->map_width = ft_strlen(map->world[map->map_height]);
+		map->map_height++;
+	}
+}
+
+// Verifica se il file è vuoto
+void check_empty_file(int current_line, t_map_data *map)
+{
+	if (!current_line)
+	{
+		printf("Error: empty file\n");
+		free_map(map);
+	}
+}
+
+// Carica e verifica la mappa
+void load_and_check_map(char **av, t_map_data *map, int map_start_line)
+{
+	map->world = load_map(av[1], map_start_line);
+	if (!check_map(map->world))
+	{
+		printf("Error: Failed to load map\n");
+		free_map(map);
+		exit(1);
+	}
+	calculate_map_dimensions(map);
+}
+
+// Processa una riga durante il parsing del file
+void process_line(char *line, t_map_data *map, int fd, int *config_done,
+				int *map_start_line, int *current_line)
+{
+	(*current_line)++;
+	if (is_empty_line(line))
+	{
+		free(line);
+		return;
+	}
+	if (*config_done)
+	{
+		if (!handle_map_line(line, *current_line, map_start_line))
+			handle_map_error(line, fd, map);
+	}
+	else
+		handle_config_line(line, map, fd, config_done);
+	free(line);
+}
+
+// Funzione principale di parsing del file
+void parse_file(char **av, int fd, t_map_data *map)
 {
 	char	*line;
 	int		config_done;
@@ -443,65 +538,8 @@ void	parse_file(char **av, int fd, t_map_data *map)
 	current_line = 0;
 	init_map(map);
 	while ((line = get_next_line(fd)))
-	{
-		current_line++;
-		if (is_empty_line(line))
-		{
-			free(line);
-			continue;
-		}
-		if (config_done)
-		{
-			if (is_map_line(line) != 0)
-			{
-				if (map_start_line == 0)
-					map_start_line = current_line - 1;
-			}
-			else
-			{
-				free(line);
-				close (fd);
-				free_map(map);
-				printf("Error\ninvalid map line\n");
-				clear_gnl();
-				exit(1);
-			}
-		}
-		else
-		{
-			if (is_map_line(line))
-			{
-				close(fd);
-				printf("Error\nInvalid configuration line\n");
-			}
-			else
-			{
-				parse_config_line(line, map, fd);
-				if (map->north_txtr && map->south_txtr && map->west_txtr
-					&& map->east_txtr && map->floor_color && map->ceiling_color)
-					config_done = 1;
-			}
-		}
-		free(line);
-	}
+		process_line(line, map, fd, &config_done, &map_start_line, &current_line);
 	close(fd);
-	if (!current_line)
-	{
-		printf("Error: empty file\n");
-		free_map(map);
-		return ;
-	}
-	map->world = load_map(av[1], map_start_line);
-	if (!check_map(map->world))
-	{
-		printf("Error: Failed to load map\n");
-		free_map(map);
-		exit(1);
-	}
-    while (map->world[map->map_height])
-	{
-		if (ft_strlen(map->world[map->map_height]) > map->map_width)
-			map->map_width = ft_strlen(map->world[map->map_height]);
-        map->map_height++;
-	}
+	check_empty_file(current_line, map);
+	load_and_check_map(av, map, map_start_line);
 }
