@@ -1,12 +1,12 @@
-WE textures/t.xpm
+
 SO textures/wall_texture.xpm
 EA textures/t.xpm 
 NO textures/a.xpm
 
+WE textures/t.xpm
 
 
-
-F 50,50,50
+F  0,50,50
 C 20,20,20
 
 1111

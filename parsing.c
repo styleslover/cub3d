@@ -6,7 +6,7 @@
 /*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 22:52:55 by mariel            #+#    #+#             */
-/*   Updated: 2025/04/24 21:37:32 by mabrigo          ###   ########.fr       */
+/*   Updated: 2025/04/24 22:19:32 by mabrigo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -485,24 +485,31 @@ void calculate_map_dimensions(t_map_data *map)
 // Verifica se il file è vuoto
 void check_empty_file(int current_line, t_map_data *map)
 {
-	if (!current_line)
-	{
-		printf("Error: empty file\n");
-		free_map(map);
-	}
+    if (!current_line)
+    {
+        printf("Error: empty file\n");
+        free_map(map);
+        exit(1);  // Add this line to exit the program
+    }
 }
 
 // Carica e verifica la mappa
 void load_and_check_map(char **av, t_map_data *map, int map_start_line)
 {
-	map->world = load_map(av[1], map_start_line);
-	if (!check_map(map->world))
-	{
-		printf("Error: Failed to load map\n");
-		free_map(map);
-		exit(1);
-	}
-	calculate_map_dimensions(map);
+    map->world = load_map(av[1], map_start_line);
+    if (!map->world)
+    {
+        printf("Error: Failed to load map\n");
+        free_map(map);
+        exit(1);
+    }
+    if (!check_map(map->world))
+    {
+        printf("Error: Invalid map\n");
+        free_map(map);
+        exit(1);
+    }
+    calculate_map_dimensions(map);
 }
 
 // Processa una riga durante il parsing del file
