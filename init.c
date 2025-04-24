@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: santiago <santiago@student.42.fr>          +#+  +:+       +#+        */
+/*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 23:45:26 by mariel            #+#    #+#             */
-/*   Updated: 2025/04/24 16:56:06 by santiago         ###   ########.fr       */
+/*   Updated: 2025/04/24 18:08:31 by damoncad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ void validate_texture_file(t_game *game, char *clean_path)
 	fd = open(clean_path, __O_DIRECTORY);
 	if (fd != -1)
 	{
-		printf("Error: Texture path '%s' is a directory.\n", clean_path);
+		printf("Error\nTexture path '%s' is a directory.\n", clean_path);
 		handle_errors(game, clean_path, fd, NULL);
 	}
 	fd = open(clean_path, O_RDONLY);

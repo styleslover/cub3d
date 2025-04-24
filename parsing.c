@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
+/*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 22:52:55 by mariel            #+#    #+#             */
-/*   Updated: 2025/04/23 18:23:53 by mabrigo          ###   ########.fr       */
+/*   Updated: 2025/04/24 18:12:02 by damoncad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -213,7 +213,7 @@ int **get_target_color(int i, char *str, t_map_data *map)
         {
             free(map->floor_color);
             map->floor_color = NULL;
-            print_error("Error\n");
+            print_error("Error\nDouble floor configuration\n");
             return (NULL);
         }
         return (&map->floor_color);
@@ -224,7 +224,7 @@ int **get_target_color(int i, char *str, t_map_data *map)
         {
             free(map->ceiling_color);
             map->ceiling_color = NULL;
-            print_error("Error\n");
+            print_error("Error\nDouble ceiling configuration\n");
             return (NULL);
         }
         return (&map->ceiling_color);
@@ -302,17 +302,17 @@ void handle_texture(t_map_data *map, int fd, char *str, int offset)
     if (!is_valid_texture_path(path))
     {
 		free(path);
-		handle_config_error(fd, map, "Error: Invalid texture path\n");
+		handle_config_error(fd, map, "Error\nInvalid texture path\n");
 		return ;
     }
     if (!ft_strncmp(str, "NO ", 3))
-        assign_texture(&map->north_txtr, path, "Error: NO texture\n");
+        assign_texture(&map->north_txtr, path, "Error\nNO texture\n");
     else if (!ft_strncmp(str, "SO ", 3))
-        assign_texture(&map->south_txtr, path, "Error: SO texture\n");
+        assign_texture(&map->south_txtr, path, "Error\nSO texture\n");
     else if (!ft_strncmp(str, "WE ", 3))
-        assign_texture(&map->west_txtr, path, "Error: WE texture\n");
+        assign_texture(&map->west_txtr, path, "Error\nWE texture\n");
     else
-        assign_texture(&map->east_txtr, path, "Error: EA texture\n");
+        assign_texture(&map->east_txtr, path, "Error\nEA texture\n");
 }
 
 void parse_config_line(char *str, t_map_data *map, int fd)
@@ -462,7 +462,7 @@ void	parse_file(char **av, int fd, t_map_data *map)
 				free(line);
 				close (fd);
 				free_map(map);
-				printf("Error: invalid map line\n");
+				printf("Error\ninvalid map line\n");
 				clear_gnl();
 				exit(1);
 			}
@@ -472,7 +472,7 @@ void	parse_file(char **av, int fd, t_map_data *map)
 			if (is_map_line(line))
 			{
 				close(fd);
-				printf("Error: Invalid configuration line\n");
+				printf("Error\nInvalid configuration line\n");
 			}
 			else
 			{
