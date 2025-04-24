@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
+/*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 12:40:01 by mabrigo           #+#    #+#             */
-/*   Updated: 2025/04/24 21:15:45 by mabrigo          ###   ########.fr       */
+/*   Updated: 2025/04/24 23:05:10 by damoncad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,13 @@
 # define FOV (PI / 3)
 # define NUM_RAYS 100
 # define RS 0.04f
+
+typedef struct s_parse_state
+{
+    int config_done;
+    int map_start_line;
+    int current_line;
+} t_parse_state;
 
 typedef struct s_raycasting_shit
 {

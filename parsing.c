@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
+/*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 22:52:55 by mariel            #+#    #+#             */
-/*   Updated: 2025/04/24 22:19:32 by mabrigo          ###   ########.fr       */
+/*   Updated: 2025/04/24 23:35:18 by damoncad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,8 @@ int	skip_spaces_check_sign(char *str, int *i)
 	return (1);
 }
 
-int	process_digit_and_spaces(char *str, int *i, int *digit_found, int *in_number)
+int	process_digit_and_spaces(char *str, int *i,
+	int *digit_found, int *in_number)
 {
 	if (ft_isdigit(str[*i]))
 	{
@@ -71,9 +72,9 @@ int	process_digit_and_spaces(char *str, int *i, int *digit_found, int *in_number
 
 int	check_single_value(char *str)
 {
-	int i;
-	int digit_found;
-	int in_number;
+	int	i;
+	int	digit_found;
+	int	in_number;
 
 	i = 0;
 	digit_found = 0;
@@ -88,33 +89,34 @@ int	check_single_value(char *str)
 	return (digit_found);
 }
 
-int rgb_char_to_int(int *rgb_values, char **input)
+int	rgb_char_to_int(int *rgb_values, char **input)
 {
-    int i;
-    char *trimmed;
+	int		i;
+	char	*trimmed;
 
-    i = 0;
-    while (i < 3 && input[i])
-    {
-        trimmed = ft_strtrim(input[i], " \t\n\r");
-        if (!trimmed || !check_single_value(trimmed))
-        {
-            printf("Error here\n");
-            if (trimmed)
-                free(trimmed);
-            return (0);
-        }
-        rgb_values[i] = ft_atoi(trimmed);
-        free(trimmed);
-        if (rgb_values[i] < 0 || rgb_values[i] > 255)
-        {
-            print_error("Error: RGB values must be between 0 and 255\n");
-            return (0);
-        }
-        i++;
-    }
-    return (1);
+	i = 0;
+	while (i < 3 && input[i])
+	{
+		trimmed = ft_strtrim(input[i], " \t\n\r");
+		if (!trimmed || !check_single_value(trimmed))
+		{
+			printf("Error here\n");
+			if (trimmed)
+				free(trimmed);
+			return (0);
+		}
+		rgb_values[i] = ft_atoi(trimmed);
+		free(trimmed);
+		if (rgb_values[i] < 0 || rgb_values[i] > 255)
+		{
+			print_error("Error: RGB values must be between 0 and 255\n");
+			return (0);
+		}
+		i++;
+	}
+	return (1);
 }
+
 int	count_check_rgb_values(char **splitted)
 {
 	int	i;
@@ -130,32 +132,32 @@ int	count_check_rgb_values(char **splitted)
 	return (0);
 }
 
-int *parse_rgb_values(char *str)
+int	*parse_rgb_values(char *str)
 {
-    char **splitted;
-    int *rgb_values;
+	char	**splitted;
+	int		*rgb_values;
 
-    splitted = ft_split(str, ',');
-    if (!splitted)
+	splitted = ft_split(str, ',');
+	if (!splitted)
 	{
 		return (0);
 	}
 	if (count_check_rgb_values(splitted))
 		return (0);
-    rgb_values = (int *)malloc(sizeof(int) * 3);
-    if (!rgb_values)
-    {
-        free_matrix(splitted);
-        return (0);
-    }
-    if (!rgb_char_to_int(rgb_values, splitted))
-    {
-        free_matrix(splitted);
-        free(rgb_values);
-        return (0);
-    }
-    free_matrix(splitted);
-    return (rgb_values);
+	rgb_values = (int *)malloc(sizeof(int) * 3);
+	if (!rgb_values)
+	{
+		free_matrix(splitted);
+		return (0);
+	}
+	if (!rgb_char_to_int(rgb_values, splitted))
+	{
+		free_matrix(splitted);
+		free(rgb_values);
+		return (0);
+	}
+	free_matrix(splitted);
+	return (rgb_values);
 }
 
 void	assign_texture(char **txtr, char *value, char *err_msg)
@@ -171,110 +173,109 @@ void	assign_texture(char **txtr, char *value, char *err_msg)
 		*txtr = value;
 }
 
-void handle_config_error(int fd, t_map_data *map, char *message)
+void	handle_config_error(int fd, t_map_data *map, char *message)
 {
-    close(fd);
-    free_map(map);
-    print_error(message);
-	//printf("cacchio\n");
+	close(fd);
+	free_map(map);
+	print_error(message);
 	return ;
-    //exit(1);
 }
 
-int check_fc_format(char *fc, int fd, t_map_data *map)
+int	check_fc_format(char *fc, int fd, t_map_data *map)
 {
-    int j;
-    int commas;
-    
-    j = 0;
-    commas = 0;
-    while (fc[j])
-    {
-        if (fc[j] == ',')
-            commas++;
-        j++;
-    }
-    if (commas != 2)
-    {
-        close(fd);
-        free(fc);
-        free_map(map);
-        print_error("Invalid rgb\n");
-        return (0);
-    }
-    return (1);
-}
+	int	j;
+	int	commas;
 
-int **get_target_color(int i, char *str, t_map_data *map)
-{
-    if (ft_strncmp(str + i, "F ", 2) == 0)
-    {
-        if (map->floor_color)
-        {
-            free(map->floor_color);
-            map->floor_color = NULL;
-            print_error("Error\nDouble floor configuration\n");
-            return (NULL);
-        }
-        return (&map->floor_color);
-    }
-    else if (ft_strncmp(str + i, "C ", 2) == 0)
-    {
-        if (map->ceiling_color)
-        {
-            free(map->ceiling_color);
-            map->ceiling_color = NULL;
-            print_error("Error\nDouble ceiling configuration\n");
-            return (NULL);
-        }
-        return (&map->ceiling_color);
-    }
-    return (NULL);
-}
-
-void handle_invalid_color(int fd, t_map_data *map)
-{
-    close(fd);
-    free_map(map);
-    print_error("Error: invalid color line\n");
-}
-
-void parse_floor_ceiling(int i, char *str, t_map_data *map, int fd)
-{
-    char *fc;
-    int **target;
-
-    fc = 0;
-    target = get_target_color(i, str, map);
-    if (!target || !str[i + 2])
-        return handle_invalid_color(fd, map);
-    if (*target)
-        handle_config_error(fd, map, "Error: double configuration\n");
-    fc = strcmp_from_i(i + 2, str);
-    if (!fc)
-        handle_config_error(fd, map, "Error: invalid color format\n");
-    if (!check_fc_format(fc, fd, map))
-        return;
-    *target = parse_rgb_values(fc);
-    free(fc);
-    if (!*target)
-        handle_invalid_color(fd, map);
-}
-
-int is_valid_config_line(char *str)
-{
-    int i = 0;
-    
-    while (str[i] == 32 || (str[i] >= 9 && str[i] <= 13))
+	j = 0;
+	commas = 0;
+	while (fc[j])
 	{
-        i++;
+		if (fc[j] == ',')
+			commas++;
+		j++;
 	}
-    return (ft_strncmp(str + i, "NO ", 3) == 0 ||
-           ft_strncmp(str + i, "SO ", 3) == 0 ||
-           ft_strncmp(str + i, "WE ", 3) == 0 ||
-           ft_strncmp(str + i, "EA ", 3) == 0 ||
-           ft_strncmp(str + i, "F ", 2) == 0 ||
-           ft_strncmp(str + i, "C ", 2) == 0);
+	if (commas != 2)
+	{
+		close(fd);
+		free(fc);
+		free_map(map);
+		print_error("Invalid rgb\n");
+		return (0);
+	}
+	return (1);
+}
+
+int	**get_target_color(int i, char *str, t_map_data *map)
+{
+	if (ft_strncmp(str + i, "F ", 2) == 0)
+	{
+		if (map->floor_color)
+		{
+			free(map->floor_color);
+			map->floor_color = NULL;
+			print_error("Error\nDouble floor configuration\n");
+			return (NULL);
+		}
+		return (&map->floor_color);
+	}
+	else if (ft_strncmp(str + i, "C ", 2) == 0)
+	{
+		if (map->ceiling_color)
+		{
+			free(map->ceiling_color);
+			map->ceiling_color = NULL;
+			print_error("Error\nDouble ceiling configuration\n");
+			return (NULL);
+		}
+		return (&map->ceiling_color);
+	}
+	return (NULL);
+}
+
+void	handle_invalid_color(int fd, t_map_data *map)
+{
+	close(fd);
+	free_map(map);
+	print_error("Error: invalid color line\n");
+}
+
+void	parse_floor_ceiling(int i, char *str, t_map_data *map, int fd)
+{
+	char	*fc;
+	int		**target;
+
+	fc = 0;
+	target = get_target_color(i, str, map);
+	if (!target || !str[i + 2])
+		return (handle_invalid_color(fd, map));
+	if (*target)
+		handle_config_error(fd, map, "Error: double configuration\n");
+	fc = strcmp_from_i(i + 2, str);
+	if (!fc)
+		handle_config_error(fd, map, "Error: invalid color format\n");
+	if (!check_fc_format(fc, fd, map))
+		return ;
+	*target = parse_rgb_values(fc);
+	free(fc);
+	if (!*target)
+		handle_invalid_color(fd, map);
+}
+
+int	is_valid_config_line(char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i] == 32 || (str[i] >= 9 && str[i] <= 13))
+	{
+		i++;
+	}
+	return (ft_strncmp(str + i, "NO ", 3) == 0
+		|| ft_strncmp(str + i, "SO ", 3) == 0
+		|| ft_strncmp(str + i, "WE ", 3) == 0
+		|| ft_strncmp(str + i, "EA ", 3) == 0
+		|| ft_strncmp(str + i, "F ", 2) == 0
+		|| ft_strncmp(str + i, "C ", 2) == 0);
 }
 
 int	is_valid_texture_path(char *path)
@@ -288,53 +289,53 @@ int	is_valid_texture_path(char *path)
 	return (1);
 }
 
-void handle_texture(t_map_data *map, int fd, char *str, int offset)
+void	handle_texture(t_map_data *map, int fd, char *str, int offset)
 {
-    char *path;
-	
+	char	*path;
+
 	path = strcmp_from_i(offset, str);
-    if (!path)
+	if (!path)
 	{
-		//free(path);
-        handle_config_error(fd, map, "Error: Invalid texture path format\n");
-		return;
-    }
-    if (!is_valid_texture_path(path))
-    {
+		handle_config_error(fd, map, "Error: Invalid texture path format\n");
+		return ;
+	}
+	if (!is_valid_texture_path(path))
+	{
 		free(path);
 		handle_config_error(fd, map, "Error\nInvalid texture path\n");
 		return ;
-    }
-    if (!ft_strncmp(str, "NO ", 3))
-        assign_texture(&map->north_txtr, path, "Error\nNO texture\n");
-    else if (!ft_strncmp(str, "SO ", 3))
-        assign_texture(&map->south_txtr, path, "Error\nSO texture\n");
-    else if (!ft_strncmp(str, "WE ", 3))
-        assign_texture(&map->west_txtr, path, "Error\nWE texture\n");
-    else
-        assign_texture(&map->east_txtr, path, "Error\nEA texture\n");
+	}
+	if (!ft_strncmp(str, "NO ", 3))
+		assign_texture(&map->north_txtr, path, "Error\nNO texture\n");
+	else if (!ft_strncmp(str, "SO ", 3))
+		assign_texture(&map->south_txtr, path, "Error\nSO texture\n");
+	else if (!ft_strncmp(str, "WE ", 3))
+		assign_texture(&map->west_txtr, path, "Error\nWE texture\n");
+	else
+		assign_texture(&map->east_txtr, path, "Error\nEA texture\n");
 }
 
-void parse_config_line(char *str, t_map_data *map, int fd)
+void	parse_config_line(char *str, t_map_data *map, int fd)
 {
-    int i = 0;
+	int	i;
 
-    while (str[i] == 32 || (str[i] >= 9 && str[i] <= 13))
-        i++;
-    if (!is_valid_config_line(str))
-    {
-        handle_config_error(fd, map, "Error: invalid configuration line\n");
-        return;
-    }
-    
-    if (!ft_strncmp(str + i, "NO ", 3) || !ft_strncmp(str + i, "SO ", 3))
-        handle_texture(map, fd, str + i, i + 3);
-    else if (!ft_strncmp(str + i, "WE ", 3) || !ft_strncmp(str + i, "EA ", 3))
-        handle_texture(map, fd, str + i, i + 3);
-    else if (!ft_strncmp(str + i, "F ", 2) || !ft_strncmp(str + i, "C ", 2))
-        parse_floor_ceiling(i, str, map, fd);
-    else
-        handle_config_error(fd, map, "Error: Unknown configuration directive\n");
+	i = 0;
+	while (str[i] == 32 || (str[i] >= 9 && str[i] <= 13))
+		i++;
+	if (!is_valid_config_line(str))
+	{
+		handle_config_error(fd, map, "Error: invalid configuration line\n");
+		return ;
+	}
+	if (!ft_strncmp(str + i, "NO ", 3) || !ft_strncmp(str + i, "SO ", 3))
+		handle_texture(map, fd, str + i, i + 3);
+	else if (!ft_strncmp(str + i, "WE ", 3) || !ft_strncmp(str + i, "EA ", 3))
+		handle_texture(map, fd, str + i, i + 3);
+	else if (!ft_strncmp(str + i, "F ", 2) || !ft_strncmp(str + i, "C ", 2))
+		parse_floor_ceiling(i, str, map, fd);
+	else
+		handle_config_error(fd, map,
+			"Error: Unknown configuration directive\n");
 }
 
 int	is_map_line(char *str)
@@ -359,80 +360,89 @@ int	is_map_line(char *str)
 	}
 	return (0);
 }
-char **set_map(int map_start_line, char *av, int *fd)
+
+char	**set_map(int map_start_line, char *av, int *fd)
 {
-    int     lines;
-    char    **map;
+	int		lines;
+	char	**map;
 
-    *fd = open(av, O_RDONLY);
-    if (*fd < 0)
-        return NULL;
-
-    lines = count_lines(av, *fd);
-    if (lines <= 0)
-    {
-        close(*fd);
-        return NULL;
-    }
-    map = malloc((lines - map_start_line + 1) * sizeof(char *));
-    if (!map)
-    {
-        close(*fd);
-        return NULL;
-    }
-    return map;
+	*fd = open(av, O_RDONLY);
+	if (*fd < 0)
+		return (NULL);
+	lines = count_lines(av, *fd);
+	if (lines <= 0)
+	{
+		close(*fd);
+		return (NULL);
+	}
+	map = malloc((lines - map_start_line + 1) * sizeof(char *));
+	if (!map)
+	{
+		close(*fd);
+		return (NULL);
+	}
+	return (map);
 }
 
-int get_map(char **map, int fd, int map_start_line)
+void	skip_to_map_start(int fd, int map_start_line)
 {
-    char    *line;
-    int     i;
+	char	*line;
+	int		i;
 
-    i = 0;
-    while (i < map_start_line)
-    {
-        line = get_next_line(fd);
-        if (!line)
-            break;
-        free(line);
-        i++;
-    }
-    i = 0;
-    while ((line = get_next_line(fd)))
-    {
-        if (is_map_line(line) || is_empty_line(line))
-        {
-            map[i] = trim_newline(line);
-            i++;
-        }
-        else
-            free(line);
-    }
-    map[i] = NULL;
-    return i;
+	i = 0;
+	while (i < map_start_line)
+	{
+		line = get_next_line(fd);
+		if (!line)
+			break ;
+		free(line);
+		i++;
+	}
 }
 
-char **load_map(char *av, int map_start_line)
+int	get_map(char **map, int fd, int map_start_line)
 {
-    int     fd;
-    char    **map;
+	char	*line;
+	int		i;
 
-    map = set_map(map_start_line, av, &fd);
-    if (!map)
-        return NULL;
-
-    if (get_map(map, fd, map_start_line) == 0)
-    {
-        free(map);
-        close(fd);
-        return NULL;
-    }
-    close(fd);
-    return map;
+	skip_to_map_start(fd, map_start_line);
+	i = 0;
+	line = get_next_line(fd);
+	while (line)
+	{
+		if (is_map_line(line) || is_empty_line(line))
+		{
+			map[i] = trim_newline(line);
+			i++;
+		}
+		else
+			free(line);
+		line = get_next_line(fd);
+	}
+	map[i] = NULL;
+	return (i);
 }
 
-// Gestisce una riga della configurazione durante il parsing
-void handle_config_line(char *line, t_map_data *map, int fd, int *config_done)
+char	**load_map(char *av, int map_start_line)
+{
+	int		fd;
+	char	**map;
+
+	map = set_map(map_start_line, av, &fd);
+	if (!map)
+		return (NULL);
+	if (get_map(map, fd, map_start_line) == 0)
+	{
+		free(map);
+		close(fd);
+		return (NULL);
+	}
+	close(fd);
+	return (map);
+}
+
+void	handle_config_line(char *line, t_map_data *map,
+	int fd, int *config_done)
 {
 	if (is_map_line(line))
 	{
@@ -448,8 +458,7 @@ void handle_config_line(char *line, t_map_data *map, int fd, int *config_done)
 	}
 }
 
-// Gestisce una riga dopo che la configurazione è completata
-int handle_map_line(char *line, int current_line, int *map_start_line)
+int	handle_map_line(char *line, int current_line, int *map_start_line)
 {
 	if (is_map_line(line) != 0)
 	{
@@ -460,8 +469,7 @@ int handle_map_line(char *line, int current_line, int *map_start_line)
 	return (0);
 }
 
-// Gestisce un errore nella mappa e pulisce le risorse
-void handle_map_error(char *line, int fd, t_map_data *map)
+void	handle_map_error(char *line, int fd, t_map_data *map)
 {
 	free(line);
 	close(fd);
@@ -471,8 +479,7 @@ void handle_map_error(char *line, int fd, t_map_data *map)
 	exit(1);
 }
 
-// Calcola le dimensioni della mappa
-void calculate_map_dimensions(t_map_data *map)
+void	calculate_map_dimensions(t_map_data *map)
 {
 	while (map->world[map->map_height])
 	{
@@ -482,71 +489,68 @@ void calculate_map_dimensions(t_map_data *map)
 	}
 }
 
-// Verifica se il file è vuoto
-void check_empty_file(int current_line, t_map_data *map)
+void	check_empty_file(int current_line, t_map_data *map)
 {
-    if (!current_line)
-    {
-        printf("Error: empty file\n");
-        free_map(map);
-        exit(1);  // Add this line to exit the program
-    }
+	if (!current_line)
+	{
+		printf("Error: empty file\n");
+		free_map(map);
+		exit(1);
+	}
 }
 
-// Carica e verifica la mappa
-void load_and_check_map(char **av, t_map_data *map, int map_start_line)
+void	load_and_check_map(char **av, t_map_data *map, int map_start_line)
 {
-    map->world = load_map(av[1], map_start_line);
-    if (!map->world)
-    {
-        printf("Error: Failed to load map\n");
-        free_map(map);
-        exit(1);
-    }
-    if (!check_map(map->world))
-    {
-        printf("Error: Invalid map\n");
-        free_map(map);
-        exit(1);
-    }
-    calculate_map_dimensions(map);
+	map->world = load_map(av[1], map_start_line);
+	if (!map->world)
+	{
+		printf("Error: Failed to load map\n");
+		free_map(map);
+		exit(1);
+	}
+	if (!check_map(map->world))
+	{
+		printf("Error: Invalid map\n");
+		free_map(map);
+		exit(1);
+	}
+	calculate_map_dimensions(map);
 }
 
-// Processa una riga durante il parsing del file
-void process_line(char *line, t_map_data *map, int fd, int *config_done,
-				int *map_start_line, int *current_line)
+void	process_line(char *line, t_map_data *map, int fd, t_parse_state *state)
 {
-	(*current_line)++;
+	state->current_line++;
 	if (is_empty_line(line))
 	{
 		free(line);
-		return;
+		return ;
 	}
-	if (*config_done)
+	if (state->config_done)
 	{
-		if (!handle_map_line(line, *current_line, map_start_line))
+		if (!handle_map_line(line, state->current_line, &state->map_start_line))
 			handle_map_error(line, fd, map);
 	}
 	else
-		handle_config_line(line, map, fd, config_done);
+		handle_config_line(line, map, fd, &state->config_done);
 	free(line);
 }
 
-// Funzione principale di parsing del file
-void parse_file(char **av, int fd, t_map_data *map)
+void	parse_file(char **av, int fd, t_map_data *map)
 {
-	char	*line;
-	int		config_done;
-	int		map_start_line;
-	int		current_line;
+	char			*line;
+	t_parse_state	state;
 
-	config_done = 0;
-	map_start_line = 0;
-	current_line = 0;
+	state.config_done = 0;
+	state.map_start_line = 0;
+	state.current_line = 0;
 	init_map(map);
-	while ((line = get_next_line(fd)))
-		process_line(line, map, fd, &config_done, &map_start_line, &current_line);
+	line = get_next_line(fd);
+	while (line)
+	{
+		process_line(line, map, fd, &state);
+		line = get_next_line(fd);
+	}
 	close(fd);
-	check_empty_file(current_line, map);
-	load_and_check_map(av, map, map_start_line);
+	check_empty_file(state.current_line, map);
+	load_and_check_map(av, map, state.map_start_line);
 }
