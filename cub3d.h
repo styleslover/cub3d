@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 12:40:01 by mabrigo           #+#    #+#             */
-/*   Updated: 2025/04/23 20:03:14 by damoncad         ###   ########.fr       */
+/*   Updated: 2025/04/24 18:22:12 by mabrigo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -182,11 +182,23 @@ void	free_game_resources(t_game *game);
 
 
 //init.c
+void	handle_errors(t_game *game, char *path, int fd, const char *msg);
+void	is_texture_empty(t_game *game, int fd, char *clean_path);
+void	validate_texture_file(t_game *game, char *clean_path);
 void	load_texture(t_game *game, t_textures *texture, char *path);
 void 	init_textures(t_game *game, t_map_data *map);
 void	init_map(t_map_data *map);
-void	init_player(t_player *player, t_map_data *map, int offset_x, int offset_y);
+void	find_player_position(t_player *player, t_map_data *map);
+void	set_player_position(t_player *player, t_map_data *map,
+		int offset_x, int offset_y)void	init_player(t_player *player, t_map_data *map, int offset_x, int offset_y);
+void	init_player(t_player *player, t_map_data *map,
+		int offset_x, int offset_y);
+void	init_player_memory(t_game *game);
+void	init_screen_and_offsets(t_game *game, t_map_data *map);
+void	init_raycasting_memory(t_game *game);
+void	init_window_and_image(t_game *game, char *name_win);
 void	init_game(char *name_win, t_game *game, t_map_data *map);
+
 //key_events.c
 void	key_press_help(int keycode, t_player *player);
 int		key_press(int keycode, t_game *game);
