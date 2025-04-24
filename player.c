@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   player.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 23:34:14 by mariel            #+#    #+#             */
-/*   Updated: 2025/04/23 20:07:54 by damoncad         ###   ########.fr       */
+/*   Updated: 2025/04/24 18:46:43 by mabrigo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,18 +66,11 @@ bool	is_valid_position(t_map_data *map, float x, float y)
 	int		tile_y;
 	float	map_x;
 	float	map_y;
-	int		i;
 
 	map_x = x - map->offset_x;
 	map_y = y - map->offset_y;
 	tile_x = (int)(map_x / TILE_SIZE);
 	tile_y = (int)(map_y / TILE_SIZE);
-	i = 0;
-	while (map->world[i])
-	{
-		printf("Map[%d]: %s\n", i, map->world[i]);
-		i++;
-	}
 	if (tile_x < 0 || tile_x >= map->map_width
 		|| tile_y < 0 || tile_y >= map->map_height)
 		return (printf("Error: Invalid position: out of map\n"), false);

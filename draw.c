@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 23:30:39 by mariel            #+#    #+#             */
-/*   Updated: 2025/04/23 20:25:48 by damoncad         ###   ########.fr       */
+/*   Updated: 2025/04/24 18:45:41 by mabrigo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,39 +22,6 @@ void	my_pixel_put(int x, int y, t_game *game, int color)
 	game->data[index] = color & 0xFF;
 	game->data[index + 1] = (color >> 8) & 0xFF;
 	game->data[index + 2] = (color >> 16) & 0xFF;
-}
-
-void	draw_direction_line(t_game *game, t_player *player,
-		int length, int color)
-{
-	float	end_x;
-	float	end_y;
-	float	step_x;
-	float	step_y;
-	float	delta_x;
-	float	delta_y;
-	int		max_steps;
-	int		i;
-	float	temp_x;
-	float	temp_y;
-
-	end_x = player->x + player->dir_x * length;
-	end_y = player->y + player->dir_y * length;
-	delta_x = end_x - player->x;
-	delta_y = end_y - player->y;
-	max_steps = (int)fmaxf(fabsf(delta_x), fabsf(delta_y));
-	step_x = delta_x / max_steps;
-	step_y = delta_y / max_steps;
-	temp_x = player->x;
-	temp_y = player->y;
-	i = 0;
-	while (i <= max_steps)
-	{
-		my_pixel_put((int)temp_x, (int)temp_y, game, color);
-		temp_x += step_x;
-		temp_y += step_y;
-		i++;
-	}
 }
 
 void	draw_square(int x, int y, int size, t_game *game, int color)
@@ -104,47 +71,103 @@ void	draw_player(t_game *game, t_player *player, int size, int color)
 	}
 }
 
+int	get_tile_color(char tile)
+{
+	if (tile == '1')
+		return (RED);
+	else if (tile == '0')
+		return (BLUE);
+	else if (tile == 'W' || tile == 'S' || tile == 'E' || tile == 'N')
+		return (WHITE);
+	return (-1);
+}
+
+void	calculate_minimap_offset(t_game *game, t_map_data *map)
+{
+	map->offset_minimap_x = game->screen_w
+		- (map->map_width * MINIMAP_SIZE) - 120;
+	map->offset_minimap_y = game->screen_h
+		- (map->map_height * MINIMAP_SIZE) - 120;
+}
+
+void	draw_map_row(t_game *game, t_map_data *map, int i)
+{
+	int	j;
+	int	color;
+
+	j = 0;
+	while (map->world[i][j] != '\0')
+	{
+		color = get_tile_color(map->world[i][j]);
+		if (color != -1)
+		{
+			draw_square(j * MINIMAP_SIZE + map->offset_minimap_x,
+				i * MINIMAP_SIZE + map->offset_minimap_y,
+				MINIMAP_SIZE, game, color);
+		}
+		j++;
+	}
+}
+
 void	draw_map(t_game *game, t_map_data *map)
 {
-	int			color;
-	int			i;
-	int			j;
+	int	i;
 
 	if (!map->world || !map->world[0])
 	{
 		printf("Error: Map not loaded or empty\n");
 		return ;
 	}
-	map->offset_minimap_x = game->screen_w
-		- (map->map_width * MINIMAP_SIZE) - 120;
-	map->offset_minimap_y = game->screen_h
-		- (map->map_height * MINIMAP_SIZE) - 120;
+	calculate_minimap_offset(game, map);
 	i = 0;
 	while (map->world[i] != NULL)
 	{
-		j = 0;
-		while (map->world[i][j] != '\0')
-		{
-			if (map->world[i][j] == '1')
-				color = RED;
-			else if (map->world[i][j] == '0')
-				color = BLUE;
-			else if (map->world[i][j] == 'W' || map->world[i][j] == 'S' ||
-					map->world[i][j] == 'E' || map->world[i][j] == 'N')
-				color = WHITE;
-			else
-			{
-				j++;
-				continue ;
-			}
-			draw_square(j * MINIMAP_SIZE + map->offset_minimap_x,
-				i * MINIMAP_SIZE + map->offset_minimap_y,
-				MINIMAP_SIZE, game, color);
-			j++;
-		}
+		draw_map_row(game, map, i);
 		i++;
 	}
 }
+
+// void	draw_map(t_game *game, t_map_data *map)
+// {
+// 	int			color;
+// 	int			i;
+// 	int			j;
+
+// 	if (!map->world || !map->world[0])
+// 	{
+// 		printf("Error: Map not loaded or empty\n");
+// 		return ;
+// 	}
+// 	map->offset_minimap_x = game->screen_w
+// 		- (map->map_width * MINIMAP_SIZE) - 120;
+// 	map->offset_minimap_y = game->screen_h
+// 		- (map->map_height * MINIMAP_SIZE) - 120;
+// 	i = 0;
+// 	while (map->world[i] != NULL)
+// 	{
+// 		j = 0;
+// 		while (map->world[i][j] != '\0')
+// 		{
+// 			if (map->world[i][j] == '1')
+// 				color = RED;
+// 			else if (map->world[i][j] == '0')
+// 				color = BLUE;
+// 			else if (map->world[i][j] == 'W' || map->world[i][j] == 'S' ||
+// 					map->world[i][j] == 'E' || map->world[i][j] == 'N')
+// 				color = WHITE;
+// 			else
+// 			{
+// 				j++;
+// 				continue ;
+// 			}
+// 			draw_square(j * MINIMAP_SIZE + map->offset_minimap_x,
+// 				i * MINIMAP_SIZE + map->offset_minimap_y,
+// 				MINIMAP_SIZE, game, color);
+// 			j++;
+// 		}
+// 		i++;
+// 	}
+// }
 
 void	paint_floor_ceiling(t_game *game, int floor, int ceiling)
 {

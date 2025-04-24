@@ -6,7 +6,7 @@
 /*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 12:40:01 by mabrigo           #+#    #+#             */
-/*   Updated: 2025/04/24 18:22:12 by mabrigo          ###   ########.fr       */
+/*   Updated: 2025/04/24 18:38:59 by mabrigo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,13 +162,12 @@ int	print_error(char *str);
 int	check_filename(char *av);
 //draw.c
 void	my_pixel_put(int x, int y, t_game *game, int color);
-void	draw_direction_line(t_game *game, t_player *player, int length, int color);
 void	draw_square(int x, int y, int size, t_game *game, int color);
 void	draw_player(t_game *game, t_player *player, int size, int color);
+void	color_map(t_map_data *map, t_game *game, int color, int i);
 void	draw_map(t_game *game, t_map_data *map);
 void	paint_floor_ceiling(t_game *game, int floor, int ceiling);
 void	draw_floor_ceiling(t_game *game, t_map_data *map);
-void 	draw_meme_gun(t_game *game);
 int		draw_loop(t_game *game);
 
 
@@ -190,7 +189,7 @@ void 	init_textures(t_game *game, t_map_data *map);
 void	init_map(t_map_data *map);
 void	find_player_position(t_player *player, t_map_data *map);
 void	set_player_position(t_player *player, t_map_data *map,
-		int offset_x, int offset_y)void	init_player(t_player *player, t_map_data *map, int offset_x, int offset_y);
+		int offset_x, int offset_y);
 void	init_player(t_player *player, t_map_data *map,
 		int offset_x, int offset_y);
 void	init_player_memory(t_game *game);
