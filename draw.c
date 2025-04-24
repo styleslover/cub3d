@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 23:30:39 by mariel            #+#    #+#             */
-/*   Updated: 2025/04/24 21:08:50 by damoncad         ###   ########.fr       */
+/*   Updated: 2025/04/24 21:15:02 by mabrigo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,8 @@ int	draw_loop(t_game *game)
 	draw_floor_ceiling(game, game->map);
 	raycasting(game);
 	draw_map(game, game->map);
-	draw_player(game, game->player, 8, GREEN);
+	game->color_player = GREEN;
+	draw_player(game, game->player, 8);
 	mlx_put_image_to_window(game->mlx, game->win, game->img, 0, 0);
 	return (0);
 }

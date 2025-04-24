@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 23:45:26 by mariel            #+#    #+#             */
-/*   Updated: 2025/04/24 21:07:45 by damoncad         ###   ########.fr       */
+/*   Updated: 2025/04/24 21:15:35 by mabrigo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,8 @@ void	init_window_and_image(t_game *game, char *name_win)
 void	init_game(char *name_win, t_game *game, t_map_data *map)
 {
 	game->map = map;
-	game->color = 0;
+	game->color_map = 0;
+	game->color_player = 0;
 	init_player_memory(game);
 	init_screen_and_offsets(game, map);
 	init_raycasting_memory(game);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw_map.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 19:08:14 by mabrigo           #+#    #+#             */
-/*   Updated: 2025/04/24 21:06:56 by damoncad         ###   ########.fr       */
+/*   Updated: 2025/04/24 21:13:13 by mabrigo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,13 +34,12 @@ void	calculate_minimap_offset(t_game *game, t_map_data *map)
 void	draw_map_row(t_game *game, t_map_data *map, int i)
 {
 	int	j;
-	int	color;
 
 	j = 0;
 	while (map->world[i][j] != '\0')
 	{
-		color = get_tile_color(map->world[i][j]);
-		if (color != -1)
+		game->color_map = get_tile_color(map->world[i][j]);
+		if (game->color_map != -1)
 		{
 			draw_square(j * MINIMAP_SIZE + map->offset_minimap_x,
 				i * MINIMAP_SIZE + map->offset_minimap_y,

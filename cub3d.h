@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 12:40:01 by mabrigo           #+#    #+#             */
-/*   Updated: 2025/04/24 21:09:16 by damoncad         ###   ########.fr       */
+/*   Updated: 2025/04/24 21:15:45 by mabrigo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,7 +139,8 @@ typedef struct s_game
 	int					bpp;
 	int					size_line;
 	int					endian;
-	int					color;
+	int					color_player;
+	int					color_map;
 
 	int					screen_w;
 	int					screen_h;
@@ -178,7 +179,7 @@ void	draw_map(t_game *game, t_map_data *map);
 
 //draw_player.c //DRAW_SQUARE HA TROPPI PARAMETRI
 void	draw_square(int x, int y, int size, t_game *game);
-void	draw_player(t_game *game, t_player *player, int size, int color);
+void	draw_player(t_game *game, t_player *player, int size);
 
 //free_shit.c //OK!
 void	free_matrix(char **map);

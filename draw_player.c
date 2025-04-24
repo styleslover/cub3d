@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   draw_player.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 19:09:32 by mabrigo           #+#    #+#             */
-/*   Updated: 2025/04/24 21:08:59 by damoncad         ###   ########.fr       */
+/*   Updated: 2025/04/24 21:17:18 by mabrigo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-void	draw_square(int x, int y, int size, t_game *game, int color)
+void	draw_square(int x, int y, int size, t_game *game)
 {
 	int	i;
 	int	j;
@@ -23,14 +23,14 @@ void	draw_square(int x, int y, int size, t_game *game, int color)
 		j = 0;
 		while (j < size)
 		{
-			my_pixel_put(x + j, y + i, game, color);
+			my_pixel_put(x + j, y + i, game, game->color_map);
 			j++;
 		}
 		i++;
 	}
 }
 
-void	draw_player(t_game *game, t_player *player, int size, int color)
+void	draw_player(t_game *game, t_player *player, int size)
 {
 	int		i;
 	int		j;
@@ -52,7 +52,7 @@ void	draw_player(t_game *game, t_player *player, int size, int color)
 			player->rx = center_x + j;
 			player->ry = center_y + i;
 			rotate_point(player, center_x, center_y, player->dir);
-			my_pixel_put((int)player->rx, (int)player->ry, game, color);
+			my_pixel_put((int)player->rx, (int)player->ry, game, game->color_player);
 			j++;
 		}
 		i++;
