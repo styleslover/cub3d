@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
+/*   By: santiago <santiago@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 23:45:26 by mariel            #+#    #+#             */
-/*   Updated: 2025/04/23 20:24:25 by mabrigo          ###   ########.fr       */
+/*   Updated: 2025/04/24 16:56:06 by santiago         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,18 +123,10 @@ void	init_map(t_map_data *map)
 	map->world = NULL;
 }
 
-void	init_player(t_player *player, t_map_data *map,
-	int offset_x, int offset_y)
+static void find_player_position(t_player *player, t_map_data *map)
 {
-	int	i;
-	int	j;
-
-	player->key_up = false;
-	player->key_down = false;
-	player->key_left = false;
-	player->key_right = false;
-	player->rx = 0;
-	player->ry = 0;
+	int i;
+	int j;
 
 	i = 0;
 	while (map->world[i] != NULL)
@@ -147,16 +139,9 @@ void	init_player(t_player *player, t_map_data *map,
 			{
 				player->tile_x = j;
 				player->tile_y = i;
-				player->x = (float)(j * TILE_SIZE + TILE_SIZE / 2) + offset_x;
-				player->y = (float)(i * TILE_SIZE + TILE_SIZE / 2) + offset_y;
-				if (!is_valid_position(map, player->x, player->y))
-				{
-					printf("Error: invalid spawn position at (%d, %d)\n", j, i);
-					exit(1);
-				}
 				get_direction(player, map->world[i][j]);
 				map->world[i][j] = '0';
-				return ;
+				return;
 			}
 			j++;
 		}
@@ -164,27 +149,61 @@ void	init_player(t_player *player, t_map_data *map,
 	}
 }
 
-void	init_game(char *name_win, t_game *game, t_map_data *map)
+static void set_player_position(t_player *player, t_map_data *map, 
+							  int offset_x, int offset_y)
 {
-	game->map = map;
+	player->x = (float)(player->tile_x * TILE_SIZE + TILE_SIZE / 2) + offset_x;
+	player->y = (float)(player->tile_y * TILE_SIZE + TILE_SIZE / 2) + offset_y;
+	if (!is_valid_position(map, player->x, player->y))
+	{
+		printf("Error: invalid spawn position at (%d, %d)\n", 
+			   player->tile_x, player->tile_y);
+		exit(1);
+	}
+}
+
+void init_player(t_player *player, t_map_data *map,
+				int offset_x, int offset_y)
+{
+	player->key_up = false;
+	player->key_down = false;
+	player->key_left = false;
+	player->key_right = false;
+	player->rx = 0;
+	player->ry = 0;
+
+	find_player_position(player, map);
+	set_player_position(player, map, offset_x, offset_y);
+}
+
+static void	init_player_memory(t_game *game)
+{
 	game->player = malloc(sizeof(t_player));
 	if (!game->player)
 	{
 		perror("Errore in malloc player\n");
-		exit (1);
+		exit(1);
 	}
-	// Ottieni la dimensione massima dello schermo
+}
+
+static void	init_screen_and_offsets(t_game *game, t_map_data *map)
+{
 	game->mlx = mlx_init();
 	mlx_get_screen_size(game->mlx, &game->screen_w, &game->screen_h);
 
 	map->offset_x = ((map->map_width * TILE_SIZE)) / 2;
 	map->offset_y = ((map->map_height * TILE_SIZE)) / 2;
-	if (map->offset_x < 0) map->offset_x = 0;
-	if (map->offset_y < 0) map->offset_y = 0;
+	if (map->offset_x < 0)
+		map->offset_x = 0;
+	if (map->offset_y < 0)
+		map->offset_y = 0;
 
 	game->cos_rot_speed = cos(RS);
 	game->sin_rot_speed = sin(RS);
-	
+}
+
+static void	init_raycasting_memory(t_game *game)
+{
 	game->ps = malloc(sizeof(t_raycasting_shit));
 	if (!game->ps)
 	{
@@ -192,33 +211,41 @@ void	init_game(char *name_win, t_game *game, t_map_data *map)
 		exit(1);
 	}
 	init_raycasting_shit(game->ps);
+}
 
-	//load_textures(game);//PER CARICARE LE TEXTURES, DA CAPIRE DOVE VA PER BENE
-	init_textures(game, map);
-	init_player(game->player, map, map->offset_x, map->offset_y);
-
-	// Crea la finestra
-	game->win = mlx_new_window(game->mlx, game->screen_w, game->screen_h, name_win);
+static void	init_window_and_image(t_game *game, char *name_win)
+{
+	game->win = mlx_new_window(game->mlx, game->screen_w,
+			game->screen_h, name_win);
 	if (!game->win)
 	{
 		perror("Errore in mlx_new_window\n");
 		exit(1);
 	}
-
-	// Crea l'immagine
 	game->img = mlx_new_image(game->mlx, game->screen_w, game->screen_h);
 	if (!game->img)
 	{
 		perror("Errore in mlx_new_image\n");
 		exit(1);
 	}
-
-	game->data = mlx_get_data_addr(game->img, &game->bpp, &game->size_line, &game->endian);
+	game->data = mlx_get_data_addr(game->img, &game->bpp,
+			&game->size_line, &game->endian);
 	if (!game->data)
 	{
 		perror("Errore in mlx_get_data_addr\n");
-		exit (1);
+		exit(1);
 	}
 	mlx_put_image_to_window(game->mlx, game->win, game->img, 0, 0);
+}
+
+void	init_game(char *name_win, t_game *game, t_map_data *map)
+{
+	game->map = map;
+	init_player_memory(game);
+	init_screen_and_offsets(game, map);
+	init_raycasting_memory(game);
+	init_textures(game, map);
+	init_player(game->player, map, map->offset_x, map->offset_y);
+	init_window_and_image(game, name_win);
 	printf("Game initialized successfully\n");
 }
