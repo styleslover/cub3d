@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   init_playes.c                                      :+:      :+:    :+:   */
+/*   init_player.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
+/*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 19:23:25 by mabrigo           #+#    #+#             */
-/*   Updated: 2025/04/24 19:26:17 by mabrigo          ###   ########.fr       */
+/*   Updated: 2025/04/24 21:03:20 by damoncad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,4 +72,23 @@ void	init_player(t_player *player, t_map_data *map,
 	player->ry = 0;
 	find_player_position(player, map);
 	set_player_position(player, map, offset_x, offset_y);
+}
+
+void	init_game_pointers(t_game *game)
+{
+	int	i;
+
+	game->mlx = NULL;
+	game->win = NULL;
+	game->img = NULL;
+	game->data = NULL;
+	game->player = NULL;
+	game->ps = NULL;
+	game->map = NULL;
+	i = 0;
+	while (i < 4)
+	{
+		game->textures[i].img = NULL;
+		i++;
+	}
 }

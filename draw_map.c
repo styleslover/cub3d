@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw_map.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
+/*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 19:08:14 by mabrigo           #+#    #+#             */
-/*   Updated: 2025/04/24 19:08:24 by mabrigo          ###   ########.fr       */
+/*   Updated: 2025/04/24 21:06:56 by damoncad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void	draw_map_row(t_game *game, t_map_data *map, int i)
 		{
 			draw_square(j * MINIMAP_SIZE + map->offset_minimap_x,
 				i * MINIMAP_SIZE + map->offset_minimap_y,
-				MINIMAP_SIZE, game, color);
+				MINIMAP_SIZE, game);
 		}
 		j++;
 	}

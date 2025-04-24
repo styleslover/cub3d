@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
+/*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 22:52:55 by mariel            #+#    #+#             */
-/*   Updated: 2025/04/24 19:00:24 by mabrigo          ###   ########.fr       */
+/*   Updated: 2025/04/24 20:48:17 by damoncad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,7 @@ int	skip_spaces_check_sign(char *str, int *i)
 	return (1);
 }
 
-int process_digit_and_spaces(char *str, int *i,
-	int *digit_found, int *in_number)
+int	process_digit_and_spaces(char *str, int *i, int *digit_found, int *in_number)
 {
 	if (ft_isdigit(str[*i]))
 	{
@@ -72,9 +71,9 @@ int process_digit_and_spaces(char *str, int *i,
 
 int	check_single_value(char *str)
 {
-	int	i;
-	int	digit_found;
-	int	in_number;
+	int i;
+	int digit_found;
+	int in_number;
 
 	i = 0;
 	digit_found = 0;
@@ -89,34 +88,33 @@ int	check_single_value(char *str)
 	return (digit_found);
 }
 
-int	rgb_char_to_int(int *rgb_values, char **input)
+int rgb_char_to_int(int *rgb_values, char **input)
 {
-	int		i;
-	char	*trimmed;
+    int i;
+    char *trimmed;
 
-	i = 0;
-	while (i < 3 && input[i])
-	{
-		trimmed = ft_strtrim(input[i], " \t\n\r");
-		if (!trimmed || !check_single_value(trimmed))
-		{
-			printf("Error here\n");
-			if (trimmed)
-				free(trimmed);
-			return (0);
-		}
-		rgb_values[i] = ft_atoi(trimmed);
-		free(trimmed);
-		if (rgb_values[i] < 0 || rgb_values[i] > 255)
-		{
-			print_error("Error: RGB values must be between 0 and 255\n");
-			return (0);
-		}
-		i++;
-	}
-	return (1);
+    i = 0;
+    while (i < 3 && input[i])
+    {
+        trimmed = ft_strtrim(input[i], " \t\n\r");
+        if (!trimmed || !check_single_value(trimmed))
+        {
+            printf("Error here\n");
+            if (trimmed)
+                free(trimmed);
+            return (0);
+        }
+        rgb_values[i] = ft_atoi(trimmed);
+        free(trimmed);
+        if (rgb_values[i] < 0 || rgb_values[i] > 255)
+        {
+            print_error("Error: RGB values must be between 0 and 255\n");
+            return (0);
+        }
+        i++;
+    }
+    return (1);
 }
-
 int	count_check_rgb_values(char **splitted)
 {
 	int	i;
@@ -132,32 +130,32 @@ int	count_check_rgb_values(char **splitted)
 	return (0);
 }
 
-int	*parse_rgb_values(char *str)
+int *parse_rgb_values(char *str)
 {
-	char	**splitted;
-	int		*rgb_values;
+    char **splitted;
+    int *rgb_values;
 
-	splitted = ft_split(str, ',');
-	if (!splitted)
+    splitted = ft_split(str, ',');
+    if (!splitted)
 	{
 		return (0);
 	}
 	if (count_check_rgb_values(splitted))
 		return (0);
-	rgb_values = (int *)malloc(sizeof(int) * 3);
-	if (!rgb_values)
-	{
-		free_matrix(splitted);
-		return (0);
-	}
-	if (!rgb_char_to_int(rgb_values, splitted))
-	{
-		free_matrix(splitted);
-		free(rgb_values);
-		return (0);
-	}
-	free_matrix(splitted);
-	return (rgb_values);
+    rgb_values = (int *)malloc(sizeof(int) * 3);
+    if (!rgb_values)
+    {
+        free_matrix(splitted);
+        return (0);
+    }
+    if (!rgb_char_to_int(rgb_values, splitted))
+    {
+        free_matrix(splitted);
+        free(rgb_values);
+        return (0);
+    }
+    free_matrix(splitted);
+    return (rgb_values);
 }
 
 void	assign_texture(char **txtr, char *value, char *err_msg)
@@ -173,63 +171,65 @@ void	assign_texture(char **txtr, char *value, char *err_msg)
 		*txtr = value;
 }
 
-void	handle_config_error(int fd, t_map_data *map, char *message)
+void handle_config_error(int fd, t_map_data *map, char *message)
 {
-	close(fd);
-	free_map(map);
-	print_error(message);
+    close(fd);
+    free_map(map);
+    print_error(message);
+	//printf("cacchio\n");
 	return ;
+    //exit(1);
 }
 
-int	check_fc_format(char *fc, int fd, t_map_data *map)
+int check_fc_format(char *fc, int fd, t_map_data *map)
 {
-	int	j;
-	int	commas;
-
-	j = 0;
-	commas = 0;
-	while (fc[j])
-	{
-		if (fc[j] == ',')
-			commas++;
-		j++;
-	}
-	if (commas != 2)
-	{
-		close(fd);
-		free(fc);
-		free_map(map);
-		print_error("Invalid rgb\n");
-		return (0);
-	}
-	return (1);
+    int j;
+    int commas;
+    
+    j = 0;
+    commas = 0;
+    while (fc[j])
+    {
+        if (fc[j] == ',')
+            commas++;
+        j++;
+    }
+    if (commas != 2)
+    {
+        close(fd);
+        free(fc);
+        free_map(map);
+        print_error("Invalid rgb\n");
+        return (0);
+    }
+    return (1);
 }
 
-int	**get_target_color(int i, char *str, t_map_data *map)
+int **get_target_color(int i, char *str, t_map_data *map)
 {
-	if (ft_strncmp(str + i, "F ", 2) == 0)
-	{
-		if (map->floor_color)
-		{
-			free(map->floor_color);
-			map->floor_color = NULL;
-			print_error("Error\nDouble floor configuration\n");
-			return (NULL);
-		}
-		return (&map->floor_color);
-	}
-	else if (ft_strncmp(str + i, "C ", 2) == 0)
-	{
-		if (map->ceiling_color)
-		{
-			free(map->ceiling_color);
-			map->ceiling_color = NULL;
-			print_error("Error\nDouble ceiling configuration\n");
-			return (NULL);
-		}
-		return (&map->ceiling_color);
-	}
-	return (NULL);
+    if (ft_strncmp(str + i, "F ", 2) == 0)
+    {
+        if (map->floor_color)
+        {
+            free(map->floor_color);
+            map->floor_color = NULL;
+            print_error("Error\nDouble floor configuration\n");
+            return (NULL);
+        }
+        return (&map->floor_color);
+    }
+    else if (ft_strncmp(str + i, "C ", 2) == 0)
+    {
+        if (map->ceiling_color)
+        {
+            free(map->ceiling_color);
+            map->ceiling_color = NULL;
+            print_error("Error\nDouble ceiling configuration\n");
+            return (NULL);
+        }
+        return (&map->ceiling_color);
+    }
+    return (NULL);
 }
 
 void handle_invalid_color(int fd, t_map_data *map)
@@ -295,7 +295,7 @@ void handle_texture(t_map_data *map, int fd, char *str, int offset)
 	path = strcmp_from_i(offset, str);
     if (!path)
 	{
-		free(path);
+		//free(path);
         handle_config_error(fd, map, "Error: Invalid texture path format\n");
 		return;
     }

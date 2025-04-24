@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
+/*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 12:40:01 by mabrigo           #+#    #+#             */
-/*   Updated: 2025/04/24 19:44:25 by mabrigo          ###   ########.fr       */
+/*   Updated: 2025/04/24 21:09:16 by damoncad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,6 +139,7 @@ typedef struct s_game
 	int					bpp;
 	int					size_line;
 	int					endian;
+	int					color;
 
 	int					screen_w;
 	int					screen_h;
@@ -176,7 +177,7 @@ void	color_map(t_map_data *map, t_game *game, int color, int i);
 void	draw_map(t_game *game, t_map_data *map);
 
 //draw_player.c //DRAW_SQUARE HA TROPPI PARAMETRI
-void	draw_square(int x, int y, int size, t_game *game, int color);
+void	draw_square(int x, int y, int size, t_game *game);
 void	draw_player(t_game *game, t_player *player, int size, int color);
 
 //free_shit.c //OK!
@@ -200,6 +201,7 @@ void	set_player_position(t_player *player, t_map_data *map,
 			int offset_x, int offset_y);
 void	init_player(t_player *player, t_map_data *map,
 			int offset_x, int offset_y);
+void init_game_pointers(t_game *game);
 
 //init_texture.c //OK!
 void	handle_errors(t_game *game, char *path, int fd, const char *msg);
@@ -260,14 +262,17 @@ void	get_line_data(t_line *line, char *str);
 
 //raycasting.c
 int		get_texture_pixel(t_textures *texture, int x, int y);
-void	init_raycasting_shit(t_raycasting_shit *ps);
-void	init_ray(t_raycasting_shit *a, t_game *game, int x);
-void	calc_step_and_side_dist(t_raycasting_shit *a);
 void	perform_dda(t_raycasting_shit *a, t_map_data *map);
-void	calc_wall_data(t_raycasting_shit *a, t_game *game);
 void	set_texture_data(t_raycasting_shit *a, t_game *game);
 void	draw_column(t_raycasting_shit *a, t_game *game, int x);
 void	raycasting(t_game *game);
+
+//raycasting_utils.c
+void	init_raycasting_shit(t_raycasting_shit *ps);
+void	init_ray(t_raycasting_shit *a, t_game *game, int x);
+void	calc_step_and_side_dist(t_raycasting_shit *a);
+void	calc_wall_data(t_raycasting_shit *a, t_game *game);
+
 
 //utils.c
 int		my_strchr(char *s, int c);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_texture.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
+/*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 19:27:23 by mabrigo           #+#    #+#             */
-/*   Updated: 2025/04/24 19:32:03 by mabrigo          ###   ########.fr       */
+/*   Updated: 2025/04/24 21:02:46 by damoncad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,11 @@ void	handle_errors(t_game *game, char *path, int fd, const char *msg)
 		close(fd);
 	if (path)
 		free(path);
+	free_textures(game);
+	if (game->img)
+		mlx_destroy_image(game->mlx, game->img);
+	if (game->win)
+		mlx_destroy_window(game->mlx, game->win);
 	free_map(game->map);
 	mlx_destroy_display(game->mlx);
 	free(game->mlx);
@@ -56,16 +61,8 @@ void	is_texture_empty(t_game *game, int fd, char *clean_path)
 		buffer[0] = '\0';
 	if (bytes_read <= 0)
 	{
-		printf("Error: Texture file '%s' is empty.\n", clean_path);
-		close(fd);
-		free(clean_path);
-		free_textures(game);
-		mlx_destroy_display(game->mlx);
-		free_map(game->map);
-		free(game->mlx);
-		free(game->ps);
-		free(game->player);
-		exit(1);
+		handle_errors(game, clean_path, fd,
+			"Error: Texture file is empty.\n");
 	}
 }
 
