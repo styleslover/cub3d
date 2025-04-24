@@ -6,7 +6,7 @@
 #    By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/12 16:24:59 by mabrigo           #+#    #+#              #
-#    Updated: 2025/04/01 19:33:14 by mabrigo          ###   ########.fr        #
+#    Updated: 2025/04/24 19:55:53 by mabrigo          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,8 +15,7 @@ CC = gcc
 CFLAGS = -Wall -Werror -Wextra
 LIBS = -Lminilibx-linux -lmlx -lXext -lX11 -lm
 GNL = get_next_line/get_next_line.c get_next_line/get_next_line_utils.c
-SRC = $(GNL) cub3d.c draw.c free_shit.c init.c key_events.c parsing.c player.c rotate_that_booty.c map_checks.c raycasting.c utils.c
-
+SRC = $(GNL) cub3d.c draw_map.c draw_player.c draw.c free_shit.c init_player.c init_texture.c init.c key_events.c map_checks_utils.c map_checks.c parsing.c player_moves.c player.c raycasting.c utils.c
 MINI_REPO = https://github.com/42Paris/minilibx-linux.git
 MINI_PATH = minilibx-linux
 MINI_ARCHIVE = $(MINI_PATH)/libmlx.a

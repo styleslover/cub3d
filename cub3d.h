@@ -6,7 +6,7 @@
 /*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 12:40:01 by mabrigo           #+#    #+#             */
-/*   Updated: 2025/04/24 18:38:59 by mabrigo          ###   ########.fr       */
+/*   Updated: 2025/04/24 19:44:25 by mabrigo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,14 +78,14 @@ typedef struct s_raycasting_shit
 
 typedef struct s_textures
 {
-	void    *img;
-    char    *addr;
-    int     width;
-    int     height;
-    int     bpp;
-    int     line_length;
-    int     endian;
-} t_textures;
+	void	*img;
+	char	*addr;
+	int		width;
+	int		height;
+	int		bpp;
+	int		line_length;
+	int		endian;
+} 	t_textures;
 
 typedef struct s_player
 {
@@ -131,23 +131,23 @@ typedef struct s_map_data
 
 typedef struct s_game
 {
-	void		*mlx; // Puntatore alla connessione con la libreria MiniLibX
-	void		*win; // Puntatore alla finestra creata con MiniLibX
-	void		*img; // Puntatore all'immagine (buffer di disegno)
+	void				*mlx;
+	void				*win;
+	void				*img;
 
-	char		*data; // Array di byte che rappresenta i pixel dell'immagine
-	int			bpp; // "Bits Per Pixel" → Numero di bit per ogni pixel
-	int			size_line; // Numero di byte per ogni riga dell'immagine
-	int			endian; // Specifica l'ordine dei byte (Big endian o Little endian)
+	char				*data;
+	int					bpp;
+	int					size_line;
+	int					endian;
 
-	int			screen_w;
-	int			screen_h;
-	float		cos_rot_speed;
-	float		sin_rot_speed;
+	int					screen_w;
+	int					screen_h;
+	float				cos_rot_speed;
+	float				sin_rot_speed;
 
-	t_textures	textures[4];
-	t_player	*player;
-	t_map_data	*map;
+	t_textures			textures[4];
+	t_player			*player;
+	t_map_data			*map;
 	t_raycasting_shit	*ps;
 }			t_game;
 
@@ -158,93 +158,124 @@ typedef struct s_line_data
 }	t_line;
 
 //cub3d.c
-int	print_error(char *str);
-int	check_filename(char *av);
-//draw.c
+int		print_error(char *str);
+int		check_filename(char *av);
+void	free_game_resources(t_game *game);
+
+//draw.c //OK!
 void	my_pixel_put(int x, int y, t_game *game, int color);
-void	draw_square(int x, int y, int size, t_game *game, int color);
-void	draw_player(t_game *game, t_player *player, int size, int color);
-void	color_map(t_map_data *map, t_game *game, int color, int i);
-void	draw_map(t_game *game, t_map_data *map);
 void	paint_floor_ceiling(t_game *game, int floor, int ceiling);
 void	draw_floor_ceiling(t_game *game, t_map_data *map);
 int		draw_loop(t_game *game);
 
+//draw_map //OK!
+int		get_tile_color(char tile);
+void	calculate_minimap_offset(t_game *game, t_map_data *map);
+void	draw_map_row(t_game *game, t_map_data *map, int i);
+void	color_map(t_map_data *map, t_game *game, int color, int i);
+void	draw_map(t_game *game, t_map_data *map);
 
-//free_shit.c
+//draw_player.c //DRAW_SQUARE HA TROPPI PARAMETRI
+void	draw_square(int x, int y, int size, t_game *game, int color);
+void	draw_player(t_game *game, t_player *player, int size, int color);
+
+//free_shit.c //OK!
 void	free_matrix(char **map);
 void	free_map_textures(t_map_data *map);
 void	free_map(t_map_data *map);
 void	free_textures(t_game *game);
 void	free_game_resources_help(t_game *game);
-void	free_game_resources(t_game *game);
-
 
 //init.c
-void	handle_errors(t_game *game, char *path, int fd, const char *msg);
-void	is_texture_empty(t_game *game, int fd, char *clean_path);
-void	validate_texture_file(t_game *game, char *clean_path);
-void	load_texture(t_game *game, t_textures *texture, char *path);
-void 	init_textures(t_game *game, t_map_data *map);
 void	init_map(t_map_data *map);
-void	find_player_position(t_player *player, t_map_data *map);
-void	set_player_position(t_player *player, t_map_data *map,
-		int offset_x, int offset_y);
-void	init_player(t_player *player, t_map_data *map,
-		int offset_x, int offset_y);
-void	init_player_memory(t_game *game);
 void	init_screen_and_offsets(t_game *game, t_map_data *map);
 void	init_raycasting_memory(t_game *game);
 void	init_window_and_image(t_game *game, char *name_win);
 void	init_game(char *name_win, t_game *game, t_map_data *map);
 
-//key_events.c
+//init_player.c //OK!
+void	init_player_memory(t_game *game);
+void	find_player_position(t_player *player, t_map_data *map);
+void	set_player_position(t_player *player, t_map_data *map,
+			int offset_x, int offset_y);
+void	init_player(t_player *player, t_map_data *map,
+			int offset_x, int offset_y);
+
+//init_texture.c //OK!
+void	handle_errors(t_game *game, char *path, int fd, const char *msg);
+void	is_texture_empty(t_game *game, int fd, char *clean_path);
+void	validate_texture_file(t_game *game, char *clean_path);
+void	load_texture(t_game *game, t_textures *texture, char *path);
+void	init_textures(t_game *game, t_map_data *map);
+
+//key_events.c //OK!
 void	key_press_help(int keycode, t_player *player);
 int		key_press(int keycode, t_game *game);
 int		key_release(int keycode, t_game *game);
 int		close_window(void *param);
+
 //parsing.c
 int		is_empty_line(char *str);
 int		skip_spaces_check_sign(char *str, int *i);
-int		process_digit_and_spaces(char *str, int *i, int *digit_found, int *in_number);
+int		process_digit_and_spaces(char *str, int *i,
+			int *digit_found, int *in_number);
 int		check_single_value(char *str);
-int 	rgb_char_to_int(int *rgb_values, char **input);
+int		rgb_char_to_int(int *rgb_values, char **input);
 int		count_check_rgb_values(char **splitted);
 int		*parse_rgb_values(char *str);
 void	assign_texture(char **txtr, char *value, char *err_msg);
-int 	check_fc_format(char *fc, int fd, t_map_data *map);
-int 	**get_target_color(int i, char *str, t_map_data *map);
+int		check_fc_format(char *fc, int fd, t_map_data *map);
+int		**get_target_color(int i, char *str, t_map_data *map);
 void	parse_floor_ceiling(int i, char *str, t_map_data *map, int fd);
 int		is_valid_config_line(char *str);
 void	parse_config_line(char *str, t_map_data *map, int fd);
 int		is_map_line(char *str);
 char	**load_map(char *av, int map_start_line);
 void	parse_file(char **av, int fd, t_map_data *map);
-//player
+
+//player.C //OK!
+void	set_east_west_direction(t_player *player, char c);
+void	set_north_south_direction(t_player *player, char c);
 void	get_direction(t_player *player, char c);
 bool	is_valid_position(t_map_data *map, float x, float y);
 void	move_player(t_player *player, t_game *game);
-//rotate_that_booty
-void    rotate_point(t_player *player, float center_x, float center_y, float angle);
-//map_checks.c
-int		map_empty_lines(char **world);
-int		map_valid_char(char **world, int i, int player);
-void	get_line_data(t_line *line, char *str);
+
+//player_moves.c //OK!
+void	move_forward(t_player *player, t_map_data *map);
+void	move_backward(t_player *player, t_map_data *map);
+void	move_left(t_player *player, t_map_data *map);
+void	move_right(t_player *player, t_map_data *map);
+void	rotate_point(t_player *player, float center_x,
+			float center_y, float angle);
+
+//map_checks.c //OK!
 int		check_cardinals(char **world, int i, int j);
 int		is_map_closed(char **world, t_line *line);
 int		check_map(char **world);
+
+//map_checks_utils.c
+int		map_empty_lines(char **world);
+int		map_valid_char(char **world, int i, int player);
+void	get_line_data(t_line *line, char *str);
+
 //raycasting.c
-int 	get_texture_pixel(t_textures *texture, int x, int y);
-void	raycasting(t_game *game);
+int		get_texture_pixel(t_textures *texture, int x, int y);
 void	init_raycasting_shit(t_raycasting_shit *ps);
+void	init_ray(t_raycasting_shit *a, t_game *game, int x);
+void	calc_step_and_side_dist(t_raycasting_shit *a);
+void	perform_dda(t_raycasting_shit *a, t_map_data *map);
+void	calc_wall_data(t_raycasting_shit *a, t_game *game);
+void	set_texture_data(t_raycasting_shit *a, t_game *game);
+void	draw_column(t_raycasting_shit *a, t_game *game, int x);
+void	raycasting(t_game *game);
+
 //utils.c
 int		my_strchr(char *s, int c);
 char	*trim_end_spaces(char *s);
 char	*strcmp_from_i(int i, char *src);
 int		count_lines(char *av, int fd);
-char 	*trim_newline(char *line);
+char	*trim_newline(char *line);
 int		get_texture_pixel(t_textures *texture, int x, int y);
-//test mappa tonda
-void	draw_square(int x, int y, int size, t_game *game, int color);
+
 
 #endif

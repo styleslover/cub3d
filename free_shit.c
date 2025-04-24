@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_shit.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 13:03:51 by damoncad          #+#    #+#             */
-/*   Updated: 2025/04/23 12:55:57 by damoncad         ###   ########.fr       */
+/*   Updated: 2025/04/24 19:15:28 by mabrigo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,24 +115,4 @@ void	free_game_resources_help(t_game *game)
 		free(game->ps);
 		game->ps = NULL;
 	}
-}
-
-void	free_game_resources(t_game *game)
-{
-	if (!game)
-		return ;
-	printf("Freeing resources...\n");
-	free_textures(game);
-	if (game->img && game->mlx)
-	{
-		mlx_destroy_image(game->mlx, game->img);
-		game->img = NULL;
-	}
-	if (game->win && game->mlx)
-	{
-		mlx_destroy_window(game->mlx, game->win);
-		game->win = NULL;
-	}
-	free_game_resources_help(game);
-	printf("Risorse liberate correttamente.\n");
 }

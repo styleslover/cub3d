@@ -6,13 +6,13 @@
 /*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 23:34:14 by mariel            #+#    #+#             */
-/*   Updated: 2025/04/24 18:46:43 by mabrigo          ###   ########.fr       */
+/*   Updated: 2025/04/24 19:37:31 by mabrigo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-static void	set_east_west_direction(t_player *player, char c)
+void	set_east_west_direction(t_player *player, char c)
 {
 	if (c == 'W')
 	{
@@ -32,7 +32,7 @@ static void	set_east_west_direction(t_player *player, char c)
 	}
 }
 
-static void	set_north_south_direction(t_player *player, char c)
+void	set_north_south_direction(t_player *player, char c)
 {
 	if (c == 'N')
 	{
@@ -80,74 +80,6 @@ bool	is_valid_position(t_map_data *map, float x, float y)
 		return (false);
 	}
 	return (true);
-}
-
-static void	move_forward(t_player *player, t_map_data *map)
-{
-	float	new_x;
-	float	new_y;
-	float	move_speed;
-
-	move_speed = 2.0f;
-	new_x = player->x + player->dir_x * move_speed;
-	new_y = player->y + player->dir_y * move_speed;
-	if (is_valid_position(map, new_x, player->y))
-		player->x = new_x;
-	if (is_valid_position(map, player->x, new_y))
-		player->y = new_y;
-}
-
-static void	move_backward(t_player *player, t_map_data *map)
-{
-	float	new_x;
-	float	new_y;
-	float	move_speed;
-
-	move_speed = 2.0f;
-	new_x = player->x - player->dir_x * move_speed;
-	new_y = player->y - player->dir_y * move_speed;
-	if (is_valid_position(map, new_x, player->y))
-		player->x = new_x;
-	if (is_valid_position(map, player->x, new_y))
-		player->y = new_y;
-}
-
-static void	move_left(t_player *player, t_map_data *map)
-{
-	float	new_x;
-	float	new_y;
-	float	perp_dir_x;
-	float	perp_dir_y;
-	float	move_speed;
-
-	move_speed = 2.0f;
-	perp_dir_x = player->dir_y;
-	perp_dir_y = -player->dir_x;
-	new_x = player->x + perp_dir_x * move_speed;
-	new_y = player->y + perp_dir_y * move_speed;
-	if (is_valid_position(map, new_x, player->y))
-		player->x = new_x;
-	if (is_valid_position(map, player->x, new_y))
-		player->y = new_y;
-}
-
-static void	move_right(t_player *player, t_map_data *map)
-{
-	float	new_x;
-	float	new_y;
-	float	perp_dir_x;
-	float	perp_dir_y;
-	float	move_speed;
-
-	move_speed = 2.0f;
-	perp_dir_x = -player->dir_y;
-	perp_dir_y = player->dir_x;
-	new_x = player->x + perp_dir_x * move_speed;
-	new_y = player->y + perp_dir_y * move_speed;
-	if (is_valid_position(map, new_x, player->y))
-		player->x = new_x;
-	if (is_valid_position(map, player->x, new_y))
-		player->y = new_y;
 }
 
 void	move_player(t_player *player, t_game *game)
