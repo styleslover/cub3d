@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_fc.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
+/*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 23:52:21 by mabrigo           #+#    #+#             */
-/*   Updated: 2025/04/25 00:05:42 by mabrigo          ###   ########.fr       */
+/*   Updated: 2025/04/26 17:40:00 by damoncad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,6 @@ int	**get_target_color(int i, char *str, t_map_data *map)
 		{
 			free(map->floor_color);
 			map->floor_color = NULL;
-			print_error("Error\nDouble floor configuration\n");
 			return (NULL);
 		}
 		return (&map->floor_color);
@@ -55,7 +54,6 @@ int	**get_target_color(int i, char *str, t_map_data *map)
 		{
 			free(map->ceiling_color);
 			map->ceiling_color = NULL;
-			print_error("Error\nDouble ceiling configuration\n");
 			return (NULL);
 		}
 		return (&map->ceiling_color);
@@ -67,6 +65,7 @@ void	handle_invalid_color(int fd, t_map_data *map)
 {
 	close(fd);
 	free_map(map);
+	clear_gnl();
 	print_error("Error: invalid color line\n");
 }
 
@@ -79,8 +78,6 @@ void	parse_floor_ceiling(int i, char *str, t_map_data *map, int fd)
 	target = get_target_color(i, str, map);
 	if (!target || !str[i + 2])
 		return (handle_invalid_color(fd, map));
-	if (*target)
-		handle_config_error(fd, map, "Error: double configuration\n");
 	fc = strcmp_from_i(i + 2, str);
 	if (!fc)
 		handle_config_error(fd, map, "Error: invalid color format\n");

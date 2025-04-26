@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_map.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
+/*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 23:55:14 by mabrigo           #+#    #+#             */
-/*   Updated: 2025/04/25 00:07:37 by mabrigo          ###   ########.fr       */
+/*   Updated: 2025/04/26 17:38:35 by damoncad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,8 @@ void	handle_map_error(char *line, int fd, t_map_data *map)
 	free(line);
 	close(fd);
 	free_map(map);
-	printf("Error\ninvalid map line\n");
+	clear_gnl();
+	printf("Error\nInvalid map line\n");
 	clear_gnl();
 	exit(1);
 }
@@ -48,13 +49,13 @@ void	load_and_check_map(char **av, t_map_data *map, int map_start_line)
 	map->world = load_map(av[1], map_start_line);
 	if (!map->world)
 	{
-		printf("Error: Failed to load map\n");
+		printf("Error\nFailed to load map\n");
 		free_map(map);
 		exit(1);
 	}
 	if (!check_map(map->world))
 	{
-		printf("Error: Invalid map\n");
+		printf("Error\nInvalid map\n");
 		free_map(map);
 		exit(1);
 	}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map_checks.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
+/*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 18:39:22 by mabrigo           #+#    #+#             */
-/*   Updated: 2025/04/24 19:39:51 by mabrigo          ###   ########.fr       */
+/*   Updated: 2025/04/26 15:15:42 by damoncad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ int	check_map(char **world)
 	if (!map_valid_char(world, i, player) || !is_map_closed(world, &line)
 		|| !map_empty_lines(world))
 	{
-		printf("Error: Invalid map\n");
+		printf("Error\nMap not surrounded by walls\n");
 		return (0);
 	}
 	return (1);

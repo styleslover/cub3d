@@ -6,7 +6,7 @@
 /*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 12:52:13 by mabrigo           #+#    #+#             */
-/*   Updated: 2025/04/24 20:54:22 by damoncad         ###   ########.fr       */
+/*   Updated: 2025/04/26 14:59:37 by damoncad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,12 +68,12 @@ int	main(int ac, char **av)
 	t_map_data		map;
 
 	if (ac != 2)
-		return (printf("Error, please check your input"));
+		return (printf("Error\nUsage: ./cub3D <mapfile.cub>\n"));
 	if (!check_filename(av[1]))
-		return (printf("Error: invalid type of fd\n"));
+		return (printf("Error\nFile must have .cub extension\n"));
 	map.fd = open(av[1], O_RDONLY);
 	if (map.fd == -1)
-		return (printf("Error: invalid fd"));
+		return (printf("Error\nCannot open map file\n"));
 	check_fd_not_directory(av[1]);
 	init_game_pointers(&game);
 	parse_file(av, map.fd, &map);

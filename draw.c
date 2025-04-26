@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
+/*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 23:30:39 by mariel            #+#    #+#             */
-/*   Updated: 2025/04/24 21:15:02 by mabrigo          ###   ########.fr       */
+/*   Updated: 2025/04/26 15:05:22 by damoncad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ void	draw_floor_ceiling(t_game *game, t_map_data *map)
 	}
 	else
 	{
-		printf("Warning: Invalid floor color\n");
+		printf("Error\nInvalid floor color\n");
 	}
 	if (map->ceiling_color)
 	{
@@ -66,7 +66,7 @@ void	draw_floor_ceiling(t_game *game, t_map_data *map)
 	}
 	else
 	{
-		printf("Warning: Invalid ceiling color.\n");
+		printf("Error\nInvalid ceiling color.\n");
 		return ;
 	}
 	paint_floor_ceiling(game, floor_color, ceiling_color);
@@ -81,7 +81,7 @@ int	draw_loop(t_game *game)
 	game->data = mlx_get_data_addr(game->img, &game->bpp, &game->size_line,
 			&game->endian);
 	if (!game->map)
-		print_error("Errore caricamento mappa");
+		print_error("Error\nErrore caricamento mappa\n");
 	draw_floor_ceiling(game, game->map);
 	raycasting(game);
 	draw_map(game, game->map);

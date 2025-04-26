@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
+/*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 23:58:46 by mabrigo           #+#    #+#             */
-/*   Updated: 2025/04/25 00:04:39 by mabrigo          ###   ########.fr       */
+/*   Updated: 2025/04/26 17:35:37 by damoncad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void	check_empty_file(int current_line, t_map_data *map)
 {
 	if (!current_line)
 	{
-		printf("Error: empty file\n");
+		printf("Error\nEmpty file\n");
 		free_map(map);
 		exit(1);
 	}
@@ -56,8 +56,10 @@ void	handle_config_error(int fd, t_map_data *map, char *message)
 {
 	close(fd);
 	free_map(map);
+	clear_gnl();
 	print_error(message);
-	return ;
+	//return ;
+	exit (1);
 }
 
 void	handle_config_line(char *line, t_map_data *map,
@@ -65,8 +67,9 @@ void	handle_config_line(char *line, t_map_data *map,
 {
 	if (is_map_line(line))
 	{
-		close(fd);
-		printf("Error\nInvalid configuration line\n");
+		free(line);
+		handle_config_error(fd, map,
+			"Error\nInvalid configuration line\n");
 	}
 	else
 	{

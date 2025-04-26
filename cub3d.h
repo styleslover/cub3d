@@ -6,7 +6,7 @@
 /*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 12:40:01 by mabrigo           #+#    #+#             */
-/*   Updated: 2025/04/26 14:40:12 by damoncad         ###   ########.fr       */
+/*   Updated: 2025/04/26 15:13:31 by damoncad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -241,7 +241,7 @@ int		find_xpm_header(int fd, int *values);
 
 
 //parsing_texture.c
-void	assign_texture(char **txtr, char *value, char *err_msg);
+void	assign_texture(char **txtr, char *value);
 int		validate_xpm_header(char *texture_path);
 int		is_valid_texture_path(char *path);
 void	handle_texture_error(t_map_data *map, char *str, int fd);
