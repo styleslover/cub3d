@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_texture.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
+/*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 23:48:54 by mabrigo           #+#    #+#             */
-/*   Updated: 2025/04/24 23:50:06 by mabrigo          ###   ########.fr       */
+/*   Updated: 2025/04/26 14:46:48 by damoncad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,23 @@ void	assign_texture(char **txtr, char *value, char *err_msg)
 		*txtr = value;
 }
 
+int	validate_xpm_header(char *texture_path)
+{
+    int		fd;
+    int		values[4];
+    int		valid;
+    char	*line;
+
+    fd = open(texture_path, O_RDONLY);
+    if (fd < 0)
+        return (0);
+    valid = find_xpm_header(fd, values);
+    while ((line = get_next_line(fd)))
+        free(line);
+    close(fd);
+    return (valid);
+}
+
 int	is_valid_texture_path(char *path)
 {
 	int		fd;
@@ -33,6 +50,15 @@ int	is_valid_texture_path(char *path)
 	if (fd == -1)
 		return (0);
 	close(fd);
+
+	if (ft_strnstr(path, ".xpm", ft_strlen(path)))
+	{
+		if (!validate_xpm_header(path))
+		{
+			printf("Error\nInvalid XPM format in %s\n", path);
+			return (0);
+		}
+	}
 	return (1);
 }
 

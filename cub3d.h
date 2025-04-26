@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
+/*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 12:40:01 by mabrigo           #+#    #+#             */
-/*   Updated: 2025/04/25 00:07:58 by mabrigo          ###   ########.fr       */
+/*   Updated: 2025/04/26 14:40:12 by damoncad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -232,8 +232,17 @@ void	parse_file(char **av, int fd, t_map_data *map);
 void	handle_config_line(char *line, t_map_data *map,
 			int fd, int *config_done);
 
+//parsing_valid_path.c
+char	*ft_strstr(const char *haystack, const char *needle);
+void	free_split(char **split);
+int		check_xpm_values(int *values, char **split);
+int		process_xpm_dimension_line(char *line, int *values);
+int		find_xpm_header(int fd, int *values);
+
+
 //parsing_texture.c
 void	assign_texture(char **txtr, char *value, char *err_msg);
+int		validate_xpm_header(char *texture_path);
 int		is_valid_texture_path(char *path);
 void	handle_texture_error(t_map_data *map, char *str, int fd);
 void	handle_texture(t_map_data *map, int fd, char *str, int offset);
