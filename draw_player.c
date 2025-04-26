@@ -6,7 +6,7 @@
 /*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 19:09:32 by mabrigo           #+#    #+#             */
-/*   Updated: 2025/04/24 21:17:18 by mabrigo          ###   ########.fr       */
+/*   Updated: 2025/04/26 14:19:51 by mabrigo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,15 @@ void	draw_square(int x, int y, int size, t_game *game)
 	}
 }
 
+void	set_center_player(t_player *player, t_game *game,
+	int *center_x, int *center_y)
+{
+	*center_x = (player->x - game->map->offset_x)
+		* MINIMAP_SIZE / TILE_SIZE + game->map->offset_minimap_x;
+	*center_y = (player->y - game->map->offset_y)
+		* MINIMAP_SIZE / TILE_SIZE + game->map->offset_minimap_y;
+}
+
 void	draw_player(t_game *game, t_player *player, int size)
 {
 	int		i;
@@ -38,10 +47,9 @@ void	draw_player(t_game *game, t_player *player, int size)
 	int		center_x;
 	int		center_y;
 
-	center_x = (player->x - game->map->offset_x)
-		* MINIMAP_SIZE / TILE_SIZE + game->map->offset_minimap_x;
-	center_y = (player->y - game->map->offset_y)
-		* MINIMAP_SIZE / TILE_SIZE + game->map->offset_minimap_y;
+	center_x = 0;
+	center_y = 0;
+	set_center_player(player, game, &center_x, &center_y);
 	half_size = size / 2.0f;
 	i = -half_size;
 	while (i <= half_size)
@@ -52,7 +60,8 @@ void	draw_player(t_game *game, t_player *player, int size)
 			player->rx = center_x + j;
 			player->ry = center_y + i;
 			rotate_point(player, center_x, center_y, player->dir);
-			my_pixel_put((int)player->rx, (int)player->ry, game, game->color_player);
+			my_pixel_put((int)player->rx, (int)player->ry,
+				game, game->color_player);
 			j++;
 		}
 		i++;
