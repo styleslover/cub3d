@@ -6,7 +6,7 @@
 #    By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/12 16:24:59 by mabrigo           #+#    #+#              #
-#    Updated: 2025/04/27 20:49:02 by mabrigo          ###   ########.fr        #
+#    Updated: 2025/04/27 21:10:01 by mabrigo          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,6 +23,8 @@ MINI_ARCHIVE = $(MINI_PATH)/libmlx.a
 LIBFT_PATH = libft
 LIBFT_ARCHIVE = $(LIBFT_PATH)/libft.a
 
+all: $(NAME)
+
 $(NAME): $(SRC) $(LIBFT_ARCHIVE) $(MINI_ARCHIVE)
 	$(CC) $(CFLAGS) -o $(NAME) $(SRC) $(LIBFT_ARCHIVE) $(MINI_ARCHIVE) $(LIBS)
 
@@ -35,20 +37,6 @@ $(MINI_PATH):
 $(LIBFT_ARCHIVE):
 	$(MAKE) -C $(LIBFT_PATH)
 
-all: $(NAME)
-$(NAME): $(SRC) $(LIBFT_ARCHIVE) $(MINI_ARCHIVE)
-	$(CC) $(CFLAGS) -o $(NAME) $(SRC) $(LIBFT_ARCHIVE) $(MINI_ARCHIVE) $(LIBS)
-
-$(MINI_ARCHIVE):
-	$(MAKE) -C $(MINI_PATH)
-
-$(MINI_PATH):
-	git clone $(MINI_REPO)
-
-$(LIBFT_ARCHIVE):
-	$(MAKE) -C $(LIBFT_PATH)
-
-
 clean:
 	$(MAKE) -C $(LIBFT_PATH) clean
 	rm -rf $(MINI_PATH)
@@ -57,6 +45,6 @@ fclean: clean
 	rm -f $(NAME)
 	$(MAKE) -C $(LIBFT_PATH) fclean
 
-re: fclean $(NAME)
+re: fclean all
 
 .PHONY: all clean fclean re
