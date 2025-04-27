@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_starter_map.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
+/*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 00:06:53 by mabrigo           #+#    #+#             */
-/*   Updated: 2025/04/25 00:07:31 by mabrigo          ###   ########.fr       */
+/*   Updated: 2025/04/26 19:06:43 by damoncad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,27 +35,27 @@ int	is_map_line(char *str)
 	return (0);
 }
 
-char	**set_map(int map_start_line, char *av, int *fd)
+char	**set_map(int map_start_line, char *av, int *fd, t_map_data *map_data)
 {
 	int		lines;
-	char	**map;
+	char	**map_arr;
 
 	*fd = open(av, O_RDONLY);
 	if (*fd < 0)
-		return (NULL);
+		handle_map_error(NULL, *fd, map_data, "Error\nFailed to open file\n");
 	lines = count_lines(av, *fd);
 	if (lines <= 0)
 	{
 		close(*fd);
-		return (NULL);
+		handle_map_error(NULL, *fd, map_data, "Error\nEmpty map file\n");
 	}
-	map = malloc((lines - map_start_line + 1) * sizeof(char *));
-	if (!map)
+	map_arr = malloc((lines - map_start_line + 1) * sizeof(char *));
+	if (!map_arr)
 	{
 		close(*fd);
-		return (NULL);
+		handle_map_error(NULL, *fd, map_data, "Error\nMemory allocation failed\n");
 	}
-	return (map);
+	return (map_arr);
 }
 
 void	skip_to_map_start(int fd, int map_start_line)
@@ -97,21 +97,19 @@ int	get_map(char **map, int fd, int map_start_line)
 	return (i);
 }
 
-char	**load_map(char *av, int map_start_line)
+char	**load_map(char *av, int map_start_line, t_map_data *map_data)
 {
 	int		fd;
-	char	**map;
+	char	**map_arr;
 
-	map = set_map(map_start_line, av, &fd);
-	if (!map)
-		return (NULL);
-	if (get_map(map, fd, map_start_line) == 0)
+	map_arr = set_map(map_start_line, av, &fd, map_data);
+	if (get_map(map_arr, fd, map_start_line) == 0)
 	{
-		free(map);
+		free(map_arr);
 		close(fd);
-		return (NULL);
+		handle_map_error(NULL, fd, map_data, "Error\nNo map found\n");
 	}
 	close(fd);
-	return (map);
+	return (map_arr);
 }
 

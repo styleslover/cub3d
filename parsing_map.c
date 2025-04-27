@@ -6,7 +6,7 @@
 /*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 23:55:14 by mabrigo           #+#    #+#             */
-/*   Updated: 2025/04/26 17:38:35 by damoncad         ###   ########.fr       */
+/*   Updated: 2025/04/26 20:11:03 by damoncad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,14 +23,15 @@ int	handle_map_line(char *line, int current_line, int *map_start_line)
 	return (0);
 }
 
-void	handle_map_error(char *line, int fd, t_map_data *map)
+void	handle_map_error(char *line, int fd, t_map_data *map, char *message)
 {
-	free(line);
-	close(fd);
+	if (line)
+		free(line);
+	if (fd != -1)
+		close(fd);
 	free_map(map);
 	clear_gnl();
-	printf("Error\nInvalid map line\n");
-	clear_gnl();
+	print_error(message);
 	exit(1);
 }
 
@@ -46,18 +47,8 @@ void	calculate_map_dimensions(t_map_data *map)
 
 void	load_and_check_map(char **av, t_map_data *map, int map_start_line)
 {
-	map->world = load_map(av[1], map_start_line);
-	if (!map->world)
-	{
-		printf("Error\nFailed to load map\n");
-		free_map(map);
-		exit(1);
-	}
-	if (!check_map(map->world))
-	{
-		printf("Error\nInvalid map\n");
-		free_map(map);
-		exit(1);
-	}
+	map->world = load_map(av[1], map_start_line, map);
+	if (!check_map(map->world, map))
+		handle_map_error(NULL, -1, map, "Error\nInvalid map\n");
 	calculate_map_dimensions(map);
 }

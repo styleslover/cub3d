@@ -6,7 +6,7 @@
 /*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 23:58:46 by mabrigo           #+#    #+#             */
-/*   Updated: 2025/04/26 17:35:37 by damoncad         ###   ########.fr       */
+/*   Updated: 2025/04/27 16:41:08 by damoncad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,8 @@ void	check_empty_file(int current_line, t_map_data *map)
 {
 	if (!current_line)
 	{
-		printf("Error\nEmpty file\n");
 		free_map(map);
+		print_error("Error\nEmpty file\n");
 		exit(1);
 	}
 }
@@ -58,7 +58,6 @@ void	handle_config_error(int fd, t_map_data *map, char *message)
 	free_map(map);
 	clear_gnl();
 	print_error(message);
-	//return ;
 	exit (1);
 }
 
@@ -80,20 +79,16 @@ void	handle_config_line(char *line, t_map_data *map,
 	}
 }
 
-int	skip_spaces_check_sign(char *str, int *i)
+int	skip_spaces_check_sign(char *str, int *i, int fd, t_map_data *map)
 {
-	while (str[*i] == 32 || (str[*i] >= 9 && str[*i] <= 13))
-		(*i)++;
-	if (str[*i] == '+')
-	{
-		if (!ft_isdigit(str[*i + 1]))
-			return (0);
-		(*i)++;
-	}
-	if (str[*i] == '-')
-	{
-		printf("Negative value\n");
-		return (0);
-	}
-	return (1);
+	while (str[*i] == ' ' || (str[*i] >= '\t' && str[*i] <= '\r'))
+    	(*i)++;
+    if (str[*i] == '+' || str[*i] == '-')
+    {
+        if (!ft_isdigit(str[*i + 1]))
+            handle_config_error(fd, map,
+                "Error\nInvalid sign in configuration\n");
+        (*i)++;
+    }
+    return (1);
 }

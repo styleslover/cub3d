@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parsinf_fc_rgb.c                                   :+:      :+:    :+:   */
+/*   parsing_fc_rgb.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
+/*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 00:05:02 by mabrigo           #+#    #+#             */
-/*   Updated: 2025/04/25 00:05:46 by mabrigo          ###   ########.fr       */
+/*   Updated: 2025/04/27 16:31:23 by damoncad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,13 +33,12 @@ int	process_digit_and_spaces(char *str, int *i,
 		(*i)++;
 	else
 	{
-		printf("Error: invalid character in RGB value\n");
 		return (0);
 	}
 	return (1);
 }
 
-int	check_single_value(char *str)
+int	check_single_value(char *str, int fd, t_map_data *map)
 {
 	int	i;
 	int	digit_found;
@@ -48,17 +47,15 @@ int	check_single_value(char *str)
 	i = 0;
 	digit_found = 0;
 	in_number = 0;
-	if (!skip_spaces_check_sign(str, &i))
+	if (!skip_spaces_check_sign(str, &i, fd, map))
 		return (0);
 	while (str[i])
-	{
 		if (!process_digit_and_spaces(str, &i, &digit_found, &in_number))
 			return (0);
-	}
 	return (digit_found);
 }
 
-int	rgb_char_to_int(int *rgb_values, char **input)
+int	rgb_char_to_int(int *rgb_values, char **input, int fd, t_map_data *map)
 {
 	int		i;
 	char	*trimmed;
@@ -67,21 +64,13 @@ int	rgb_char_to_int(int *rgb_values, char **input)
 	while (i < 3 && input[i])
 	{
 		trimmed = ft_strtrim(input[i], " \t\n\r");
-		if (!trimmed || !check_single_value(trimmed))
+		if (!trimmed || !check_single_value(trimmed, fd, map))
 		{
-			printf("Error here\n");
-			if (trimmed)
-				free(trimmed);
+			free(trimmed);
 			return (0);
 		}
-		rgb_values[i] = ft_atoi(trimmed);
+		rgb_values[i++] = ft_atoi(trimmed);
 		free(trimmed);
-		if (rgb_values[i] < 0 || rgb_values[i] > 255)
-		{
-			print_error("Error: RGB values must be between 0 and 255\n");
-			return (0);
-		}
-		i++;
 	}
 	return (1);
 }
@@ -93,37 +82,33 @@ int	count_check_rgb_values(char **splitted)
 	i = 0;
 	while (splitted[i])
 		i++;
-	if (i != 3)
-	{
-		free_matrix(splitted);
-		return (1);
-	}
-	return (0);
+	return (i == 3);
 }
 
-int	*parse_rgb_values(char *str)
+int	*parse_rgb_values(char *str, int fd, t_map_data *map)
 {
 	char	**splitted;
 	int		*rgb_values;
 
 	splitted = ft_split(str, ',');
 	if (!splitted)
+		return (NULL);
+	if (!count_check_rgb_values(splitted))
 	{
-		return (0);
+		free_matrix(splitted);
+		return (NULL);
 	}
-	if (count_check_rgb_values(splitted))
-		return (0);
 	rgb_values = (int *)malloc(sizeof(int) * 3);
 	if (!rgb_values)
 	{
 		free_matrix(splitted);
-		return (0);
+		return (NULL);
 	}
-	if (!rgb_char_to_int(rgb_values, splitted))
+	if (!rgb_char_to_int(rgb_values, splitted, fd, map))
 	{
-		free_matrix(splitted);
 		free(rgb_values);
-		return (0);
+		free_matrix(splitted);
+		return (NULL);
 	}
 	free_matrix(splitted);
 	return (rgb_values);

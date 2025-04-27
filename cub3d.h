@@ -6,7 +6,7 @@
 /*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 12:40:01 by mabrigo           #+#    #+#             */
-/*   Updated: 2025/04/26 15:13:31 by damoncad         ###   ########.fr       */
+/*   Updated: 2025/04/27 15:31:55 by damoncad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -204,6 +204,7 @@ void	init_game(char *name_win, t_game *game, t_map_data *map);
 
 //init_player.c //OK!
 void	init_player_memory(t_game *game);
+void	handle_player_error(t_player *player, t_map_data *map, char *message);
 void	find_player_position(t_player *player, t_map_data *map);
 void	set_player_position(t_player *player, t_map_data *map,
 			int offset_x, int offset_y);
@@ -248,31 +249,31 @@ void	handle_texture_error(t_map_data *map, char *str, int fd);
 void	handle_texture(t_map_data *map, int fd, char *str, int offset);
 
 //parsing_fc.c
-int		check_fc_format(char *fc, int fd, t_map_data *map);
+int		check_fc_format(char *fc, char *line, int fd, t_map_data *map);
 int		**get_target_color(int i, char *str, t_map_data *map);
-void	handle_invalid_color(int fd, t_map_data *map);
+void	handle_invalid_color(int fd, t_map_data *map, char *message);
 void	parse_floor_ceiling(int i, char *str, t_map_data *map, int fd);
 
 //parsing_fc_rgb.c
 int		process_digit_and_spaces(char *str, int *i,
 			int *digit_found, int *in_number);
-int		check_single_value(char *str);
-int		rgb_char_to_int(int *rgb_values, char **input);
+int		check_single_value(char *str, int fd, t_map_data *map);
+int		rgb_char_to_int(int *rgb_values, char **input, int fd, t_map_data *map);
 int		count_check_rgb_values(char **splitted);
-int		*parse_rgb_values(char *str);
+int		*parse_rgb_values(char *str, int fd, t_map_data *map);
 
 //parsing_map.c
 int		handle_map_line(char *line, int current_line, int *map_start_line);
-void	handle_map_error(char *line, int fd, t_map_data *map);
+void	handle_map_error(char *line, int fd, t_map_data *map, char *message);
 void	calculate_map_dimensions(t_map_data *map);
 void	load_and_check_map(char **av, t_map_data *map, int map_start_line);
 
 //parsing_starter_map.c
 int		is_map_line(char *str);
-char	**set_map(int map_start_line, char *av, int *fd);
+char	**set_map(int map_start_line, char *av, int *fd, t_map_data *map);
 void	skip_to_map_start(int fd, int map_start_line);
 int		get_map(char **map, int fd, int map_start_line);
-char	**load_map(char *av, int map_start_line);
+char	**load_map(char *av, int map_start_line, t_map_data *map);
 
 
 //parsing_utils.c
@@ -280,7 +281,7 @@ int		is_empty_line(char *str);
 int		is_valid_config_line(char *str);
 void	check_empty_file(int current_line, t_map_data *map);
 void	handle_config_error(int fd, t_map_data *map, char *message);
-int		skip_spaces_check_sign(char *str, int *i);
+int		skip_spaces_check_sign(char *str, int *i, int fd, t_map_data *map);
 
 //player.C //OK!
 void	set_east_west_direction(t_player *player, char c);
@@ -300,11 +301,11 @@ void	rotate_point(t_player *player, float center_x,
 //map_checks.c //OK!
 int		check_cardinals(char **world, int i, int j);
 int		is_map_closed(char **world, t_line *line);
-int		check_map(char **world);
+int		check_map(char **world, t_map_data *map);
 
 //map_checks_utils.c
 int		map_empty_lines(char **world);
-int		map_valid_char(char **world, int i, int player);
+int		map_valid_char(char **world, t_map_data *map);
 void	get_line_data(t_line *line, char *str);
 
 //raycasting.c

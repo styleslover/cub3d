@@ -6,7 +6,7 @@
 /*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 23:30:39 by mariel            #+#    #+#             */
-/*   Updated: 2025/04/26 15:05:22 by damoncad         ###   ########.fr       */
+/*   Updated: 2025/04/26 20:50:58 by damoncad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,14 @@ void	paint_floor_ceiling(t_game *game, int floor, int ceiling)
 	}
 }
 
+void	handle_draw_error(t_game *game, char *message)
+{
+	free_game_resources(game);
+	clear_gnl();
+	print_error(message);
+	exit(1);
+}
+
 void	draw_floor_ceiling(t_game *game, t_map_data *map)
 {
 	int	floor_color;
@@ -57,7 +65,7 @@ void	draw_floor_ceiling(t_game *game, t_map_data *map)
 	}
 	else
 	{
-		printf("Error\nInvalid floor color\n");
+		handle_draw_error(game, "Error\nInvalid floor color.\n");
 	}
 	if (map->ceiling_color)
 	{
@@ -66,8 +74,7 @@ void	draw_floor_ceiling(t_game *game, t_map_data *map)
 	}
 	else
 	{
-		printf("Error\nInvalid ceiling color.\n");
-		return ;
+		handle_draw_error(game, "Error\nInvalid ceiling color.\n");
 	}
 	paint_floor_ceiling(game, floor_color, ceiling_color);
 }

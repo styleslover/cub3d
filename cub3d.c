@@ -6,7 +6,7 @@
 /*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 12:52:13 by mabrigo           #+#    #+#             */
-/*   Updated: 2025/04/26 14:59:37 by damoncad         ###   ########.fr       */
+/*   Updated: 2025/04/26 20:42:10 by damoncad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,12 +68,21 @@ int	main(int ac, char **av)
 	t_map_data		map;
 
 	if (ac != 2)
-		return (printf("Error\nUsage: ./cub3D <mapfile.cub>\n"));
+	{
+		print_error("Error\nUsage: ./cub3D <map.cub>\n");
+		exit (1);		
+	}
 	if (!check_filename(av[1]))
-		return (printf("Error\nFile must have .cub extension\n"));
+	{
+		print_error("Error\nFile must have .cub extension\n");
+		exit (1);
+	}
 	map.fd = open(av[1], O_RDONLY);
-	if (map.fd == -1)
-		return (printf("Error\nCannot open map file\n"));
+	if (map.fd < 0)
+	{
+		print_error("Error\nCannot open map file\n");
+		exit (1);
+	}
 	check_fd_not_directory(av[1]);
 	init_game_pointers(&game);
 	parse_file(av, map.fd, &map);
@@ -86,5 +95,6 @@ int	main(int ac, char **av)
 	mlx_hook(game.win, 17, 0, close_window, &game);
 	mlx_loop(game.mlx);
 	free_game_resources(&game);
+	clear_gnl();
 	return (0);
 }

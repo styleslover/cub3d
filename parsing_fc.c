@@ -6,17 +6,20 @@
 /*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 23:52:21 by mabrigo           #+#    #+#             */
-/*   Updated: 2025/04/26 17:40:00 by damoncad         ###   ########.fr       */
+/*   Updated: 2025/04/27 16:36:50 by damoncad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-int	check_fc_format(char *fc, int fd, t_map_data *map)
+int	check_fc_format(char *fc,char *line, int fd, t_map_data *map)
 {
 	int	j;
 	int	commas;
-
+	(void)fd;
+	(void)map;
+	(void)line;
+	
 	j = 0;
 	commas = 0;
 	while (fc[j])
@@ -27,10 +30,6 @@ int	check_fc_format(char *fc, int fd, t_map_data *map)
 	}
 	if (commas != 2)
 	{
-		close(fd);
-		free(fc);
-		free_map(map);
-		print_error("Invalid rgb\n");
 		return (0);
 	}
 	return (1);
@@ -61,31 +60,57 @@ int	**get_target_color(int i, char *str, t_map_data *map)
 	return (NULL);
 }
 
-void	handle_invalid_color(int fd, t_map_data *map)
+void	handle_invalid_color(int fd, t_map_data *map, char *message)
 {
-	close(fd);
+	if (fd >= 0)
+		close(fd);
 	free_map(map);
 	clear_gnl();
-	print_error("Error: invalid color line\n");
+	print_error(message);
+	exit(1);
 }
 
 void	parse_floor_ceiling(int i, char *str, t_map_data *map, int fd)
 {
-	char	*fc;
-	int		**target;
+    char	*fc;
+    int	**target;
+    int	 *values;
 
-	fc = 0;
-	target = get_target_color(i, str, map);
-	if (!target || !str[i + 2])
-		return (handle_invalid_color(fd, map));
-	fc = strcmp_from_i(i + 2, str);
-	if (!fc)
-		handle_config_error(fd, map, "Error: invalid color format\n");
-	if (!check_fc_format(fc, fd, map))
-		return ;
-	*target = parse_rgb_values(fc);
-	free(fc);
-	if (!*target)
-		handle_invalid_color(fd, map);
+    target = get_target_color(i, str, map);
+    if (!target || !str[i + 2])
+    {
+        free(str);
+        handle_invalid_color(fd, map, "Error\nInvalid color line\n");
+    }
+    fc = strcmp_from_i(i + 2, str);
+    if (!fc)
+    {
+        free(str);
+        handle_invalid_color(fd, map, "Error\nInvalid color line\n");
+    }
+    if (!check_fc_format(fc, str, fd, map))
+	{
+		free(fc);
+		free(str);
+		handle_invalid_color(fd, map, "Error\nInvalid RGB format\n");
+	}
+    values = parse_rgb_values(fc, fd, map);
+	if (!values)
+	{
+		free(fc);
+		free(str);
+		handle_invalid_color(fd, map, "Error\nInvalid Rgb value\n");
+	}
+    if (values[0] < 0 || values[0] > 255
+     || values[1] < 0 || values[1] > 255
+     || values[2] < 0 || values[2] > 255)
+    {
+        free(values);
+        free(fc);
+        free(str);
+        handle_invalid_color(fd, map, "Error\nRGB value out of range\n");
+    }
+    *target = values;
+    free(fc);
 }
 

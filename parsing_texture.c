@@ -6,7 +6,7 @@
 /*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 23:48:54 by mabrigo           #+#    #+#             */
-/*   Updated: 2025/04/26 17:37:03 by damoncad         ###   ########.fr       */
+/*   Updated: 2025/04/27 16:57:50 by damoncad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,54 +50,79 @@ int	is_valid_texture_path(char *path)
 		return (0);
 	close(fd);
 
-	if (ft_strnstr(path, ".xpm", ft_strlen(path)))
-	{
-		if (!validate_xpm_header(path))
-			return (0);
-	}
+    if (!validate_xpm_header(path))
+    {
+        return (0);
+    }
 	return (1);
 }
 
-
-void	test_texture_error_handler(t_map_data *map, char *line, int fd)
+void	handle_texture_error(t_map_data *map, char *line, int fd)
 {
 	free(line);
 	handle_config_error(fd, map,
 		"Error\nInvalid texture path\n");
 }
 
-void	handle_texture_error(t_map_data *map, char *str, int fd)
+static void	check_texture_duplicate(t_map_data *map, char *str, int fd)
 {
-	if ((!ft_strncmp(str, "NO ", 3) && !map->north_txtr)
-		|| (!ft_strncmp(str, "SO ", 3) && !map->south_txtr)
-		|| (!ft_strncmp(str, "WE ", 3) && !map->west_txtr)
-		|| (!ft_strncmp(str, "EA ", 3) && !map->east_txtr))
-		test_texture_error_handler(map, str, fd);
+    if ((ft_strncmp(str, "NO ", 3) == 0 && map->north_txtr)
+     || (ft_strncmp(str, "SO ", 3) == 0 && map->south_txtr)
+     || (ft_strncmp(str, "WE ", 3) == 0 && map->west_txtr)
+     || (ft_strncmp(str, "EA ", 3) == 0 && map->east_txtr))
+        handle_texture_error(map, str, fd);
+}
+
+static char	*extract_raw_path(char *str, int offset, int fd, t_map_data *map)
+{
+    char *raw;
+
+    raw = strcmp_from_i(offset, str);
+    if (!raw)
+        handle_config_error(fd, map, "Error\nMissing texture path\n");
+    return (raw);
+}
+
+static char	*trim_texture_path(char *raw, char *str, int fd, t_map_data *map)
+{
+    char *path;
+
+    path = ft_strtrim(raw, " \t\r\n");
+    free(raw);
+    if (!path)
+    {
+        free(str);
+        handle_config_error(fd, map, "Error\nMemory allocation failed\n");
+    }
+    return (path);
+}
+
+static void	validate_and_assign_texture(t_map_data *map,
+                        int fd, char *str, char *path)
+{
+    if (!is_valid_texture_path(path))
+    {
+        free(path);
+        free(str);
+        handle_config_error(fd, map, "Error\nInvalid texture file\n");
+    }
+    if (!ft_strncmp(str, "NO ", 3))
+        assign_texture(&map->north_txtr, path);
+    else if (!ft_strncmp(str, "SO ", 3))
+        assign_texture(&map->south_txtr, path);
+    else if (!ft_strncmp(str, "WE ", 3))
+        assign_texture(&map->west_txtr, path);
+    else
+        assign_texture(&map->east_txtr, path);
 }
 
 void	handle_texture(t_map_data *map, int fd, char *str, int offset)
 {
-	char	*path;
-	
-	handle_texture_error(map, str, fd);
-	path = strcmp_from_i(offset, str);
-	if (!path)
-	{
-		handle_config_error(fd, map, "Error\nMissing texture path\n");
-		return ;
-	}
-	if (!is_valid_texture_path(path))
-	{
-		free(path);
-		handle_config_error(fd, map, "Error\nInvalid texture file\n");
-		return ;
-	}
-	if (!ft_strncmp(str, "NO ", 3))
-	assign_texture(&map->north_txtr, path);
-	else if (!ft_strncmp(str, "SO ", 3))
-	assign_texture(&map->south_txtr, path);
-	else if (!ft_strncmp(str, "WE ", 3))
-	assign_texture(&map->west_txtr, path);
-	else if (!ft_strncmp(str, "EA ", 3))
-		assign_texture(&map->east_txtr, path);
+    char	*raw;
+    char	*path;
+
+    check_texture_duplicate(map, str, fd);
+    raw = extract_raw_path(str, offset, fd, map);
+    path = trim_texture_path(raw, str, fd, map);
+    validate_and_assign_texture(map, fd, str, path);
 }

@@ -6,7 +6,7 @@
 /*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 19:23:25 by mabrigo           #+#    #+#             */
-/*   Updated: 2025/04/26 15:21:50 by damoncad         ###   ########.fr       */
+/*   Updated: 2025/04/26 19:59:23 by damoncad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,16 @@ void	init_player_memory(t_game *game)
 		printf("Error\nError initializing player\n");
 		exit(1);
 	}
+}
+
+void	handle_player_error(t_player *player, t_map_data *map, char *message)
+{
+	if (player)
+		free(player);
+	free_map(map);
+	clear_gnl();
+	print_error(message);
+	exit(1);
 }
 
 void	find_player_position(t_player *player, t_map_data *map)
@@ -46,7 +56,8 @@ void	find_player_position(t_player *player, t_map_data *map)
 		}
 		i++;
 	}
-	printf("Error\nMissing player start position\n");
+	handle_player_error(player, map,
+		"Error\nPlayer not found in the map\n");
 }
 
 void	set_player_position(t_player *player, t_map_data *map,
@@ -56,9 +67,7 @@ void	set_player_position(t_player *player, t_map_data *map,
 	player->y = (float)(player->tile_y * TILE_SIZE + TILE_SIZE / 2) + offset_y;
 	if (!is_valid_position(map, player->x, player->y))
 	{
-		printf("Error\nInvalid spawn position at (%d, %d)\n",
-			player->tile_x, player->tile_y);
-		exit(1);
+		handle_player_error(player, map, "Error\nInvalid player position\n");
 	}
 }
 

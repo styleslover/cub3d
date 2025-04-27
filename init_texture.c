@@ -6,31 +6,25 @@
 /*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 19:27:23 by mabrigo           #+#    #+#             */
-/*   Updated: 2025/04/24 21:02:46 by damoncad         ###   ########.fr       */
+/*   Updated: 2025/04/27 16:48:57 by damoncad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-void	handle_errors(t_game *game, char *path, int fd, const char *msg)
+void handle_errors(t_game *game, char *path, int fd, const char *msg)
 {
-	if (fd != -1)
+    if (fd >= 0)
 		close(fd);
 	if (path)
 		free(path);
 	free_textures(game);
-	if (game->img)
-		mlx_destroy_image(game->mlx, game->img);
-	if (game->win)
-		mlx_destroy_window(game->mlx, game->win);
-	free_map(game->map);
-	mlx_destroy_display(game->mlx);
-	free(game->mlx);
-	free(game->ps);
-	free(game->player);
+    free_map(game->map);
+    free_game_resources_help(game);
+    clear_gnl();
 	if (msg)
-		printf("%s", msg);
-	exit(1);
+    	print_error((char *)msg);
+    exit(1);
 }
 
 void	init_textures(t_game *game, t_map_data *map)
@@ -73,14 +67,12 @@ void	validate_texture_file(t_game *game, char *clean_path)
 	fd = open(clean_path, __O_DIRECTORY);
 	if (fd != -1)
 	{
-		printf("Error\nTexture path '%s' is a directory.\n", clean_path);
-		handle_errors(game, clean_path, fd, NULL);
+		handle_errors(game, clean_path, fd, "Error\nTexture path is a directory.\n");
 	}
 	fd = open(clean_path, O_RDONLY);
 	if (fd == -1)
 	{
-		printf("Error: Could not open texture file '%s'.\n", clean_path);
-		handle_errors(game, clean_path, fd, NULL);
+		handle_errors(game, clean_path, fd, "Error\nCould not open texture file.\n");
 	}
 	is_texture_empty(game, fd, clean_path);
 	close(fd);
@@ -93,14 +85,13 @@ void	load_texture(t_game *game, t_textures *texture, char *path)
 	clean_path = ft_strtrim(path, "\t\n\r");
 	if (!clean_path)
 		handle_errors(game, NULL, -1,
-			"Error: Memory allocation failed for texture path.\n");
+			"Error\nMemory allocation failed for texture path.\n");
 	validate_texture_file(game, clean_path);
 	texture->img = mlx_xpm_file_to_image(game->mlx, clean_path,
 			&texture->width, &texture->height);
 	if (!texture->img)
 	{
-		printf("Error: Could not load texture '%s'.\n", clean_path);
-		handle_errors(game, clean_path, -1, NULL);
+		handle_errors(game, clean_path, -1, "Error: Could not load texture.\n");
 	}
 	texture->addr = mlx_get_data_addr(texture->img, &texture->bpp,
 			&texture->line_length, &texture->endian);

@@ -6,7 +6,7 @@
 /*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 14:25:54 by damoncad          #+#    #+#             */
-/*   Updated: 2025/04/26 15:22:40 by damoncad         ###   ########.fr       */
+/*   Updated: 2025/04/27 16:43:40 by damoncad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,7 +114,5 @@ int	find_xpm_header(int fd, int *values)
         }
         free(line);
     }
-    if (!valid)
-        printf("Error\nInvalid XPM header\n");
     return (valid);
 }

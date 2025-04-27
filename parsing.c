@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
+/*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 22:52:55 by mariel            #+#    #+#             */
-/*   Updated: 2025/04/25 00:11:00 by mabrigo          ###   ########.fr       */
+/*   Updated: 2025/04/26 19:43:14 by damoncad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,6 @@ void	parse_config_line(char *str, t_map_data *map, int fd)
 	i = 0;
 	while (str[i] == 32 || (str[i] >= 9 && str[i] <= 13))
 		i++;
-	if (!is_valid_config_line(str))
-	{
-		handle_config_error(fd, map, "Error: invalid configuration line\n");
-		return ;
-	}
 	if (!ft_strncmp(str + i, "NO ", 3) || !ft_strncmp(str + i, "SO ", 3))
 		handle_texture(map, fd, str + i, i + 3);
 	else if (!ft_strncmp(str + i, "WE ", 3) || !ft_strncmp(str + i, "EA ", 3))
@@ -31,8 +26,11 @@ void	parse_config_line(char *str, t_map_data *map, int fd)
 	else if (!ft_strncmp(str + i, "F ", 2) || !ft_strncmp(str + i, "C ", 2))
 		parse_floor_ceiling(i, str, map, fd);
 	else
-		handle_config_error(fd, map,
-			"Error: Unknown configuration directive\n");
+	{
+		free(str);
+		handle_config_error(fd, map, "Error\nUnknown configuration directive\n");
+		
+	}
 }
 
 void	process_line(char *line, t_map_data *map, int fd, t_parse_state *state)
@@ -46,7 +44,7 @@ void	process_line(char *line, t_map_data *map, int fd, t_parse_state *state)
 	if (state->config_done)
 	{
 		if (!handle_map_line(line, state->current_line, &state->map_start_line))
-			handle_map_error(line, fd, map);
+			handle_map_error(line, fd, map, "Error\nInvalid map line\n");
 	}
 	else
 		handle_config_line(line, map, fd, &state->config_done);

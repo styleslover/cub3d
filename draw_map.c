@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw_map.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
+/*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 19:08:14 by mabrigo           #+#    #+#             */
-/*   Updated: 2025/04/24 21:13:13 by mabrigo          ###   ########.fr       */
+/*   Updated: 2025/04/26 19:13:01 by damoncad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,15 +49,19 @@ void	draw_map_row(t_game *game, t_map_data *map, int i)
 	}
 }
 
+void	handle_draw_map_error(t_game *game)
+{
+	print_error("Error\nMap not loaded or empty\n");
+	free_game_resources(game);
+	exit(1);
+}
+
 void	draw_map(t_game *game, t_map_data *map)
 {
 	int	i;
 
 	if (!map->world || !map->world[0])
-	{
-		printf("Error: Map not loaded or empty\n");
-		return ;
-	}
+		handle_draw_map_error(game);
 	calculate_minimap_offset(game, map);
 	i = 0;
 	while (map->world[i] != NULL)

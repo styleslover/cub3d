@@ -6,7 +6,7 @@
 /*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 18:39:22 by mabrigo           #+#    #+#             */
-/*   Updated: 2025/04/26 15:15:42 by damoncad         ###   ########.fr       */
+/*   Updated: 2025/04/26 20:16:46 by damoncad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,19 +56,14 @@ int	is_map_closed(char **world, t_line *line)
 	return (1);
 }
 
-int	check_map(char **world)
+int	check_map(char **world, t_map_data *map)
 {
 	t_line	line;
-	int		i;
-	int		player;
 
-	i = 0;
-	player = 0;
-	if (!map_valid_char(world, i, player) || !is_map_closed(world, &line)
+	if (!map_valid_char(world, map) || !is_map_closed(world, &line)
 		|| !map_empty_lines(world))
 	{
-		printf("Error\nMap not surrounded by walls\n");
-		return (0);
+		handle_map_error(NULL, -1, map, "Error\nInvalid map\n");
 	}
 	return (1);
 }
