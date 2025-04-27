@@ -6,7 +6,7 @@
 /*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 00:05:02 by mabrigo           #+#    #+#             */
-/*   Updated: 2025/04/27 18:58:20 by mabrigo          ###   ########.fr       */
+/*   Updated: 2025/04/27 20:10:38 by mabrigo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int	process_digit_and_spaces(char *str, int *i,
 	return (1);
 }
 
-int	check_single_value(char *str, int fd, t_map_data *map)
+int	check_single_value(char *str)
 {
 	int	i;
 	int	digit_found;
@@ -47,7 +47,7 @@ int	check_single_value(char *str, int fd, t_map_data *map)
 	i = 0;
 	digit_found = 0;
 	in_number = 0;
-	if (!skip_spaces_check_sign(str, &i, fd, map))
+	if (!skip_spaces_check_sign(str, &i))
 		return (0);
 	while (str[i])
 		if (!process_digit_and_spaces(str, &i, &digit_found, &in_number))
@@ -55,7 +55,7 @@ int	check_single_value(char *str, int fd, t_map_data *map)
 	return (digit_found);
 }
 
-int	rgb_char_to_int(int *rgb_values, char **input, int fd, t_map_data *map)
+int	rgb_char_to_int(int *rgb_values, char **input)
 {
 	int		i;
 	char	*trimmed;
@@ -64,7 +64,7 @@ int	rgb_char_to_int(int *rgb_values, char **input, int fd, t_map_data *map)
 	while (i < 3 && input[i])
 	{
 		trimmed = ft_strtrim(input[i], " \t\n\r");
-		if (!trimmed || !check_single_value(trimmed, fd, map))
+		if (!trimmed || !check_single_value(trimmed))
 		{
 			free(trimmed);
 			return (0);
@@ -85,7 +85,7 @@ int	count_check_rgb_values(char **splitted)
 	return (i == 3);
 }
 
-int	*parse_rgb_values(char *str, int fd, t_map_data *map)
+int	*parse_rgb_values(char *str)
 {
 	char	**splitted;
 	int		*rgb_values;
@@ -104,7 +104,7 @@ int	*parse_rgb_values(char *str, int fd, t_map_data *map)
 		free_matrix(splitted);
 		return (NULL);
 	}
-	if (!rgb_char_to_int(rgb_values, splitted, fd, map))
+	if (!rgb_char_to_int(rgb_values, splitted))
 	{
 		free(rgb_values);
 		free_matrix(splitted);

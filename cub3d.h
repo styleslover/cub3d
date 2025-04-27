@@ -6,7 +6,7 @@
 /*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 12:40:01 by mabrigo           #+#    #+#             */
-/*   Updated: 2025/04/27 18:56:38 by mabrigo          ###   ########.fr       */
+/*   Updated: 2025/04/27 20:27:35 by mabrigo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -252,7 +252,7 @@ void	handle_texture(t_map_data *map, int fd, char *str, int offset);
 int		validate_xpm_header(char *texture_path);
 int		is_valid_texture_path(char *path);
 char	*extract_raw_path(char *str, int offset, int fd, t_map_data *map);
-char	*trim_texture_path(char *raw, char *str, int fd, t_map_data *map);
+char	*trim_texture_path(char *raw);
 
 //parsing_fc.c //ok
 int		check_fc_format(char *fc);
@@ -264,10 +264,10 @@ void	parse_floor_ceiling(int i, char *str, t_map_data *map, int fd);
 //parsing_fc_rgb.c //ok
 int		process_digit_and_spaces(char *str, int *i,
 			int *digit_found, int *in_number);
-int		check_single_value(char *str, int fd, t_map_data *map);
-int		rgb_char_to_int(int *rgb_values, char **input, int fd, t_map_data *map);
+int		check_single_value(char *str);
+int		rgb_char_to_int(int *rgb_values, char **input);
 int		count_check_rgb_values(char **splitted);
-int		*parse_rgb_values(char *str, int fd, t_map_data *map);
+int		*parse_rgb_values(char *str);
 
 //parsing_map.c //ok
 int		handle_map_line(char *line, int current_line, int *map_start_line);
@@ -289,7 +289,7 @@ void	check_empty_file(int current_line, t_map_data *map);
 void	handle_config_error(int fd, t_map_data *map, char *message);
 void	handle_config_line(char *line, t_map_data *map,
 			int fd, int *config_done);
-int		skip_spaces_check_sign(char *str, int *i, int fd, t_map_data *map);
+int		skip_spaces_check_sign(char *str, int *i);
 
 //player.C //ok
 void	set_east_west_direction(t_player *player, char c);

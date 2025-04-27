@@ -6,7 +6,7 @@
 /*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 00:06:53 by mabrigo           #+#    #+#             */
-/*   Updated: 2025/04/27 18:59:17 by mabrigo          ###   ########.fr       */
+/*   Updated: 2025/04/27 20:42:02 by mabrigo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,12 @@ int	is_map_line(char *str)
 	{
 		if (!ft_strncmp(&str[i], "NO ", 3) || !ft_strncmp(&str[i], "SO ", 3)
 			|| !ft_strncmp(&str[i], "WE ", 3) || !ft_strncmp(&str[i], "EA ", 3)
-			|| !ft_strncmp(&str[i], "F ", 2) || !ft_strncmp(&str[i], "C ", 2))
+			|| !ft_strncmp(&str[i], "NO\t", 3)
+			|| !ft_strncmp(&str[i], "SO\t", 3)
+			|| !ft_strncmp(&str[i], "WE\t", 3)
+			|| !ft_strncmp(&str[i], "EA\t", 3)
+			|| !ft_strncmp(&str[i], "F ", 2) || !ft_strncmp(&str[i], "C ", 2)
+			|| !ft_strncmp(&str[i], "F\t", 2) || !ft_strncmp(&str[i], "C\t", 2))
 			return (0);
 		return (1);
 	}

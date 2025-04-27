@@ -6,7 +6,7 @@
 /*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 19:27:23 by mabrigo           #+#    #+#             */
-/*   Updated: 2025/04/27 18:23:34 by mabrigo          ###   ########.fr       */
+/*   Updated: 2025/04/27 20:15:17 by mabrigo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ void	load_texture(t_game *game, t_textures *texture, char *path)
 			&texture->width, &texture->height);
 	if (!texture->img)
 	{
-		handle_errors(game, clean_path, -1, "Error: Could not load texture.\n");
+		handle_errors(game, clean_path, -1, "Error\nCould not load texture.\n");
 	}
 	texture->addr = mlx_get_data_addr(texture->img, &texture->bpp,
 			&texture->line_length, &texture->endian);

@@ -6,7 +6,7 @@
 /*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 22:52:55 by mariel            #+#    #+#             */
-/*   Updated: 2025/04/27 18:44:19 by mabrigo          ###   ########.fr       */
+/*   Updated: 2025/04/27 20:20:34 by mabrigo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,14 @@ void	parse_config_line(char *str, t_map_data *map, int fd)
 	i = 0;
 	while (str[i] == 32 || (str[i] >= 9 && str[i] <= 13))
 		i++;
-	if (!ft_strncmp(str + i, "NO ", 3) || !ft_strncmp(str + i, "SO ", 3))
+	if (!ft_strncmp(str + i, "NO ", 3) || !ft_strncmp(str + i, "SO ", 3)
+		|| !ft_strncmp(str + i, "NO\t", 3) || !ft_strncmp(str + i, "SO\t", 3))
 		handle_texture(map, fd, str + i, i + 3);
-	else if (!ft_strncmp(str + i, "WE ", 3) || !ft_strncmp(str + i, "EA ", 3))
+	else if (!ft_strncmp(str + i, "WE ", 3) || !ft_strncmp(str + i, "EA ", 3)
+		|| !ft_strncmp(str + i, "WE\t", 3) || !ft_strncmp(str + i, "EA\t", 3))
 		handle_texture(map, fd, str + i, i + 3);
-	else if (!ft_strncmp(str + i, "F ", 2) || !ft_strncmp(str + i, "C ", 2))
+	else if (!ft_strncmp(str + i, "F ", 2) || !ft_strncmp(str + i, "C ", 2)
+		|| !ft_strncmp(str + i, "F\t", 2) || !ft_strncmp(str + i, "C\t", 2))
 		parse_floor_ceiling(i, str, map, fd);
 	else
 	{

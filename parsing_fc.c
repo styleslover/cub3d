@@ -6,7 +6,7 @@
 /*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 23:52:21 by mabrigo           #+#    #+#             */
-/*   Updated: 2025/04/27 19:16:52 by mabrigo          ###   ########.fr       */
+/*   Updated: 2025/04/27 20:10:53 by mabrigo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ int	*finalize_rgb_values(int fd, char *fc, char *str, t_map_data *map)
 {
 	int		*values;
 
-	values = parse_rgb_values(fc, fd, map);
+	values = parse_rgb_values(fc);
 	if (!values)
 	{
 		free(fc);

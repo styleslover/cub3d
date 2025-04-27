@@ -6,7 +6,7 @@
 /*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 23:58:46 by mabrigo           #+#    #+#             */
-/*   Updated: 2025/04/27 18:57:48 by mabrigo          ###   ########.fr       */
+/*   Updated: 2025/04/27 20:19:47 by mabrigo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,14 @@ int	is_valid_config_line(char *str)
 		|| ft_strncmp(str + i, "SO ", 3) == 0
 		|| ft_strncmp(str + i, "WE ", 3) == 0
 		|| ft_strncmp(str + i, "EA ", 3) == 0
+		|| ft_strncmp(str + i, "NO\t", 3) == 0
+		|| ft_strncmp(str + i, "SO\t", 3) == 0
+		|| ft_strncmp(str + i, "WE\t", 3) == 0
+		|| ft_strncmp(str + i, "EA\t", 3) == 0
 		|| ft_strncmp(str + i, "F ", 2) == 0
-		|| ft_strncmp(str + i, "C ", 2) == 0);
+		|| ft_strncmp(str + i, "C ", 2) == 0
+		|| ft_strncmp(&str[i], "F\t", 2) == 0
+		|| ft_strncmp(&str[i], "C\t", 2) == 0);
 }
 
 void	check_empty_file(int current_line, t_map_data *map)
@@ -52,15 +58,16 @@ void	check_empty_file(int current_line, t_map_data *map)
 	}
 }
 
-int	skip_spaces_check_sign(char *str, int *i, int fd, t_map_data *map)
+int	skip_spaces_check_sign(char *str, int *i)
 {
 	while (str[*i] == ' ' || (str[*i] >= '\t' && str[*i] <= '\r'))
 		(*i)++;
 	if (str[*i] == '+' || str[*i] == '-')
 	{
 		if (!ft_isdigit(str[*i + 1]))
-			handle_config_error(fd, map,
-				"Error\nInvalid sign in configuration\n");
+		{
+			return (0);
+		}
 		(*i)++;
 	}
 	return (1);
