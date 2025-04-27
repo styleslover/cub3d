@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_starter_map.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 00:06:53 by mabrigo           #+#    #+#             */
-/*   Updated: 2025/04/26 19:06:43 by damoncad         ###   ########.fr       */
+/*   Updated: 2025/04/27 18:59:17 by mabrigo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,8 @@ char	**set_map(int map_start_line, char *av, int *fd, t_map_data *map_data)
 	if (!map_arr)
 	{
 		close(*fd);
-		handle_map_error(NULL, *fd, map_data, "Error\nMemory allocation failed\n");
+		handle_map_error(NULL, *fd, map_data,
+			"Error\nMemory allocation failed\n");
 	}
 	return (map_arr);
 }
@@ -112,4 +113,3 @@ char	**load_map(char *av, int map_start_line, t_map_data *map_data)
 	close(fd);
 	return (map_arr);
 }
-

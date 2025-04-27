@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw_map.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 19:08:14 by mabrigo           #+#    #+#             */
-/*   Updated: 2025/04/26 19:13:01 by damoncad         ###   ########.fr       */
+/*   Updated: 2025/04/27 18:57:37 by mabrigo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void	draw_map_row(t_game *game, t_map_data *map, int i)
 
 void	handle_draw_map_error(t_game *game)
 {
-	print_error("Error\nMap not loaded or empty\n");
+	printf("Error\nMap not loaded or empty\n");
 	free_game_resources(game);
 	exit(1);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_map.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 23:55:14 by mabrigo           #+#    #+#             */
-/*   Updated: 2025/04/26 20:11:03 by damoncad         ###   ########.fr       */
+/*   Updated: 2025/04/27 18:18:41 by mabrigo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	handle_map_error(char *line, int fd, t_map_data *map, char *message)
 		close(fd);
 	free_map(map);
 	clear_gnl();
-	print_error(message);
+	printf("%s", message);
 	exit(1);
 }
 

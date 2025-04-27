@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 22:52:55 by mariel            #+#    #+#             */
-/*   Updated: 2025/04/26 19:43:14 by damoncad         ###   ########.fr       */
+/*   Updated: 2025/04/27 18:44:19 by mabrigo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,8 @@ void	parse_config_line(char *str, t_map_data *map, int fd)
 	else
 	{
 		free(str);
-		handle_config_error(fd, map, "Error\nUnknown configuration directive\n");
-		
+		handle_config_error(fd, map,
+			"Error\nUnknown configuration directive\n");
 	}
 }
 

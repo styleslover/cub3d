@@ -3,20 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 12:52:13 by mabrigo           #+#    #+#             */
-/*   Updated: 2025/04/26 20:42:10 by damoncad         ###   ########.fr       */
+/*   Updated: 2025/04/27 18:59:48 by mabrigo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
-
-int	print_error(char *str)
-{
-	printf("%s\n", str);
-	return (1);
-}
 
 int	check_filename(char *av)
 {
@@ -62,27 +56,32 @@ void	free_game_resources(t_game *game)
 	printf("Risorse liberate correttamente.\n");
 }
 
+void	check_args(int ac, char **av, t_map_data *map)
+{
+	if (ac != 2)
+	{
+		printf("Error\nUsage: ./cub3D <map.cub>\n");
+		exit (1);
+	}
+	if (!check_filename(av[1]))
+	{
+		printf("Error\nFile must have .cub extension\n");
+		exit (1);
+	}
+	map->fd = open(av[1], O_RDONLY);
+	if (map->fd < 0)
+	{
+		printf("Error\nCannot open map file\n");
+		exit (1);
+	}
+}
+
 int	main(int ac, char **av)
 {
 	t_game			game;
 	t_map_data		map;
 
-	if (ac != 2)
-	{
-		print_error("Error\nUsage: ./cub3D <map.cub>\n");
-		exit (1);		
-	}
-	if (!check_filename(av[1]))
-	{
-		print_error("Error\nFile must have .cub extension\n");
-		exit (1);
-	}
-	map.fd = open(av[1], O_RDONLY);
-	if (map.fd < 0)
-	{
-		print_error("Error\nCannot open map file\n");
-		exit (1);
-	}
+	check_args(ac, av, &map);
 	check_fd_not_directory(av[1]);
 	init_game_pointers(&game);
 	parse_file(av, map.fd, &map);

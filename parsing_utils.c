@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 23:58:46 by mabrigo           #+#    #+#             */
-/*   Updated: 2025/04/27 16:41:08 by damoncad         ###   ########.fr       */
+/*   Updated: 2025/04/27 18:57:48 by mabrigo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,48 +47,21 @@ void	check_empty_file(int current_line, t_map_data *map)
 	if (!current_line)
 	{
 		free_map(map);
-		print_error("Error\nEmpty file\n");
+		printf("Error\nEmpty file\n");
 		exit(1);
-	}
-}
-
-void	handle_config_error(int fd, t_map_data *map, char *message)
-{
-	close(fd);
-	free_map(map);
-	clear_gnl();
-	print_error(message);
-	exit (1);
-}
-
-void	handle_config_line(char *line, t_map_data *map,
-	int fd, int *config_done)
-{
-	if (is_map_line(line))
-	{
-		free(line);
-		handle_config_error(fd, map,
-			"Error\nInvalid configuration line\n");
-	}
-	else
-	{
-		parse_config_line(line, map, fd);
-		if (map->north_txtr && map->south_txtr && map->west_txtr
-			&& map->east_txtr && map->floor_color && map->ceiling_color)
-			*config_done = 1;
 	}
 }
 
 int	skip_spaces_check_sign(char *str, int *i, int fd, t_map_data *map)
 {
 	while (str[*i] == ' ' || (str[*i] >= '\t' && str[*i] <= '\r'))
-    	(*i)++;
-    if (str[*i] == '+' || str[*i] == '-')
-    {
-        if (!ft_isdigit(str[*i + 1]))
-            handle_config_error(fd, map,
-                "Error\nInvalid sign in configuration\n");
-        (*i)++;
-    }
-    return (1);
+		(*i)++;
+	if (str[*i] == '+' || str[*i] == '-')
+	{
+		if (!ft_isdigit(str[*i + 1]))
+			handle_config_error(fd, map,
+				"Error\nInvalid sign in configuration\n");
+		(*i)++;
+	}
+	return (1);
 }

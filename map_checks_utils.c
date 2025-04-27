@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map_checks_utils.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 19:39:16 by mabrigo           #+#    #+#             */
-/*   Updated: 2025/04/26 20:15:34 by damoncad         ###   ########.fr       */
+/*   Updated: 2025/04/27 18:27:26 by mabrigo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,35 +30,39 @@ int	map_empty_lines(char **world)
 	return (1);
 }
 
+void	check_player_number(int player, t_map_data *map)
+{
+	if (player != 1)
+		handle_map_error(NULL, -1, map,
+			"Error\nThere must be exactly one player start\n");
+}
+
 int	map_valid_char(char **world, t_map_data *map)
 {
-	int	i = 0;
-    int	player = 0;
-    int	j;
+	int	i;
+	int	player;
+	int	j;
 
-    while (world[i])
-    {
-        j = 0;
-        while (world[i][j] == ' ' || (world[i][j] >= '\t' && world[i][j] <= '\r'))
-            j++;
-        while (world[i][j])
-        {
-            if (world[i][j] == '\t')
-                handle_map_error(NULL, -1, map,
-                    "Error\nInvalid character in map: tab\n");
-            if (!my_strchr("01NSEW ", world[i][j]))
-                handle_map_error(NULL, -1, map,
-                    "Error\nInvalid character in map\n");
-            if (my_strchr("NSEW", world[i][j]))
-                player++;
-            j++;
-        }
-        i++;
-    }
-    if (player != 1)
-        handle_map_error(NULL, -1, map,
-            "Error\nThere must be exactly one player start\n");
-    return (1);
+	i = 0;
+	player = 0;
+	while (world[i])
+	{
+		j = 0;
+		while (world[i][j] == ' ' && world[i][j] <= '\r')
+			j++;
+		while (world[i][j])
+		{
+			if (!my_strchr("01NSEW ", world[i][j]))
+				handle_map_error(NULL, -1, map,
+					"Error\nInvalid character in map\n");
+			if (my_strchr("NSEW", world[i][j]))
+				player++;
+			j++;
+		}
+		i++;
+	}
+	check_player_number(player, map);
+	return (1);
 }
 
 void	get_line_data(t_line *line, char *str)

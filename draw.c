@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 23:30:39 by mariel            #+#    #+#             */
-/*   Updated: 2025/04/26 20:50:58 by damoncad         ###   ########.fr       */
+/*   Updated: 2025/04/27 18:18:51 by mabrigo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void	handle_draw_error(t_game *game, char *message)
 {
 	free_game_resources(game);
 	clear_gnl();
-	print_error(message);
+	printf("%s", message);
 	exit(1);
 }
 
@@ -88,7 +88,7 @@ int	draw_loop(t_game *game)
 	game->data = mlx_get_data_addr(game->img, &game->bpp, &game->size_line,
 			&game->endian);
 	if (!game->map)
-		print_error("Error\nErrore caricamento mappa\n");
+		printf("Error\nErrore caricamento mappa\n");
 	draw_floor_ceiling(game, game->map);
 	raycasting(game);
 	draw_map(game, game->map);

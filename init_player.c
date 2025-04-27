@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_player.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 19:23:25 by mabrigo           #+#    #+#             */
-/*   Updated: 2025/04/26 19:59:23 by damoncad         ###   ########.fr       */
+/*   Updated: 2025/04/27 18:51:57 by mabrigo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,16 +20,6 @@ void	init_player_memory(t_game *game)
 		printf("Error\nError initializing player\n");
 		exit(1);
 	}
-}
-
-void	handle_player_error(t_player *player, t_map_data *map, char *message)
-{
-	if (player)
-		free(player);
-	free_map(map);
-	clear_gnl();
-	print_error(message);
-	exit(1);
 }
 
 void	find_player_position(t_player *player, t_map_data *map)

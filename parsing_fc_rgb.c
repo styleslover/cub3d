@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_fc_rgb.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: damoncad <damoncad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mabrigo <mabrigo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 00:05:02 by mabrigo           #+#    #+#             */
-/*   Updated: 2025/04/27 16:31:23 by damoncad         ###   ########.fr       */
+/*   Updated: 2025/04/27 18:58:20 by mabrigo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,4 +113,3 @@ int	*parse_rgb_values(char *str, int fd, t_map_data *map)
 	free_matrix(splitted);
 	return (rgb_values);
 }
-
